@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "types": ["node"],
+    "baseUrl": ".",
+    "paths": {
+      "~*": ["./*"]
+    }
+  },
+  "exclude": ["out"]
+}
