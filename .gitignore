@@ -1,1 +1,14 @@
-/uni
+/monoclean
+
+node_modules
+
+npm/
+
+snapshot/**/*.js
+snapshot/**/*.map
+snapshot/**/*.json
+snapshot/**/stderr
+snapshot/**/stdout
+snapshot/**/yarn-lock
+
+dist/
