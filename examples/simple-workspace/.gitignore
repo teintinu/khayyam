@@ -1,0 +1,10 @@
+# monoclean
+node_modules
+package.json
+package-lock.json
+yarn-lock.*
+tsconfig.*
+tmp
+out
+.eslintrc.js
+coverage
