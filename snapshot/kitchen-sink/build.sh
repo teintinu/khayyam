@@ -1,7 +1,9 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 set -euo pipefail
 
-uni deps
-uni clean
-uni build
+bash "$NVM_DIR/nvm.sh" use
+
+monoclean deps
+monoclean clean
+monoclean build
