@@ -9,7 +9,6 @@ const matchesTag = /^refs\/tags\/v(.*)$/.exec(github_ref)
 if (matchesTag && matchesTag[ 1 ]) {
   const version = matchesTag[ 1 ]
   const packageJson = JSON.parse(fs.readFileSync(packageJsonFile, 'utf8'))
-  packageJson.version = version
-  console.log(JSON.stringify(packageJson, null, 2))
+  packageJson.version = version  
   fs.writeFileSync(packageJsonFile, JSON.stringify(packageJson, null, 2), 'utf8')
 }

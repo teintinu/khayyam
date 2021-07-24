@@ -24,6 +24,8 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: 14.17.3
+    - name: Prepare publishment
+      run: node ./scripts/prepare.js
 
 # test
     - name: Test
@@ -33,7 +35,7 @@ jobs:
 
     - name: Run GoReleaser
       uses: goreleaser/goreleaser-action@v2
-      if: startsWith(github.ref, 'refs/tags/v')
+      if: startsWith(github.ref, 'refs/tags/')
       with:
         distribution: goreleaser
         version: latest
@@ -43,12 +45,9 @@ jobs:
 
 # publish:
 
-    - name: Prepare publishment
-      run: ./scripts/prepare.sh
-
     - name: Publish NPM
       uses: JS-DevTools/npm-publish@v1
-      if: startsWith(github.ref, 'refs/tags/v')
+      if: startsWith(github.ref, 'refs/tags/')
       with:
         token: ${{ secrets.NPM_TOKEN }}
         package: npm/package.json

@@ -7,8 +7,8 @@
     "preuninstall": "go-npm uninstall"
   },
   "goBinary": {
-    "name": "myBinaryName",
+    "name": "monoclean",
     "path": "./bin",
-    "url": "https://github.com/user/myrepo/releases/download/v{{version}}/myBinaryName{{platform}}_{{arch}}.tar.gz"
+    "url": "https://github.com/user/myrepo/releases/download/v{{version}}/monoclean{{platform}}_{{arch}}.tar.gz"
   }
 }
