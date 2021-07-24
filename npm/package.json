@@ -1,0 +1,14 @@
+{
+  "name": "monoclean",
+  "description": "A clean mono workspace automation",
+  "main": "index.js",
+  "scripts": {
+    "postinstall": "go-npm install",
+    "preuninstall": "go-npm uninstall"
+  },
+  "goBinary": {
+    "name": "myBinaryName",
+    "path": "./bin",
+    "url": "https://github.com/user/myrepo/releases/download/v{{version}}/myBinaryName{{platform}}_{{arch}}.tar.gz"
+  }
+}

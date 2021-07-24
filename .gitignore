@@ -6,3 +6,5 @@ snapshot/**/*.json
 snapshot/**/stderr
 snapshot/**/stdout
 snapshot/**/yarn-lock
+
+dist/
