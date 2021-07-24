@@ -182,6 +182,7 @@ func configurePkgTsConfigReferences(repo *Repository, pkg *Package) error {
 			BaseURL:   ".",
 			Composite: true,
 			Paths:     make(map[string][]string),
+			Lib:       []string{"ESNext"},
 		},
 		Exclude: []string{"dist"},
 		Include: []string{"src/**/*.ts", "src/**/*.tsx"},
@@ -190,27 +191,33 @@ func configurePkgTsConfigReferences(repo *Repository, pkg *Package) error {
 		if dependency.Version != "*" {
 			return errors.New("package dependencies is supported only inside workspace")
 		}
-		var depPkg = repo.Packages[dependency.Name]
-		if depPkg == nil {
-			return errors.New("package not found " + dependency.Name)
-		}
-		relativePathToDep, err := filepath.Rel(pkg.Folder, depPkg.Folder)
-		if err != nil {
-			return err
-		}
+		if dependency.Name == "DOM" {
+			meta.CompilerOptions.Lib = append(meta.CompilerOptions.Lib, "DOM")
+		} else {
+			var depPkg = repo.Packages[dependency.Name]
+			if depPkg == nil {
+				return errors.New("package not found " + dependency.Name)
+			}
+			relativePathToDep, err := filepath.Rel(pkg.Folder, depPkg.Folder)
+			if err != nil {
+				return err
+			}
 
-		ref := TsConfigReferenceMetadata{
-			Path: relativePathToDep,
+			ref := TsConfigReferenceMetadata{
+				Path: relativePathToDep,
+			}
+			meta.References = append(meta.References, ref)
+			meta.CompilerOptions.Paths[dependency.Name] = []string{relativePathToDep + "/src"}
 		}
-		meta.References = append(meta.References, ref)
-		meta.CompilerOptions.Paths[dependency.Name] = []string{relativePathToDep + "/src"}
 	}
 	return WriteTsConfigJSON(meta, path.Join(repo.RootDir, pkg.Folder, "tsconfig.json"))
 }
 
 func addDependenciesToPackageJSON(metadata PackageMetadata, dependencies map[string]*Dependency) {
 	for dependencyName, dependency := range dependencies {
-		metadata.Dependencies[dependencyName] = dependency.Version
+		if dependencyName != "DOM" {
+			metadata.Dependencies[dependencyName] = dependency.Version
+		}
 	}
 }
 

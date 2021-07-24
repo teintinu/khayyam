@@ -24,6 +24,7 @@ type TsConfigCompileOptionsMetadata struct {
 	Target           string              `json:"target,omitempty"`
 	ModuleResolution string              `json:"moduleResolution,omitempty"`
 	Module           string              `json:"module,omitempty"`
+	Lib              []string            `json:"lib,omitempty"`
 	RootDir          string              `json:"rootDir,omitempty"`
 	BaseURL          string              `json:"baseUrl,omitempty"`
 	Paths            map[string][]string `json:"paths,omitempty"`
