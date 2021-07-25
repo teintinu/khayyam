@@ -3,6 +3,7 @@ package internal
 import (
 	"errors"
 	"io/ioutil"
+	"os"
 	"path"
 	"path/filepath"
 )
@@ -14,6 +15,9 @@ func ConfigureRepository(repo *Repository) error {
 		workspaceName = repo.Workspace.Name
 		workspaceVersion = repo.Workspace.Version
 		if err := configureGitIgnore(repo); err != nil {
+			return err
+		}
+		if err := configureVsCodeRecommendedExtensions(repo); err != nil {
 			return err
 		}
 		if err := configureNvmRc(repo); err != nil {
@@ -56,7 +60,10 @@ func ConfigureRepository(repo *Repository) error {
 			"postinstall": "patch-package",
 		}
 	}
-	addDependenciesToPackageJSON(metadata, repo.Dependencies)
+	for dependencyName, dependency := range repo.Dependencies {
+		metadata.Dependencies[dependencyName] = dependency.Version
+	}
+
 	return WritePackageJSON(metadata, repo.RootDir)
 }
 
@@ -65,17 +72,38 @@ func configureGitIgnore(repo *Repository) error {
 	gitignore := path.Join(repo.RootDir, ".gitignore")
 	var content = `# monoclean
 node_modules
+.nvm.rc
 package.json
 package-lock.json
 yarn-lock.*
-tsconfig.*
+yarn.lock
+tsconfig.**
+jest.config.js
 tmp
 out
-.eslintrc.js
+.eslintrc.json
 coverage
+.vscode/extensions.json
+
 `
 
 	err := ioutil.WriteFile(gitignore, []byte(content), 0644)
+	return err
+}
+
+func configureVsCodeRecommendedExtensions(repo *Repository) error {
+	var vscodeDir = path.Join(repo.RootDir, ".vscode")
+	if err := os.MkdirAll(vscodeDir, 0755); err != nil {
+		return err
+	}
+	var extensionsJson = path.Join(vscodeDir, "extensions.json")
+	var content = `{
+  "recommendations": [
+    "dbaeumer.vscode-eslint"
+  ]
+}
+`
+	err := ioutil.WriteFile(extensionsJson, []byte(content), 0644)
 	return err
 }
 
@@ -161,10 +189,17 @@ func configurePkg(repo *Repository, pkg *Package) error {
 			"postinstall": "patch-package",
 		},
 	}
-	addDependenciesToPackageJSON(metadata, pkg.Dependencies)
+
+	for dependencyName, dependency := range pkg.Dependencies {
+		metadata.Dependencies[dependencyName] = dependency.Version
+	}
+
 	err := WritePackageJSON(metadata, repo.RootDir+"/"+pkg.Folder)
 	if err == nil {
 		err = configurePkgTsConfigReferences(repo, pkg)
+	}
+	if err == nil {
+		err = initializeEmptySources(repo, pkg)
 	}
 	return err
 }
@@ -191,34 +226,65 @@ func configurePkgTsConfigReferences(repo *Repository, pkg *Package) error {
 		if dependency.Version != "*" {
 			return errors.New("package dependencies is supported only inside workspace")
 		}
-		if dependency.Name == "DOM" {
-			meta.CompilerOptions.Lib = append(meta.CompilerOptions.Lib, "DOM")
-		} else {
-			var depPkg = repo.Packages[dependency.Name]
-			if depPkg == nil {
-				return errors.New("package not found " + dependency.Name)
-			}
-			relativePathToDep, err := filepath.Rel(pkg.Folder, depPkg.Folder)
-			if err != nil {
-				return err
-			}
+		var depPkg = repo.Packages[dependency.Name]
+		if depPkg == nil {
+			return errors.New("package not found " + dependency.Name)
+		}
+		relativePathToDep, err := filepath.Rel(pkg.Folder, depPkg.Folder)
+		if err != nil {
+			return err
+		}
 
-			ref := TsConfigReferenceMetadata{
-				Path: relativePathToDep,
-			}
-			meta.References = append(meta.References, ref)
-			meta.CompilerOptions.Paths[dependency.Name] = []string{relativePathToDep + "/src"}
+		ref := TsConfigReferenceMetadata{
+			Path: relativePathToDep,
+		}
+		meta.References = append(meta.References, ref)
+		meta.CompilerOptions.Paths[dependency.Name] = []string{relativePathToDep + "/src"}
+		if depPkg.usesDOM {
+			meta.CompilerOptions.Lib = append(meta.CompilerOptions.Lib, "DOM")
+		}
+		if depPkg.usesWebWorker {
+			meta.CompilerOptions.Lib = append(meta.CompilerOptions.Lib, "WebWorker")
 		}
 	}
 	return WriteTsConfigJSON(meta, path.Join(repo.RootDir, pkg.Folder, "tsconfig.json"))
 }
 
-func addDependenciesToPackageJSON(metadata PackageMetadata, dependencies map[string]*Dependency) {
-	for dependencyName, dependency := range dependencies {
-		if dependencyName != "DOM" {
-			metadata.Dependencies[dependencyName] = dependency.Version
-		}
+func initializeEmptySources(repo *Repository, pkg *Package) error {
+	sourceDir := path.Join(repo.RootDir, pkg.Folder, "src")
+	indexTs := path.Join(sourceDir, "index.ts")
+
+	_, err := os.Stat(indexTs)
+	if err == nil {
+		return nil
 	}
+
+	err = os.MkdirAll(sourceDir, 0755)
+	if err == nil {
+		err = createIndexTs(indexTs)
+	}
+	if err == nil {
+		err = createIndexTestTs(path.Join(sourceDir, "index.test.ts"))
+	}
+	return err
+}
+
+func createIndexTs(indexTs string) error {
+	const content = `export function doSomething() {
+  return 'something';
+}
+`
+	return ioutil.WriteFile(indexTs, []byte(content), 0644)
+}
+
+func createIndexTestTs(indexTestTs string) error {
+	const content = `import {doSomething} from "./index"
+
+it('test something' , () => {
+  expect('anything').toEqual(doSomething())
+})
+`
+	return ioutil.WriteFile(indexTestTs, []byte(content), 0644)
 }
 
 func configureJest(repo *Repository) error {
@@ -262,39 +328,39 @@ module.exports = {
 }
 
 func configureEsLint(repo *Repository) error {
-	const content = `module.exports = {
-  env: {
-    browser: true,
-    es2021: true,
-    node: true,
-    jest: true
+	const content = `{
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "node": true,
+    "jest": true
   },
-  extends: [
-    'plugin:react/recommended',
-    'standard'
+  "extends": [
+    "plugin:react/recommended",
+    "standard"
   ],
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    ecmaFeatures: {
-      jsx: true
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
     },
-    ecmaVersion: 12,
-    sourceType: 'module'
+    "ecmaVersion": 12,
+    "sourceType": "module"
   },
-  plugins: [
-    'react',
-    '@typescript-eslint'
+  "plugins": [
+    "react",
+    "@typescript-eslint"
   ],
-  rules: {
+  "rules": {
   },
-  settings: {
-    react: {
-      version: 'detect'
+  "settings": {
+    "react": {
+      "version": "detect"
     }
   }
 }
 `
-	eslintrc := path.Join(repo.RootDir, ".eslintrc.js")
+	eslintrc := path.Join(repo.RootDir, ".eslintrc.json")
 	err := ioutil.WriteFile(eslintrc, []byte(content), 0644)
 	return err
 }

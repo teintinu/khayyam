@@ -37,14 +37,17 @@ type Dependency struct {
 }
 
 type Package struct {
-	Name         string
-	Version      string
-	Folder       string
-	Public       bool
-	Description  string
-	Index        string
-	Dependencies map[string]*Dependency
-	Executables  map[string]*Executable
+	Name          string
+	Version       string
+	Folder        string
+	Public        bool
+	usesNode      bool
+	usesDOM       bool
+	usesWebWorker bool
+	Description   string
+	Index         string
+	Dependencies  map[string]*Dependency
+	Executables   map[string]*Executable
 }
 
 type TsConfig struct {
@@ -146,6 +149,8 @@ func LoadRepository(searchDir string) (*Repository, error) {
 					Name:    dependencyName,
 					Version: dependencyVersion,
 				}
+				pkg.usesDOM = dependencyName == "react-dom"
+				pkg.usesNode = dependencyName == "@types/node"
 			}
 		}
 		repo.Packages[packageName] = pkg

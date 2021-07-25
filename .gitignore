@@ -12,3 +12,6 @@ snapshot/**/stdout
 snapshot/**/yarn-lock
 
 dist/
+
+examples/new/a
+examples/new/b
