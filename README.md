@@ -1,6 +1,6 @@
 # monoclean
 
-A clean mono workspace automation
+A clean repository automation for Typescript mono workspace projects. Includes yarn, jest and eslint predifined configurations. Customizations and new automations automations are planned.
 
 # install
 
@@ -11,10 +11,6 @@ A clean mono workspace automation
 ## declare you workspace `monoclean.yml`
 
 ```
-engines:
-  node: "v14.17.3"
-  npm: "6.14.13"
-
 workspace:
   name: "example"
   version: "1.0.0"
@@ -37,7 +33,7 @@ It will create and maintain automatically package.json, tsconfig.json, eslint.js
 
 `monoclean run [PACKAGE]` use esbuild to fasterly run `src/index.ts` on desired `[PACKAGE]`
 
-### `monoclean`
+### `monoclean test`
 
 `monoclean test [PACKAGE]` use esbuild and jest to fasterly test all packages in the workspace
 

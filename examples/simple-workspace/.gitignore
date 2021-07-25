@@ -11,5 +11,5 @@ tmp
 out
 .eslintrc.json
 coverage
-.vscode/extensions.json
+.vscode
 
