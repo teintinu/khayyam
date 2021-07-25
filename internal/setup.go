@@ -17,6 +17,9 @@ func ConfigureRepository(repo *Repository) error {
 		if err := configureGitIgnore(repo); err != nil {
 			return err
 		}
+		if err := configureVsCodeSettings(repo); err != nil {
+			return err
+		}
 		if err := configureVsCodeRecommendedExtensions(repo); err != nil {
 			return err
 		}
@@ -91,11 +94,26 @@ coverage
 	return err
 }
 
-func configureVsCodeRecommendedExtensions(repo *Repository) error {
+func configureVsCodeSettings(repo *Repository) error {
 	var vscodeDir = path.Join(repo.RootDir, ".vscode")
 	if err := os.MkdirAll(vscodeDir, 0755); err != nil {
 		return err
 	}
+	var extensionsJson = path.Join(vscodeDir, "settings.json")
+	var content = `{
+  "yaml.schemas": {
+    "https://teintinu.github.io/monoclean/monoclean-schema.json": [
+      "monoclean.yml"
+    ]
+  }
+}
+`
+	err := ioutil.WriteFile(extensionsJson, []byte(content), 0644)
+	return err
+}
+
+func configureVsCodeRecommendedExtensions(repo *Repository) error {
+	var vscodeDir = path.Join(repo.RootDir, ".vscode")
 	var extensionsJson = path.Join(vscodeDir, "extensions.json")
 	var content = `{
   "recommendations": [
@@ -111,7 +129,9 @@ func configureNvmRc(repo *Repository) error {
 
 	npmRc := path.Join(repo.RootDir, ".nvm.rc")
 	var content = repo.Engines["node"]
-
+	if len(content) == 0 {
+		return nil
+	}
 	err := ioutil.WriteFile(npmRc, []byte(content), 0644)
 	return err
 }

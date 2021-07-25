@@ -10,6 +10,9 @@ builds:
       - linux
       - windows
       - darwin
+includes:
+  - from_file:
+      path: ./monoclean-schema.json
 checksum:
   name_template: 'checksums.txt'
 snapshot:
