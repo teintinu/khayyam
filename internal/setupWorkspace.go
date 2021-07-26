@@ -115,7 +115,8 @@ func configureVsCodeRecommendedExtensions(repo *Repository) error {
 	var extensionsJson = path.Join(vscodeDir, "extensions.json")
 	var content = `{
   "recommendations": [
-    "dbaeumer.vscode-eslint"
+    "dbaeumer.vscode-eslint",
+		"redhat.vscode-yaml"
   ]
 }
 `
