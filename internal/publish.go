@@ -15,7 +15,7 @@ func Publish(repo *Repository, pkg *Package) error {
 	packedPath := path.Join(packedDir, packedName)
 
 	access := "restricted"
-	if pkg.Public {
+	if pkg.Publish == PublishPublicly {
 		access = "public"
 	}
 

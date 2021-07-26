@@ -22,7 +22,7 @@ type WorkspaceConfig struct {
 }
 
 type PackageConfig struct {
-	Public       bool
+	Publish      string
 	Description  string
 	Version      string
 	Index        string

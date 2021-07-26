@@ -144,9 +144,11 @@
           "title": "folder of this package relative to workspace",
           "pattern": "^[^\\.\\/\\\\]"
         },
-        "public": {
-          "type": "boolean",
-          "title": "Publish this package as public"
+        "publish": {
+          "type": "string",
+          "enum": ["no", "restrict", "public"],
+          "default": "no",
+          "title": "This package must to be published?"
         },
         "dependencies": {
           "$ref": "#/definitions/dependencies",

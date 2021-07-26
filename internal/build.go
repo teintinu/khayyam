@@ -132,7 +132,7 @@ void (async () => {
 	}
 
 	isScoped := strings.HasPrefix(pkg.Name, "@")
-	private := !(pkg.Public || isScoped)
+	private := !(pkg.Publish == PublishPublicly || isScoped)
 
 	return buildAndWatch{
 		Repository: repo,

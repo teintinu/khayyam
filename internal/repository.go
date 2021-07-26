@@ -46,11 +46,19 @@ const (
 	AdaptersLayer
 )
 
+type PackagePublish = int
+
+const (
+	DontPublish PackagePublish = iota
+	PublishRestrictly
+	PublishPublicly
+)
+
 type Package struct {
 	Name          string
 	Version       string
 	Folder        string
-	Public        bool
+	Publish       PackagePublish
 	usesNode      bool
 	usesDOM       bool
 	usesWebWorker bool
@@ -186,11 +194,17 @@ func loadPackages(repo Repository, packages map[string]PackageConfig, layer Pack
 		}
 		pkg := &Package{
 			Name:        packageName,
-			Public:      packageConfig.Public,
 			Description: packageConfig.Description,
 			Index:       packageConfig.Index,
 			Folder:      packageConfig.Folder,
 			Layer:       layer,
+		}
+		if packageConfig.Publish == "public" {
+			pkg.Publish = PublishPublicly
+		} else if packageConfig.Publish == "restrict" {
+			pkg.Publish = PublishRestrictly
+		} else {
+			pkg.Publish = DontPublish
 		}
 		if repo.IsWorkspace && packageConfig.Dependencies != nil {
 			pkg.Dependencies = make(map[string]*Dependency)
