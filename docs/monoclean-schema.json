@@ -5,8 +5,29 @@
   "$id": "http://example.com/example.json",
   "type": "object",
   "required": [
-    "packages",
     "workspace"
+  ],
+  "anyOf": [
+    {
+      "required": [
+        "packages"
+      ]
+    },
+    {
+      "required": [
+        "business-rules"
+      ]
+    },
+    {
+      "required": [        
+        "executables"        
+      ]
+    },
+    {
+      "required": [        
+        "adapters"
+      ]
+    }
   ],
   "properties": {
     "engines": {
@@ -64,25 +85,25 @@
       },
       "additionalProperties": false
     },
-    "packages": {
-      "$id": "#/properties/packages",
-      "$ref": "#/definitions/packageList",      
-      "title": "The packages on this workspace"
-    },
     "business-rules": {
       "$id": "#/properties/packages",
-      "$ref": "#/definitions/packageList",      
+      "$ref": "#/definitions/packageList",
       "title": "These Clean Architecture packages defines business-rules"
     },
-    "applications": {
+    "executables": {
       "$id": "#/properties/packages",
-      "$ref": "#/definitions/packageList",      
-      "title": "These Clean Architecture packages defines applications"
+      "$ref": "#/definitions/packageList",
+      "title": "These Clean Architecture packages defines executables"
     },
     "adapters": {
       "$id": "#/properties/packages",
-      "$ref": "#/definitions/packageList",      
+      "$ref": "#/definitions/packageList",
       "title": "These Clean Architecture packages defines adapters"
+    },
+    "packages": {
+      "$id": "#/properties/packages",
+      "$ref": "#/definitions/packageList",
+      "title": "The packages on this workspace"
     }
   },
   "definitions": {
@@ -130,7 +151,7 @@
         "dependencies": {
           "$ref": "#/definitions/dependencies",
           "title": "The dependencies for all workspace"
-        }        
+        }
       },
       "additionalProperties": false
     }

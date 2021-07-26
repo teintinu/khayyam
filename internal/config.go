@@ -4,12 +4,15 @@ package internal
 // preserve order if necessary.
 
 type Config struct {
-	Engines      map[string]string
-	Repository   string
-	Registry     string
-	Workspace    WorkspaceConfig
-	Packages     map[string]PackageConfig
-	Dependencies map[string]string
+	Engines       map[string]string
+	Repository    string
+	Registry      string
+	Workspace     WorkspaceConfig
+	Dependencies  map[string]string
+	Packages      map[string]PackageConfig
+	BusinessRules map[string]PackageConfig `yaml:"business-rules"`
+	Executables   map[string]PackageConfig
+	Adapters      map[string]PackageConfig
 }
 
 type WorkspaceConfig struct {

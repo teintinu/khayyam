@@ -20,10 +20,11 @@ type Repository struct {
 	Engines      map[string]string
 	IsWorkspace  bool
 	Workspace    Workspace
-	Packages     map[string]*Package
 	Dependencies map[string]*Dependency
 	Url          string
 	Registry     string
+
+	Packages map[string]*Package
 }
 
 type Workspace struct {
@@ -36,6 +37,15 @@ type Dependency struct {
 	Version string
 }
 
+type PackageLayer = int
+
+const (
+	NormalLayer PackageLayer = iota
+	BusinessRulesLayer
+	ExecutablesLayer
+	AdaptersLayer
+)
+
 type Package struct {
 	Name          string
 	Version       string
@@ -46,11 +56,9 @@ type Package struct {
 	usesWebWorker bool
 	Description   string
 	Index         string
+	Layer         PackageLayer
 	Dependencies  map[string]*Dependency
-	Executables   map[string]*Executable
-}
-
-type TsConfig struct {
+	IsExecutable  bool
 }
 
 type Executable struct {
@@ -107,53 +115,21 @@ func LoadRepository(searchDir string) (*Repository, error) {
 	}
 
 	repo.Packages = make(map[string]*Package)
-	for packageName, packageConfig := range cfg.Packages {
-		if repo.IsWorkspace {
-			if len(packageConfig.Index) > 0 {
-				return nil, errors.New("use folder instead index inside workspace")
-			}
-			if packageConfig.Folder == "" {
-				return nil, errors.New("use folder for each package in workspace")
-			}
-			if strings.Contains(packageConfig.Folder, "\\") {
-				return nil, errors.New(packageConfig.Folder + " user normal slashes")
-			}
-			if strings.HasPrefix(packageConfig.Folder, ".") || strings.HasPrefix(packageConfig.Folder, "/") {
-				return nil, errors.New(packageConfig.Folder + " must be relative to workspace folder")
-			}
-			if strings.HasSuffix(packageConfig.Folder, ".") || strings.HasSuffix(packageConfig.Folder, "/") {
-				return nil, errors.New(packageConfig.Folder + " folder ends with a invalid char")
-			}
-		}
-		if packageConfig.Dependencies != nil && (!repo.IsWorkspace) {
-			return nil, errors.New("package dependencies is supported only inside workspace")
-		}
-		pkg := &Package{
-			Name:        packageName,
-			Public:      packageConfig.Public,
-			Description: packageConfig.Description,
-			Index:       packageConfig.Index,
-			Folder:      packageConfig.Folder,
-		}
-		pkg.Executables = make(map[string]*Executable)
-		for executableName, executableEntrypoint := range packageConfig.Executables {
-			pkg.Executables[executableName] = &Executable{
-				Name:       executableName,
-				Entrypoint: executableEntrypoint,
-			}
-		}
-		if repo.IsWorkspace && packageConfig.Dependencies != nil {
-			pkg.Dependencies = make(map[string]*Dependency)
-			for dependencyName, dependencyVersion := range packageConfig.Dependencies {
-				pkg.Dependencies[dependencyName] = &Dependency{
-					Name:    dependencyName,
-					Version: dependencyVersion,
-				}
-				pkg.usesDOM = dependencyName == "react-dom"
-				pkg.usesNode = dependencyName == "@types/node"
-			}
-		}
-		repo.Packages[packageName] = pkg
+	err = loadPackages(repo, cfg.Packages, NormalLayer)
+	if err != nil {
+		return nil, err
+	}
+	err = loadPackages(repo, cfg.BusinessRules, BusinessRulesLayer)
+	if err != nil {
+		return nil, err
+	}
+	err = loadPackages(repo, cfg.Executables, ExecutablesLayer)
+	if err != nil {
+		return nil, err
+	}
+	err = loadPackages(repo, cfg.Adapters, AdaptersLayer)
+	if err != nil {
+		return nil, err
 	}
 
 	repo.Dependencies = make(map[string]*Dependency)
@@ -177,8 +153,89 @@ func LoadRepository(searchDir string) (*Repository, error) {
 			addDependency(dependencyName, dependencyVersion)
 		}
 	}
-
+	for pkgName := range repo.Packages {
+		err = validateLayer(repo, repo.Packages[pkgName])
+		if err != nil {
+			return nil, err
+		}
+	}
 	return &repo, nil
+}
+
+func loadPackages(repo Repository, packages map[string]PackageConfig, layer PackageLayer) error {
+	for packageName, packageConfig := range packages {
+		if repo.IsWorkspace {
+			if len(packageConfig.Index) > 0 {
+				return errors.New("use folder instead index inside workspace")
+			}
+			if packageConfig.Folder == "" {
+				return errors.New("use folder for each package in workspace")
+			}
+			if strings.Contains(packageConfig.Folder, "\\") {
+				return errors.New(packageConfig.Folder + " user normal slashes")
+			}
+			if strings.HasPrefix(packageConfig.Folder, ".") || strings.HasPrefix(packageConfig.Folder, "/") {
+				return errors.New(packageConfig.Folder + " must be relative to workspace folder")
+			}
+			if strings.HasSuffix(packageConfig.Folder, ".") || strings.HasSuffix(packageConfig.Folder, "/") {
+				return errors.New(packageConfig.Folder + " folder ends with a invalid char")
+			}
+		}
+		if packageConfig.Dependencies != nil && (!repo.IsWorkspace) {
+			return errors.New("package dependencies is supported only inside workspace")
+		}
+		pkg := &Package{
+			Name:        packageName,
+			Public:      packageConfig.Public,
+			Description: packageConfig.Description,
+			Index:       packageConfig.Index,
+			Folder:      packageConfig.Folder,
+			Layer:       layer,
+		}
+		if repo.IsWorkspace && packageConfig.Dependencies != nil {
+			pkg.Dependencies = make(map[string]*Dependency)
+			for dependencyName, dependencyVersion := range packageConfig.Dependencies {
+				pkg.Dependencies[dependencyName] = &Dependency{
+					Name:    dependencyName,
+					Version: dependencyVersion,
+				}
+				pkg.usesDOM = dependencyName == "react-dom"
+				pkg.usesNode = dependencyName == "@types/node"
+			}
+		}
+		repo.Packages[packageName] = pkg
+	}
+	return nil
+}
+
+func validateLayer(repo Repository, pkg *Package) error {
+	if pkg.Layer == NormalLayer {
+		return nil
+	}
+	if pkg.Layer == BusinessRulesLayer {
+		if pkg.IsExecutable {
+			return errors.New("Business layer " + pkg.Name + " can't be an executble")
+		}
+		for depName := range pkg.Dependencies {
+			var depPkg = repo.Packages[depName]
+			if depPkg == nil {
+				return errors.New("don't use external dependency " + depName + " on business layer " + pkg.Name)
+			}
+			if depPkg.Layer == AdaptersLayer {
+				return errors.New("business layer " + pkg.Name + "can't depends of adapter layer " + depName)
+			}
+			if depPkg.Layer == ExecutablesLayer {
+				return errors.New("business layer " + pkg.Name + "can't depends of executable layer " + depName)
+			}
+		}
+	}
+	if pkg.Layer == AdaptersLayer && pkg.IsExecutable {
+		return errors.New("Adapter layer " + pkg.Name + " can't be an executble")
+	}
+	if pkg.Layer == ExecutablesLayer && pkg.IsExecutable {
+		return errors.New("Adapter layer " + pkg.Name + " can't be an executble")
+	}
+	return nil
 }
 
 const configName = "monoclean.yml"

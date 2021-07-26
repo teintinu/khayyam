@@ -87,12 +87,17 @@ func Build(repo *Repository, opts BuildOptions) error {
 	}
 
 	bin := make(map[string]string)
-	for executableName, executable := range pkg.Executables {
-		buildOpts.EntryPoints = append(buildOpts.EntryPoints, executable.Entrypoint)
+
+	{
+
+		executableName := "index.js"
+		executableEntrypoint := "index.ts"
+
+		buildOpts.EntryPoints = append(buildOpts.EntryPoints, executableEntrypoint)
 		bin[executableName] = executableName
 
-		entrypointExt := path.Ext(executable.Entrypoint)
-		entrypointOut := strings.TrimSuffix(path.Base(executable.Entrypoint), entrypointExt) + ".js"
+		entrypointExt := path.Ext(executableEntrypoint)
+		entrypointOut := strings.TrimSuffix(path.Base(executableEntrypoint), entrypointExt) + ".js"
 
 		// See also `script` in Run.
 		shim := fmt.Sprintf(`#!/usr/bin/env node

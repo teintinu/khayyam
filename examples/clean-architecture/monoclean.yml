@@ -1,0 +1,21 @@
+workspace:
+  name: "todo"
+  version: "1.0.0"
+
+business-rules:
+  "@todo/business-rules":
+    folder: "business-rules"
+
+adapters:
+  "@todo/fake-repository":
+    folder: "adapters/fake-repository"
+
+  "@todo/postgres-repository":
+    folder: "adapters/postgres-repository"
+
+executables:
+  "@todo/server":
+    folder: "apps/server"
+
+  "@todo/client":
+    folder: "apps/client"

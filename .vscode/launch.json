@@ -21,6 +21,15 @@
       "program": "${workspaceFolder}/main.go",
       "cwd": "${workspaceFolder}/examples/simple-workspace",
       "args": ["deps"]
+    },
+    {
+      "name": "clean-architecture(deps)",
+      "type": "go",
+      "request": "launch",
+      "mode": "auto",
+      "program": "${workspaceFolder}/main.go",
+      "cwd": "${workspaceFolder}/examples/clean-architecture",
+      "args": ["deps"]
     }
   ]
 }
