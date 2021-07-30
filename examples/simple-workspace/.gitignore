@@ -3,7 +3,7 @@ node_modules
 .nvm.rc
 package.json
 package-lock.json
-yarn-lock.*
+yarn-error.log
 yarn.lock
 tsconfig.**
 jest.config.js

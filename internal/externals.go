@@ -1,9 +1,9 @@
 package internal
 
 func getExternals(repo *Repository) []string {
-	externals := make([]string, len(repo.Dependencies))
+	externals := make([]string, len(repo.DevDependencies))
 	i := 0
-	for external := range repo.Dependencies {
+	for external := range repo.DevDependencies {
 		externals[i] = external
 		i++
 	}

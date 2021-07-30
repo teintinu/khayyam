@@ -1,17 +1,17 @@
 package cmd
 
 import (
-	"fmt"
 	"runtime/debug"
 
 	"github.com/spf13/cobra"
+	"github.com/teintinu/monoclean/internal"
 )
 
-var verbose bool
+var detailed bool
 
 func init() {
 	rootCmd.AddCommand(versionCmd)
-	versionCmd.Flags().BoolVar(&verbose, "verbose", false, "Prints version information for all dependencies too.")
+	versionCmd.Flags().BoolVar(&detailed, "detailed", false, "Prints version information for all dependencies too.")
 }
 
 var versionCmd = &cobra.Command{
@@ -24,16 +24,16 @@ var versionCmd = &cobra.Command{
 			panic("debug.ReadBuildInfo() failed")
 		}
 		printInfo := func(mod debug.Module) {
-			if verbose {
-				fmt.Println(mod.Path, mod.Version)
+			if detailed {
+				internal.Logger.Info(mod.Path, mod.Version)
 			} else {
-				fmt.Println(mod.Version)
+				internal.Logger.Info(mod.Version)
 			}
 		}
 		printInfo(buildInfo.Main)
-		if verbose {
+		if detailed {
 			for _, dep := range buildInfo.Deps {
-				fmt.Println(dep.Path, dep.Version)
+				internal.Logger.Info(dep.Path, dep.Version)
 			}
 		}
 	},

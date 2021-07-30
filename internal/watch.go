@@ -1,37 +1,11 @@
 package internal
 
-import (
-	"errors"
-	"fmt"
-	"log"
-	"os"
-	"os/exec"
-	"path"
-	"path/filepath"
-	"time"
-
-	"github.com/evanw/esbuild/pkg/api"
-	"github.com/fsnotify/fsnotify"
-	"golang.org/x/sync/errgroup"
-)
-
-type buildAndWatch struct {
-	Repository    *Repository
-	Package       *Package
-	Esbuild       api.BuildOptions // XXX smaller option set.
-	Types         bool
-	Watch         bool
-	CreateProcess func() process
+func Watch() error {
+	return nil
 }
 
-type process interface {
-	Start() error
-	Wait() error
-	Kill() error
-}
-
-func (opts buildAndWatch) Run() error {
-	if opts.Watch && opts.Types {
+/*	var optsTypes bool = opts.Package.Layer != ExecutablesLayer
+	if opts.Watch && optsTypes {
 		return errors.New("cannot build types with watch")
 	}
 
@@ -79,27 +53,8 @@ func (opts buildAndWatch) Run() error {
 
 	result := api.Build(esbuildOpts)
 
-	if opts.Types && opts.Package.Index != "" {
-		args := []string{
-			"--silent",
-			"--no-banner",
-		}
-		for _, external := range esbuildOpts.External {
-			args = append(args, "--external-imports="+external)
-		}
-		args = append(args,
-			"--out-file", path.Join(repo.OutDir, "dist", opts.Package.Name, "index.d.ts"),
-			opts.Package.Index,
-		)
-		cmd := exec.Command(
-			path.Join(repo.RootDir, "node_modules", ".bin", "dts-bundle-generator"),
-			args...,
-		)
-		cmd.Stdout = os.Stderr // Intentional redirect.
-		cmd.Stderr = os.Stderr
-		if err := cmd.Run(); err != nil {
-			return fmt.Errorf("bundling type declarations: %w", err)
-		}
+	if optsTypes && opts.Package.Index != "" {
+		BuildDTS(repo, opts.Package, esbuildOpts.External)
 	}
 
 	g := new(errgroup.Group)
@@ -126,7 +81,7 @@ func (opts buildAndWatch) Run() error {
 					if !opts.Watch {
 						return err
 					}
-					fmt.Fprintf(os.Stderr, "could not start: %v\n", err)
+					fmt.Fpxrintf(os.Stderr, "could not start: %v\n", err)
 					waitForChange = true
 				} else {
 					go func() {
@@ -137,7 +92,7 @@ func (opts buildAndWatch) Run() error {
 			select {
 			case <-abort:
 				if err := proc.Kill(); err != nil {
-					fmt.Fprintf(os.Stderr, "could not kill: %v\n", err)
+					fmt.Fpxrintf(os.Stderr, "could not kill: %v\n", err)
 				}
 				return nil
 			case <-restart:
@@ -152,7 +107,7 @@ func (opts buildAndWatch) Run() error {
 					}
 				}
 				if err := proc.Kill(); err != nil {
-					fmt.Fprintf(os.Stderr, "could not kill: %v\n", err)
+					fmt.Fpxrintf(os.Stderr, "could not kill: %v\n", err)
 				}
 				result = result.Rebuild()
 				waitForChange = false
@@ -161,9 +116,9 @@ func (opts buildAndWatch) Run() error {
 					return err
 				}
 				if err == nil {
-					fmt.Fprintf(os.Stderr, "process finished\n")
+					fmt.Fpxrintf(os.Stderr, "process finished\n")
 				} else {
-					fmt.Fprintf(os.Stderr, "process failure: %v\n", err)
+					fmt.Fpxrintf(os.Stderr, "process failure: %v\n", err)
 				}
 				waitForChange = true
 			}
@@ -191,3 +146,5 @@ func (opts buildAndWatch) Run() error {
 
 	return g.Wait()
 }
+
+*/

@@ -44,7 +44,7 @@ The package must already be built. Use the build command.`,
 			if err != nil {
 				return err
 			}
-			fmt.Println(res.PackagePath)
+			internal.Logger.Debug(res.PackagePath)
 		}
 		return nil
 	},

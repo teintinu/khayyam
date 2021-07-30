@@ -35,11 +35,20 @@ It will create and maintain automatically package.json, tsconfig.json, eslint.js
 
 ### `monoclean test`
 
-`monoclean test [PACKAGE]` use esbuild and jest to fasterly test all packages in the workspace
+`monoclean test [--watch] [--coverage]` use esbuild and jest to fasterly test all packages in the workspace
+
+### `monoclean build`
+
+`monoclean build` build everything in the repository
 
 ### another commands
 - [ ] monoclean build
+- [ ] monoclean run
+- [ ] monoclean watch --tray
+-   [ ] https://github.com/getlantern/systray
 - [ ] monoclean deploy
+- [ ] component diagram
+- [ ] class diagram
 
 ## Notes
 - This project is in alfa version, use responsibly.

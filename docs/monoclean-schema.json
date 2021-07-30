@@ -150,6 +150,10 @@
           "default": "no",
           "title": "This package must to be published?"
         },
+        "executable": {
+          "type": "boolean",
+          "title": "This package produces a executable?"
+        },
         "dependencies": {
           "$ref": "#/definitions/dependencies",
           "title": "The dependencies for all workspace"

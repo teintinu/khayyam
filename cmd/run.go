@@ -2,70 +2,45 @@ package cmd
 
 import (
 	"errors"
-	"fmt"
-	"os"
-	"os/exec"
-	"path/filepath"
 
 	"github.com/spf13/cobra"
 	"github.com/teintinu/monoclean/internal"
 )
 
-var runOpts = internal.RunOptions{}
-
 func init() {
 	rootCmd.AddCommand(runCmd)
-	runCmd.Flags().BoolVar(&runOpts.Watch, "watch", false, "re-runs command when source files change")
-	runCmd.Flags().BoolVar(&runOpts.BuildOnly, "build-only", false, "(internal) exit before running, skip temporary file cleanup, and print path to build output")
 }
 
 var runCmd = &cobra.Command{
-	Use:   "run [flags] <script> [args...]",
-	Short: "Build and run an entrypoint.",
-	Long: `Builds and runs the given entrypoint file.
-
-Entrypoint files are modules that export a "main" function, which will be called
-with the given 'args' as positional parameters.
-
-Main functions may return an integer status code, and the return value will
-will be awaited.  If no status code is returned, the default is 0.
-
-After awaiting a return value, the process will be terminated immediately.  Any
-pending events will not be executed; main is responsible for graceful shutdown.
-
-Unhandled exceptions and promise rejections will be logged to stderr and the
-process will immediately exit with status code 1.
-
-Example:
-
-export const main = async (...args: string[]) => {
-  console.log("see monoclean run");
-  return 0; // Return an exit code (optional).
-}
-`,
+	Use:                   "run [flags] <executable...>",
+	Short:                 "Build and run",
+	Long:                  `Builds and runs one or more executables. If not specified will run all executables in repository`,
 	Args:                  cobra.MinimumNArgs(1),
 	DisableFlagsInUseLine: true,
 	SilenceErrors:         true,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		repo := mustLoadRepository()
+		var packagesToRun []string = []string{}
+
 		if err := internal.CheckEngines(repo); err != nil {
 			return err
 		}
 
-		var err error
-		runOpts.Entrypoint, err = filepath.Abs(args[0])
-		if err != nil {
-			fmt.Fprintln(os.Stderr, err)
-			os.Exit(1)
+		if len(args) == 0 {
+			for pkgName, pkg := range repo.Packages {
+				if pkg.Executable {
+					packagesToRun = append(packagesToRun, pkgName)
+				}
+			}
+		} else {
+			for _, pkgName := range args {
+				pkg := repo.Packages[pkgName]
+				if pkg == nil {
+					return errors.New("no such package: " + pkgName)
+				}
+				packagesToRun = append(packagesToRun, pkgName)
+			}
 		}
-
-		runOpts.Args = args[1:]
-
-		err = internal.Run(repo, runOpts)
-		var exitErr *exec.ExitError
-		if errors.As(err, &exitErr) {
-			os.Exit(exitErr.ExitCode())
-		}
-		return err
+		return internal.Run(repo, packagesToRun)
 	},
 }

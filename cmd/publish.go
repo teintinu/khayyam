@@ -26,7 +26,7 @@ The package must already be packed. Use the pack command.`,
 		case 0:
 			// TODO: Parallelism.
 			for pkgName, pkg := range repo.Packages {
-				fmt.Println("publishing", pkgName)
+				internal.Logger.Info("publishing", pkgName)
 				if err := internal.Publish(repo, pkg); err != nil {
 					return err
 				}

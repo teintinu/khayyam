@@ -1,9 +1,13 @@
 #!/usr/bin/env bash
 
 ROOT=`realpath $(dirname $0)/..`
-cd $ROOT
 
 set -euo pipefail
+
+cd $ROOT/internal
+go test
+
+cd $ROOT
 
 go build
 

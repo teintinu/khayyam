@@ -6,11 +6,14 @@ DIR=$(realpath `dirname $0`/../..)
 
 cd $DIR/examples/simple-workspace
 
+set +e
+
 bash "$NVM_DIR/nvm.sh" use
+
 monoclean deps
 monoclean clean
-
-set +e
+monoclean build
+monoclean run
 
 monoclean lint
 monoclean test

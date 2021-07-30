@@ -4,33 +4,34 @@ engines:
  
 packages:
   "@simple-workspace/a":
-    public: true
+    publish: public
+    executable: true
     folder: "a"
     dependencies:
-      "@simple-workspace/b": "*"
+      "@simple-workspace/b": "*"      
 
   "@simple-workspace/b":
-    public: true
+    publish: public
     folder: "b"
     dependencies:
       "@simple-workspace/c": "*"
       "@simple-workspace/d": "*"
       
   "@simple-workspace/c":
-    public: true
+    publish: public
     folder: "c"
     dependencies:
       "@simple-workspace/d": "*"
       "@simple-workspace/e": "*"
 
   "@simple-workspace/d":
-    public: true
+    publish: public
     folder: "d"
     dependencies:
       "@simple-workspace/e": "*"
 
   "@simple-workspace/e":
-    public: true
+    publish: public
     folder: "e"
 
 workspace:

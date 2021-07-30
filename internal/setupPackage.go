@@ -11,11 +11,7 @@ import (
 func configurePkg(repo *Repository, pkg *Package) error {
 	var packageVersion string
 	if pkg.Version == "" {
-		if repo.IsWorkspace {
-			packageVersion = repo.Workspace.Version
-		} else {
-			packageVersion = "0.0.1"
-		}
+		packageVersion = repo.Workspace.Version
 	} else {
 		packageVersion = pkg.Version
 	}
@@ -27,7 +23,9 @@ func configurePkg(repo *Repository, pkg *Package) error {
 		Dependencies: make(map[string]string),
 		Repository:   repo.Url,
 		Scripts: map[string]string{
-			"postinstall": "patch-package",
+			"clean":        "monoclean clean",
+			"buildWithTSC": "tsc -p .",
+			"buildDTS":     "dts-bundle-generator --project . --verbose",
 		},
 	}
 
@@ -51,17 +49,26 @@ func configurePkgTsConfigReferences(repo *Repository, pkg *Package) error {
 		return err
 	}
 	meta := TsConfigMetadata{
-		Extends: relativePathToRoot + "/tsconfig.json",
+		Extends: relativePathToRoot + "/tsconfig.settings.json",
 		CompilerOptions: TsConfigCompileOptionsMetadata{
-			OutDir:    "./dist/cjs",
+			OutDir:    "./dist",
 			RootDir:   "./src",
 			BaseURL:   ".",
 			Composite: true,
 			Paths:     make(map[string][]string),
 			Lib:       []string{"ESNext"},
 		},
-		Exclude: []string{"dist"},
-		Include: []string{"src/**/*.ts", "src/**/*.tsx"},
+		Exclude: []string{
+			"dist",
+			"src/**/*.test.ts",
+			"src/**/*.test.tsx",
+			"src/**/*.spec.ts",
+			"src/**/*.spec.tsx",
+		},
+		Include: []string{
+			"src/**/*.ts",
+			"src/**/*.tsx",
+		},
 	}
 	for _, dependency := range pkg.Dependencies {
 		if dependency.Version != "*" {

@@ -7,17 +7,18 @@ import (
 )
 
 type PackageMetadata struct {
-	Name          string            `json:"name,omitempty"`
-	Description   string            `json:"description,omitempty"`
-	Version       string            `json:"version,omitempty"`
-	Private       bool              `json:"private"`
-	Repository    string            `json:"repository,omitempty"`
-	Main          string            `json:"main,omitempty"`
-	Bin           map[string]string `json:"bin,omitempty"`
-	Dependencies  map[string]string `json:"dependencies,omitempty"`
-	Scripts       map[string]string `json:"scripts,omitempty"`
-	PublishConfig *PublishConfig    `json:"publishConfig,omitempty"`
-	Workspaces    []string          `json:"workspaces,omitempty"`
+	Name            string            `json:"name,omitempty"`
+	Description     string            `json:"description,omitempty"`
+	Version         string            `json:"version,omitempty"`
+	Private         bool              `json:"private"`
+	Repository      string            `json:"repository,omitempty"`
+	Main            string            `json:"main,omitempty"`
+	Bin             map[string]string `json:"bin,omitempty"`
+	Dependencies    map[string]string `json:"dependencies,omitempty"`
+	DevDependencies map[string]string `json:"devDependencies,omitempty"`
+	Scripts         map[string]string `json:"scripts,omitempty"`
+	PublishConfig   *PublishConfig    `json:"publishConfig,omitempty"`
+	Workspaces      []string          `json:"workspaces,omitempty"`
 }
 
 type PublishConfig struct {

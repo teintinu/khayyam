@@ -18,28 +18,49 @@
 package internal
 
 import (
-	"fmt"
-	"io/ioutil"
+	"errors"
 	"os"
 	"os/exec"
-	"path"
-
-	"github.com/evanw/esbuild/pkg/api"
 )
-
-type RunOptions struct {
-	Watch      bool
-	Entrypoint string
-	Args       []string
-	BuildOnly  bool
-}
 
 // TODO: Need to handle interrupts in order to have a higher chance
 // of cleaning up temporary files.
 
 // Status code may be returend within an exec.ExitError return value.
-func Run(repo *Repository, opts RunOptions) error {
-	if err := EnsureTmp(repo); err != nil {
+func Run(repo *Repository, packages []string) error {
+	if err := BuildWorkspace(repo); err != nil {
+		return err
+	}
+	var cmds []*exec.Cmd
+	for _, pkgName := range packages {
+		pkg := repo.Packages[pkgName]
+		if pkg != nil {
+			return errors.New("no such package: " + pkgName)
+		}
+		if cmd, err := run(repo, pkg); err != nil {
+			for _, running := range cmds {
+				running.Process.Kill()
+			}
+			return err
+		} else {
+			cmds = append(cmds, cmd)
+		}
+	}
+	return nil
+}
+
+func run(repo *Repository, pkg *Package) (*exec.Cmd, error) {
+	node := exec.Command("node", pkg.Bin)
+	node.Stdin = os.Stdin
+	node.Stdout = os.Stdout
+	node.Stderr = os.Stderr
+	if err := node.Run(); err != nil {
+		return nil, err
+	}
+	return node, nil
+}
+
+/*	if err := EnsureTmp(repo); err != nil {
 		return err
 	}
 
@@ -52,7 +73,7 @@ func Run(repo *Repository, opts RunOptions) error {
 	}
 
 	// See also `shim` in Build.
-	script := fmt.Sprintf(`require('source-map-support').install();
+	script := fmt.Spxrintf(`require('source-map-support').install();
 
 const { inspect } = require('util');
 process.on('uncaughtException', (exception) => {
@@ -107,7 +128,7 @@ if (typeof main === 'function') {
 			if opts.BuildOnly {
 				return &funcProcess{
 					start: func() error {
-						fmt.Println(dir)
+						fmt.pxrintln(dir)
 						return nil
 					},
 				}
@@ -145,3 +166,5 @@ func (proc *cmdProcess) Wait() error {
 	}
 	return proc.cmd.Wait()
 }
+
+*/

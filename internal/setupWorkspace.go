@@ -9,60 +9,61 @@ import (
 func ConfigureRepository(repo *Repository) error {
 	var workspaceName string
 	var workspaceVersion string
-	if repo.IsWorkspace {
-		workspaceName = repo.Workspace.Name
-		workspaceVersion = repo.Workspace.Version
-		if err := configureGitIgnore(repo); err != nil {
-			return err
-		}
-		if err := configureVsCodeSettings(repo); err != nil {
-			return err
-		}
-		if err := configureVsCodeRecommendedExtensions(repo); err != nil {
-			return err
-		}
-		if err := configureNvmRc(repo); err != nil {
-			return err
-		}
-		if err := configureRootTsConfigSettings(repo); err != nil {
-			return err
-		}
-		if err := configureRootTsConfigReferences(repo); err != nil {
-			return err
-		}
-		if err := configureRootTsConfigTest(repo); err != nil {
-			return err
-		}
-		if err := configureJest(repo); err != nil {
-			return err
-		}
-		if err := configureEsLint(repo); err != nil {
-			return err
-		}
-	} else {
-		workspaceName = "@monoclean/placeholder"
-		workspaceVersion = "0.0.1"
+
+	workspaceName = repo.Workspace.Name
+	workspaceVersion = repo.Workspace.Version
+	if err := configureGitIgnore(repo); err != nil {
+		return err
 	}
+	if err := configureVsCodeSettings(repo); err != nil {
+		return err
+	}
+	if err := configureVsCodeRecommendedExtensions(repo); err != nil {
+		return err
+	}
+	if err := configureNvmRc(repo); err != nil {
+		return err
+	}
+	if err := configureRootTsConfigSettings(repo); err != nil {
+		return err
+	}
+	if err := configureRootTsConfigReferences(repo); err != nil {
+		return err
+	}
+	if err := configureRootTsConfigTest(repo); err != nil {
+		return err
+	}
+	if err := configureJest(repo); err != nil {
+		return err
+	}
+	if err := configureEsLint(repo); err != nil {
+		return err
+	}
+
 	metadata := PackageMetadata{
-		Name:         workspaceName,
-		Version:      workspaceVersion,
-		Private:      true,
-		Description:  "GENERATED FILE: DO NOT EDIT! This file is managed by monoclean.",
-		Dependencies: make(map[string]string),
-		Repository:   repo.Url,
+		Name:            workspaceName,
+		Version:         workspaceVersion,
+		Private:         true,
+		Description:     "GENERATED FILE: DO NOT EDIT! This file is managed by monoclean.",
+		DevDependencies: make(map[string]string),
+		Repository:      repo.Url,
 	}
-	if repo.IsWorkspace {
-		metadata.Workspaces = []string{}
-		for _, pkg := range repo.Packages {
-			metadata.Workspaces = append(metadata.Workspaces, pkg.Folder)
-		}
-	} else {
-		metadata.Scripts = map[string]string{
-			"postinstall": "patch-package",
-		}
+
+	metadata.Workspaces = []string{}
+	for _, pkg := range repo.Packages {
+		metadata.Workspaces = append(metadata.Workspaces, pkg.Folder)
 	}
-	for dependencyName, dependency := range repo.Dependencies {
-		metadata.Dependencies[dependencyName] = dependency.Version
+
+	metadata.Scripts = map[string]string{
+		"clean":     "monoclean clean",
+		"start":     "monoclean run",
+		"build":     "monoclean build",
+		"publish":   "monoclean publish",
+		"tsc-watch": "tsc -p . --watch",
+	}
+
+	for dependencyName, dependency := range repo.DevDependencies {
+		metadata.DevDependencies[dependencyName] = dependency.Version
 	}
 
 	return WritePackageJSON(metadata, repo.RootDir)
@@ -76,7 +77,7 @@ node_modules
 .nvm.rc
 package.json
 package-lock.json
-yarn-lock.*
+yarn-error.log
 yarn.lock
 tsconfig.**
 jest.config.js
@@ -99,11 +100,26 @@ func configureVsCodeSettings(repo *Repository) error {
 	}
 	var extensionsJson = path.Join(vscodeDir, "settings.json")
 	var content = `{
+	"search.exclude": {
+		"**/node_modules": true,
+		"**/bower_components": true,
+		"**/env": true,
+		"**/venv": true
+	},
+	"files.watcherExclude": {
+		"**/.git/objects/**": true,
+		"**/.git/subtree-cache/**": true,
+		"**/node_modules/**": true,
+		"**/env/**": true,
+		"**/venv/**": true,
+		"env-*": true
+	},
   "yaml.schemas": {
     "https://teintinu.github.io/monoclean/monoclean-schema.json": [
       "monoclean.yml"
     ]
-  }
+  },
+	"typescript.disableAutomaticTypeAcquisition": true
 }
 `
 	err := ioutil.WriteFile(extensionsJson, []byte(content), 0644)

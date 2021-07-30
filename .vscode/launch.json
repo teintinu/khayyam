@@ -23,6 +23,15 @@
       "args": ["deps"]
     },
     {
+      "name": "simple-workspace(build)",
+      "type": "go",
+      "request": "launch",
+      "mode": "auto",
+      "program": "${workspaceFolder}/main.go",
+      "cwd": "${workspaceFolder}/examples/simple-workspace",
+      "args": ["build"]
+    },
+    {
       "name": "clean-architecture(deps)",
       "type": "go",
       "request": "launch",

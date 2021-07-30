@@ -7,24 +7,23 @@ import (
 	"os"
 	"path"
 	"strings"
+	"sync"
 
 	"github.com/goccy/go-yaml"
+	"github.com/teintinu/gjobs"
 )
 
 type Repository struct {
-	ConfigPath   string
-	RootDir      string
-	OutDir       string
-	DistDir      string
-	TmpDir       string
-	Engines      map[string]string
-	IsWorkspace  bool
-	Workspace    Workspace
-	Dependencies map[string]*Dependency
-	Url          string
-	Registry     string
+	ConfigPath      string
+	RootDir         string
+	Engines         map[string]string
+	Workspace       Workspace
+	DevDependencies map[string]*Dependency
+	Url             string
+	Registry        string
 
-	Packages map[string]*Package
+	Packages     map[string]*Package
+	PackageNames []string
 }
 
 type Workspace struct {
@@ -55,18 +54,21 @@ const (
 )
 
 type Package struct {
-	Name          string
-	Version       string
-	Folder        string
-	Publish       PackagePublish
-	usesNode      bool
-	usesDOM       bool
-	usesWebWorker bool
-	Description   string
-	Index         string
-	Layer         PackageLayer
-	Dependencies  map[string]*Dependency
-	IsExecutable  bool
+	Name            string
+	Version         string
+	Folder          string
+	Publish         PackagePublish
+	usesNode        bool
+	usesDOM         bool
+	usesWebWorker   bool
+	Description     string
+	Dependencies    map[string]*Dependency
+	devDependencies map[string]*Dependency
+	Layer           PackageLayer
+	Executable      bool
+	Main            string
+	Bin             string
+	Types           string
 }
 
 type Executable struct {
@@ -86,9 +88,6 @@ func LoadRepository(searchDir string) (*Repository, error) {
 	var repo Repository
 	repo.ConfigPath = f.Name()
 	repo.RootDir = path.Dir(repo.ConfigPath)
-	repo.OutDir = path.Join(repo.RootDir, "out")
-	repo.DistDir = path.Join(repo.OutDir, "dist")
-	repo.TmpDir = path.Join(repo.OutDir, "tmp")
 
 	dec := yaml.NewDecoder(f, yaml.Strict())
 	var cfg Config
@@ -101,15 +100,8 @@ func LoadRepository(searchDir string) (*Repository, error) {
 		return nil, err
 	}
 
-	repo.IsWorkspace = len(cfg.Workspace.Version) > 0
-
-	if repo.IsWorkspace {
-		repo.Workspace.Name = cfg.Workspace.Name
-		repo.Workspace.Version = cfg.Workspace.Version
-		if cfg.Dependencies != nil {
-			return nil, errors.New("use dependencies inside workspace")
-		}
-	}
+	repo.Workspace.Name = cfg.Workspace.Name
+	repo.Workspace.Version = cfg.Workspace.Version
 
 	repo.Engines = make(map[string]string)
 	for engineName, engineVersion := range cfg.Engines {
@@ -123,46 +115,38 @@ func LoadRepository(searchDir string) (*Repository, error) {
 	}
 
 	repo.Packages = make(map[string]*Package)
-	err = loadPackages(repo, cfg.Packages, NormalLayer)
+	err = loadPackages(&repo, cfg.Packages, NormalLayer)
 	if err != nil {
 		return nil, err
 	}
-	err = loadPackages(repo, cfg.BusinessRules, BusinessRulesLayer)
+	err = loadPackages(&repo, cfg.BusinessRules, BusinessRulesLayer)
 	if err != nil {
 		return nil, err
 	}
-	err = loadPackages(repo, cfg.Executables, ExecutablesLayer)
+	err = loadPackages(&repo, cfg.Executables, ExecutablesLayer)
 	if err != nil {
 		return nil, err
 	}
-	err = loadPackages(repo, cfg.Adapters, AdaptersLayer)
+	err = loadPackages(&repo, cfg.Adapters, AdaptersLayer)
 	if err != nil {
 		return nil, err
 	}
 
-	repo.Dependencies = make(map[string]*Dependency)
-	addDependency := func(name, version string) {
-		repo.Dependencies[name] = &Dependency{
+	repo.DevDependencies = make(map[string]*Dependency)
+	addWorkspaceDependency := func(name, version string) {
+		repo.DevDependencies[name] = &Dependency{
 			Name:    name,
 			Version: version,
 		}
 	}
-	for dependencyName, dependencyVersion := range cfg.Dependencies {
-		addDependency(dependencyName, dependencyVersion)
-	}
-	var requiredDeps map[string]string
-	if repo.IsWorkspace {
-		requiredDeps = requiredDependenciesWorkspace
-	} else {
-		requiredDeps = requiredDependenciesMix
-	}
-	for dependencyName, dependencyVersion := range requiredDeps {
-		if _, ok := repo.Dependencies[dependencyName]; !ok {
-			addDependency(dependencyName, dependencyVersion)
+
+	for dependencyName, dependencyVersion := range requiredWorkspaceDevDependencies {
+		if _, ok := repo.DevDependencies[dependencyName]; !ok {
+			addWorkspaceDependency(dependencyName, dependencyVersion)
 		}
 	}
 	for pkgName := range repo.Packages {
-		err = validateLayer(repo, repo.Packages[pkgName])
+		err = validateLayer(&repo, repo.Packages[pkgName])
 		if err != nil {
 			return nil, err
 		}
@@ -170,35 +154,35 @@ func LoadRepository(searchDir string) (*Repository, error) {
 	return &repo, nil
 }
 
-func loadPackages(repo Repository, packages map[string]PackageConfig, layer PackageLayer) error {
+func loadPackages(repo *Repository, packages map[string]PackageConfig, layer PackageLayer) error {
 	for packageName, packageConfig := range packages {
-		if repo.IsWorkspace {
-			if len(packageConfig.Index) > 0 {
-				return errors.New("use folder instead index inside workspace")
-			}
-			if packageConfig.Folder == "" {
-				return errors.New("use folder for each package in workspace")
-			}
-			if strings.Contains(packageConfig.Folder, "\\") {
-				return errors.New(packageConfig.Folder + " user normal slashes")
-			}
-			if strings.HasPrefix(packageConfig.Folder, ".") || strings.HasPrefix(packageConfig.Folder, "/") {
-				return errors.New(packageConfig.Folder + " must be relative to workspace folder")
-			}
-			if strings.HasSuffix(packageConfig.Folder, ".") || strings.HasSuffix(packageConfig.Folder, "/") {
-				return errors.New(packageConfig.Folder + " folder ends with a invalid char")
-			}
+
+		if len(packageConfig.Index) > 0 {
+			return errors.New("use folder instead index inside workspace")
 		}
-		if packageConfig.Dependencies != nil && (!repo.IsWorkspace) {
-			return errors.New("package dependencies is supported only inside workspace")
+		if packageConfig.Folder == "" {
+			return errors.New("use folder for each package in workspace")
 		}
+		if strings.Contains(packageConfig.Folder, "\\") {
+			return errors.New(packageConfig.Folder + " user normal slashes")
+		}
+		if strings.HasPrefix(packageConfig.Folder, ".") || strings.HasPrefix(packageConfig.Folder, "/") {
+			return errors.New(packageConfig.Folder + " must be relative to workspace folder")
+		}
+		if strings.HasSuffix(packageConfig.Folder, ".") || strings.HasSuffix(packageConfig.Folder, "/") {
+			return errors.New(packageConfig.Folder + " folder ends with a invalid char")
+		}
+
 		pkg := &Package{
-			Name:        packageName,
-			Description: packageConfig.Description,
-			Index:       packageConfig.Index,
-			Folder:      packageConfig.Folder,
-			Layer:       layer,
+			Name:            packageName,
+			Description:     packageConfig.Description,
+			Folder:          packageConfig.Folder,
+			Layer:           layer,
+			Executable:      layer == ExecutablesLayer || (layer == NormalLayer && packageConfig.Executable),
+			Dependencies:    make(map[string]*Dependency),
+			devDependencies: make(map[string]*Dependency),
 		}
+		pkgFolder := path.Join(repo.RootDir, pkg.Folder)
 		if packageConfig.Publish == "public" {
 			pkg.Publish = PublishPublicly
 		} else if packageConfig.Publish == "restrict" {
@@ -206,28 +190,80 @@ func loadPackages(repo Repository, packages map[string]PackageConfig, layer Pack
 		} else {
 			pkg.Publish = DontPublish
 		}
-		if repo.IsWorkspace && packageConfig.Dependencies != nil {
-			pkg.Dependencies = make(map[string]*Dependency)
-			for dependencyName, dependencyVersion := range packageConfig.Dependencies {
-				pkg.Dependencies[dependencyName] = &Dependency{
-					Name:    dependencyName,
-					Version: dependencyVersion,
+
+		for dependencyName, dependencyVersion := range packageConfig.Dependencies {
+			pkg.Dependencies[dependencyName] = &Dependency{
+				Name:    dependencyName,
+				Version: dependencyVersion,
+			}
+			pkg.usesDOM = dependencyName == "react-dom"
+			pkg.usesNode = dependencyName == "@types/node"
+		}
+
+		for depName, depVersion := range requiredPackageDevDependencies {
+			pkg.devDependencies[depName] = &Dependency{
+				Name:    depName,
+				Version: depVersion,
+			}
+		}
+
+		if pkg.Executable {
+			if endpoint, err := GetPackageEntryPoint(repo, pkg); err != nil {
+				return err
+			} else {
+				if endpoint == "" {
+					return errors.New("package " + pkg.Name + " has not main.ts entrypoint")
+				} else {
+					pkg.Bin = path.Join(pkgFolder, "dist/main.js")
 				}
-				pkg.usesDOM = dependencyName == "react-dom"
-				pkg.usesNode = dependencyName == "@types/node"
+			}
+		} else {
+			if endpoint, err := GetPackageEntryPoint(repo, pkg); err != nil {
+				return err
+			} else {
+				if endpoint == "" {
+					return errors.New("package " + pkg.Name + " has not index.ts or index.tsx")
+				} else {
+					pkg.Main = path.Join(pkgFolder, "dist/index.js")
+					pkg.Types = path.Join(pkgFolder, "dist/index.d.ts")
+				}
 			}
 		}
 		repo.Packages[packageName] = pkg
+		repo.PackageNames = append(repo.PackageNames, packageName)
 	}
 	return nil
 }
 
-func validateLayer(repo Repository, pkg *Package) error {
-	if pkg.Layer == NormalLayer {
-		return nil
+func MakeJobs(jobs *gjobs.GJobs, jobPrefix string, repo *Repository, witchPackages []string, fn func(pkg *Package) error) error {
+
+	var errWalk error
+	errMutex := sync.Mutex{}
+	for _, pkg := range repo.Packages {
+		if Contains(witchPackages, pkg.Name) {
+			dep := []string{}
+			for depName := range pkg.Dependencies {
+				dep = append(dep, jobPrefix+depName)
+			}
+			pkgInternal := pkg
+			jobs.NewJob(jobPrefix+pkg.Name, dep, func() (interface{}, error) {
+				if err := fn(pkgInternal); err != nil {
+					errMutex.Lock()
+					errWalk = err
+					errMutex.Unlock()
+				}
+				return nil, nil
+			})
+		}
 	}
+
+	return errWalk
+}
+
+func validateLayer(repo *Repository, pkg *Package) error {
+
 	if pkg.Layer == BusinessRulesLayer {
-		if pkg.IsExecutable {
+		if pkg.Executable {
 			return errors.New("Business layer " + pkg.Name + " can't be an executble")
 		}
 		for depName := range pkg.Dependencies {
@@ -243,13 +279,11 @@ func validateLayer(repo Repository, pkg *Package) error {
 			}
 		}
 	}
-	if pkg.Layer == AdaptersLayer && pkg.IsExecutable {
+	if pkg.Layer == AdaptersLayer && pkg.Executable {
 		return errors.New("Adapter layer " + pkg.Name + " can't be an executble")
 	}
-	if pkg.Layer == ExecutablesLayer && pkg.IsExecutable {
-		return errors.New("Adapter layer " + pkg.Name + " can't be an executble")
-	}
-	return nil
+
+	return avoidCircularReferences(repo, repo.Packages, map[string]bool{})
 }
 
 const configName = "monoclean.yml"
@@ -267,6 +301,30 @@ func openConfigFile(searchDir string) (*os.File, error) {
 			}
 			continue
 		}
+		println("workspace: " + configPath)
 		return f, err
 	}
+}
+
+func avoidCircularReferences(repo *Repository, packages map[string]*Package, used map[string]bool) error {
+	for _, pkg := range packages {
+		if err := avoidCircularReferencesForPackage(repo, pkg, used); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func avoidCircularReferencesForPackage(repo *Repository, pkg *Package, used map[string]bool) error {
+	for dependencyName := range pkg.Dependencies {
+		depPkg := repo.Packages[dependencyName]
+		if depPkg.Executable {
+			return errors.New(pkg.Name + " references to executable " + dependencyName)
+		}
+		var _, circularRef = used[dependencyName]
+		if circularRef {
+			return errors.New("Package " + dependencyName + " has circular reference")
+		}
+	}
+	return nil
 }

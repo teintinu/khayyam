@@ -1,17 +1,8 @@
 package internal
 
-var requiredDependenciesMix = map[string]string{
-	"source-map-support":        "^0.5.19",
-	"@types/source-map-support": "^0.5.3",
-	"patch-package":             "^6.2.2",
-	"typescript":                "^4.3.5",
-	"dts-bundle-generator":      "^5.9.0",
-}
-
-var requiredDependenciesWorkspace = map[string]string{
+var requiredWorkspaceDevDependencies = map[string]string{
 	"source-map-support":               "^0.5.19",
 	"@types/source-map-support":        "^0.5.3",
-	"patch-package":                    "^6.2.2",
 	"typescript":                       "^4.3.5",
 	"dts-bundle-generator":             "^5.9.0",
 	"jest":                             "^27.0.6",
@@ -27,4 +18,13 @@ var requiredDependenciesWorkspace = map[string]string{
 	"eslint-plugin-react":              "^7.24.0",
 	"@typescript-eslint/eslint-plugin": "^4.28.3",
 	"@typescript-eslint/parser":        "^4.28.3",
+}
+
+var requiredPackageDevDependencies = map[string]string{
+	"source-map-support":        "^0.5.19",
+	"@types/source-map-support": "^0.5.3",
+	"typescript":                "^4.3.5",
+	"dts-bundle-generator":      "^5.9.0",
+	"esbuild":                   "^0.12.15",
+	"esbuild-jest":              "^0.5.0",
 }

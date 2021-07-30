@@ -10,10 +10,6 @@ type LintOptions struct {
 }
 
 func Lint(repo *Repository, opts LintOptions) error {
-	if err := EnsureTmp(repo); err != nil {
-		return err
-	}
-
 	var lint *exec.Cmd
 	if opts.Fix {
 		lint = exec.Command("npx", "eslint", ".", "--ext", ".ts,.tsx", "--fix")

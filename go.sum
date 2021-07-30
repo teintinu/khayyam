@@ -39,9 +39,9 @@ github.com/dgryski/go-sip13 v0.0.0-20181026042036-e10d5fee7954/go.mod h1:vAd38F8
 github.com/evanw/esbuild v0.8.49 h1:5Pq/z1C+s07oD6y2eRU2TcOdPrwL8bm/2WnZiOtMpbE=
 github.com/evanw/esbuild v0.8.49/go.mod h1:y2AFBAGVelPqPodpdtxWWqe6n2jYf5FrsJbligmRmuw=
 github.com/fatih/color v1.7.0/go.mod h1:Zm6kSWBoL9eyXnKyktHP6abPY2pDugNf5KwzbycvMj4=
-github.com/fatih/color v1.10.0 h1:s36xzo75JdqLaaWoiEHk767eHiwo0598uUxyfiPkDsg=
 github.com/fatih/color v1.10.0/go.mod h1:ELkj/draVOlAH/xkhN6mQ50Qd0MPOk5AAr3maGEBuJM=
-github.com/fsnotify/fsnotify v1.4.7 h1:IXs+QLmnXW2CcXuY+8Mzv/fWEsPGWxqefPtCP5CnV9I=
+github.com/fatih/color v1.12.0 h1:mRhaKNwANqRgUBGKmnI5ZxEk7QXmjQeCcuYFMX2bfcc=
+github.com/fatih/color v1.12.0/go.mod h1:ELkj/draVOlAH/xkhN6mQ50Qd0MPOk5AAr3maGEBuJM=
 github.com/fsnotify/fsnotify v1.4.7/go.mod h1:jwhsz4b93w/PPRr/qN1Yymfu8t87LnFCMoQvtojpjFo=
 github.com/ghodss/yaml v1.0.0/go.mod h1:4dBDuWmgqj2HViK6kFavaiC9ZROes6MMH2rRYeMEF04=
 github.com/go-gl/glfw v0.0.0-20190409004039-e6da0acd62b1/go.mod h1:vR7hzQXu2zJy9AVAgeJqvqgH9Q5CA+iKCZ2gyEVpxRU=
@@ -188,6 +188,14 @@ github.com/stretchr/testify v1.3.0/go.mod h1:M5WIy9Dh21IEIfnGCwXGc5bZfKNJtfHm1UV
 github.com/stretchr/testify v1.4.0 h1:2E4SXV/wtOkTonXsotYi4li6zVWxYlZuYNCXe9XRJyk=
 github.com/stretchr/testify v1.4.0/go.mod h1:j7eGeouHqKxXV5pUuKE4zz7dFj8WfuZ+81PSLYec5m4=
 github.com/subosito/gotenv v1.2.0/go.mod h1:N0PQaV/YGNqwC0u51sEeR/aUtSLEXKX9iv69rRypqCw=
+github.com/teintinu/gjobs v1.0.0 h1:I6wl7v0b1Lt0WHYqWkdE3laVySGWFBvexqD1MKKq18A=
+github.com/teintinu/gjobs v1.0.0/go.mod h1:J9MtSg0D2nSQEyHjosN7Bzy0ocyvzm+IQY1W81TGGm0=
+github.com/teintinu/gjobs v1.0.1 h1:6MHVb/756fsRr8bvPrhM35+crIdoKvPHR3oG+846FJE=
+github.com/teintinu/gjobs v1.0.1/go.mod h1:J9MtSg0D2nSQEyHjosN7Bzy0ocyvzm+IQY1W81TGGm0=
+github.com/teintinu/gjobs v1.0.2 h1:IYRYVG0KEnl/vVsO3BmXG042Jhea4aHlo1HbDqEKJiA=
+github.com/teintinu/gjobs v1.0.2/go.mod h1:J9MtSg0D2nSQEyHjosN7Bzy0ocyvzm+IQY1W81TGGm0=
+github.com/teintinu/gjobs v1.0.5 h1:GfQsaSoMfy+PzD8UvLWjfd5Kxy5Wj7pWj8fBiuQd044=
+github.com/teintinu/gjobs v1.0.5/go.mod h1:J9MtSg0D2nSQEyHjosN7Bzy0ocyvzm+IQY1W81TGGm0=
 github.com/tmc/grpc-websocket-proxy v0.0.0-20190109142713-0ad062ec5ee5/go.mod h1:ncp9v5uamzpCO7NfCPTXjqaC+bZgJeR0sMTm6dMHP7U=
 github.com/xiang90/probing v0.0.0-20190116061207-43a291ad63a2/go.mod h1:UETIi67q53MR2AWcXfiuqkDkRtnGDLqkBTpCHuJHxtU=
 go.etcd.io/bbolt v1.3.2/go.mod h1:IbVyRI1SCnLcuJnV2u8VeU0CEYM7e686BmAb1XKL+uU=

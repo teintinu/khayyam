@@ -3,6 +3,7 @@ package internal
 import (
 	"encoding/json"
 	"io/ioutil"
+	"path"
 )
 
 type TsConfigMetadata struct {
@@ -49,4 +50,24 @@ func ReadTConfigJSON(filename string) (*TsConfigMetadata, error) {
 		return nil, err
 	}
 	return &metadata, nil
+}
+
+func GetPackageEntryPoint(repo *Repository, pkg *Package) (string, error) {
+
+	pkgRoot := path.Join(repo.RootDir, pkg.Folder)
+	srcDir := path.Join(pkgRoot, "src")
+
+	if pkg.Layer == ExecutablesLayer {
+		return NeedSomeOfTheseFiles(
+			srcDir,
+			[]string{"main.ts", "main.tsx"},
+			"main.ts or main.tsx not found in package "+pkg.Name,
+		)
+	}
+
+	return NeedSomeOfTheseFiles(
+		srcDir,
+		[]string{"index.ts", "index.tsx"},
+		"main.ts or main.tsx not found in package "+pkg.Name,
+	)
 }

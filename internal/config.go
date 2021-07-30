@@ -8,7 +8,6 @@ type Config struct {
 	Repository    string
 	Registry      string
 	Workspace     WorkspaceConfig
-	Dependencies  map[string]string
 	Packages      map[string]PackageConfig
 	BusinessRules map[string]PackageConfig `yaml:"business-rules"`
 	Executables   map[string]PackageConfig
@@ -27,6 +26,6 @@ type PackageConfig struct {
 	Version      string
 	Index        string
 	Folder       string
-	Executables  map[string]string
+	Executable   bool
 	Dependencies map[string]string
 }

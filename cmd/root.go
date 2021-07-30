@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"fmt"
 	"os"
 
 	"github.com/spf13/cobra"
@@ -22,7 +21,7 @@ var rootCmd = &cobra.Command{
 
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
-		fmt.Fprintln(os.Stderr, err)
+		internal.Logger.Error(err.Error())
 		os.Exit(1)
 	}
 }
@@ -30,12 +29,12 @@ func Execute() {
 func mustLoadRepository() *internal.Repository {
 	cwd, err := os.Getwd()
 	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
+		internal.Logger.ErrorObj(err)
 		os.Exit(1)
 	}
 	repo, err := internal.LoadRepository(cwd)
 	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
+		internal.Logger.ErrorObj(err)
 		os.Exit(1)
 	}
 	return repo
