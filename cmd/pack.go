@@ -19,7 +19,7 @@ Prints the absolute path of each created package.
 The package must already be built. Use the build command.`,
 	Args: cobra.RangeArgs(0, 1),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		repo := mustLoadRepository()
+		repo := mustLoadRepository(true)
 
 		var packages map[string]*internal.Package
 		switch len(args) {

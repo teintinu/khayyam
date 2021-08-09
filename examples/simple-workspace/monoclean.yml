@@ -1,11 +1,24 @@
-engines:
-  node: "v14.17.3"
-  npm: "6.14.13"
- 
+workspace:
+  name: "simple-workspace"
+  version: "1.0.0"
+
 packages:
+  "appA":
+    publish: public
+    folder: "appA"
+    executable: true
+    dependencies:
+      "@simple-workspace/a": "*"      
+
+  "appD":
+    publish: public
+    folder: "appD"
+    executable: true
+    dependencies:
+      "@simple-workspace/d": "*"
+
   "@simple-workspace/a":
     publish: public
-    executable: true
     folder: "a"
     dependencies:
       "@simple-workspace/b": "*"      
@@ -34,6 +47,6 @@ packages:
     publish: public
     folder: "e"
 
-workspace:
-  name: "simple-workspace"
-  version: "1.0.0"
+engines:
+  node: "v14.17.3"
+  npm: "6.14.13"

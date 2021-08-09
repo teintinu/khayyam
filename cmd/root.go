@@ -26,13 +26,13 @@ func Execute() {
 	}
 }
 
-func mustLoadRepository() *internal.Repository {
+func mustLoadRepository(checkEntryPoints bool) *internal.Repository {
 	cwd, err := os.Getwd()
 	if err != nil {
 		internal.Logger.ErrorObj(err)
 		os.Exit(1)
 	}
-	repo, err := internal.LoadRepository(cwd)
+	repo, err := internal.LoadRepository(cwd, checkEntryPoints)
 	if err != nil {
 		internal.Logger.ErrorObj(err)
 		os.Exit(1)

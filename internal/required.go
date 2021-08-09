@@ -23,6 +23,9 @@ var requiredWorkspaceDevDependencies = map[string]string{
 var requiredPackageDevDependencies = map[string]string{
 	"source-map-support":        "^0.5.19",
 	"@types/source-map-support": "^0.5.3",
+	"jest":                      "^27.0.6",
+	"@types/jest":               "^26.0.24",
+	"ts-jest":                   "^27.0.3",
 	"typescript":                "^4.3.5",
 	"dts-bundle-generator":      "^5.9.0",
 	"esbuild":                   "^0.12.15",

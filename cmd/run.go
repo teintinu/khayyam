@@ -19,7 +19,7 @@ var runCmd = &cobra.Command{
 	DisableFlagsInUseLine: true,
 	SilenceErrors:         true,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		repo := mustLoadRepository()
+		repo := mustLoadRepository(true)
 		var packagesToRun []string = []string{}
 
 		if err := internal.CheckEngines(repo); err != nil {

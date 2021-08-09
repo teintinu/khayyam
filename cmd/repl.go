@@ -18,7 +18,7 @@ var replCmd = &cobra.Command{
 	Short: "Start a Read Evaluate Print Loop.",
 	Long:  "Start a Read Evaluate Print Loop.",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		repo := mustLoadRepository()
+		repo := mustLoadRepository(false)
 		if err := internal.CheckEngines(repo); err != nil {
 			return err
 		}

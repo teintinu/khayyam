@@ -21,7 +21,7 @@ func BuildWorkspace(repo *Repository) error {
 }
 
 func bundleExecutable(repo *Repository, pkg *Package) error {
-	Logger.Info("Bundling executable ", pkg.Name)
+	Logger.Info("Bundling executable:", pkg.Name)
 	msgs, err := BundleWithEsbuild(repo, pkg)
 	if err != nil {
 		Logger.ErrorObj(err)
@@ -29,16 +29,16 @@ func bundleExecutable(repo *Repository, pkg *Package) error {
 	for _, msg := range msgs.Errors {
 		Logger.Error(msg.Text)
 	}
-	Logger.Debug("Bundled executable ", pkg.Name)
+	Logger.Debug("Bundled  executable:", pkg.Name)
 	return err
 }
 
 func buildLibrary(repo *Repository, pkg *Package) error {
-	Logger.Info("Building library ", pkg.Name)
+	Logger.Info("Building library   :", pkg.Name)
 	err := BuildWithTSC(repo, pkg)
 	if err != nil {
 		Logger.ErrorObj(err)
 	}
-	Logger.Debug("Built library ", pkg.Name)
+	Logger.Debug("Built   library   :", pkg.Name)
 	return err
 }

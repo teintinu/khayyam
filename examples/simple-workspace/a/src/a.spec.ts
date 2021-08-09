@@ -1,4 +1,4 @@
-import { functionA } from './'
+import { functionA } from './index'
 
 it('module a', () => {
   expect(functionA()).toEqual({

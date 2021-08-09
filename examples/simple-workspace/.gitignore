@@ -12,4 +12,4 @@ out
 .eslintrc.json
 coverage
 .vscode
-
+jest.config.js

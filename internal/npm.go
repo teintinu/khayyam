@@ -13,7 +13,8 @@ type PackageMetadata struct {
 	Private         bool              `json:"private"`
 	Repository      string            `json:"repository,omitempty"`
 	Main            string            `json:"main,omitempty"`
-	Bin             map[string]string `json:"bin,omitempty"`
+	Types           string            `json:"types,omitempty"`
+	Bin             string            `json:"bin,omitempty"`
 	Dependencies    map[string]string `json:"dependencies,omitempty"`
 	DevDependencies map[string]string `json:"devDependencies,omitempty"`
 	Scripts         map[string]string `json:"scripts,omitempty"`

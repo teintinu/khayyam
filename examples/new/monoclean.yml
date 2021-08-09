@@ -5,11 +5,11 @@ workspace:
 
 packages:
   "@new/a":
-    public: true
+    publish: public
     folder: "a"
     dependencies:
       "@new/b": "*"      
 
   "@new/b":
-    public: true
+    publish: public
     folder: "b"
