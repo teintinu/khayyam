@@ -78,7 +78,7 @@ type Executable struct {
 
 const DefaultRegistry = "https://registry.npmjs.org/"
 
-func LoadRepository(searchDir string) (*Repository, error) {
+func LoadRepository(searchDir string, checkEntryPoints bool) (*Repository, error) {
 	f, err := openConfigFile(searchDir)
 	if err != nil {
 		return nil, err
@@ -115,19 +115,19 @@ func LoadRepository(searchDir string) (*Repository, error) {
 	}
 
 	repo.Packages = make(map[string]*Package)
-	err = loadPackages(&repo, cfg.Packages, NormalLayer)
+	err = loadPackages(&repo, cfg.Packages, NormalLayer, checkEntryPoints)
 	if err != nil {
 		return nil, err
 	}
-	err = loadPackages(&repo, cfg.BusinessRules, BusinessRulesLayer)
+	err = loadPackages(&repo, cfg.BusinessRules, BusinessRulesLayer, checkEntryPoints)
 	if err != nil {
 		return nil, err
 	}
-	err = loadPackages(&repo, cfg.Executables, ExecutablesLayer)
+	err = loadPackages(&repo, cfg.Executables, ExecutablesLayer, checkEntryPoints)
 	if err != nil {
 		return nil, err
 	}
-	err = loadPackages(&repo, cfg.Adapters, AdaptersLayer)
+	err = loadPackages(&repo, cfg.Adapters, AdaptersLayer, checkEntryPoints)
 	if err != nil {
 		return nil, err
 	}
@@ -146,7 +146,14 @@ func LoadRepository(searchDir string) (*Repository, error) {
 		}
 	}
 	for pkgName := range repo.Packages {
-		err = validateLayer(&repo, repo.Packages[pkgName])
+		pkg := repo.Packages[pkgName]
+		if checkEntryPoints {
+			_, err = GetPackageEntryPoint(&repo, pkg)
+			if err != nil {
+				return nil, err
+			}
+		}
+		err = validateLayer(&repo, pkg)
 		if err != nil {
 			return nil, err
 		}
@@ -154,7 +161,7 @@ func LoadRepository(searchDir string) (*Repository, error) {
 	return &repo, nil
 }
 
-func loadPackages(repo *Repository, packages map[string]PackageConfig, layer PackageLayer) error {
+func loadPackages(repo *Repository, packages map[string]PackageConfig, layer PackageLayer, checkEntryPoints bool) error {
 	for packageName, packageConfig := range packages {
 
 		if len(packageConfig.Index) > 0 {
@@ -208,25 +215,17 @@ func loadPackages(repo *Repository, packages map[string]PackageConfig, layer Pac
 		}
 
 		if pkg.Executable {
-			if endpoint, err := GetPackageEntryPoint(repo, pkg); err != nil {
+			if _, err := GetPackageEntryPoint(repo, pkg); err != nil && checkEntryPoints {
 				return err
 			} else {
-				if endpoint == "" {
-					return errors.New("package " + pkg.Name + " has not main.ts entrypoint")
-				} else {
-					pkg.Bin = path.Join(pkgFolder, "dist/main.js")
-				}
+				pkg.Bin = path.Join(pkgFolder, "dist/main.js")
 			}
 		} else {
-			if endpoint, err := GetPackageEntryPoint(repo, pkg); err != nil {
+			if _, err := GetPackageEntryPoint(repo, pkg); err != nil && checkEntryPoints {
 				return err
 			} else {
-				if endpoint == "" {
-					return errors.New("package " + pkg.Name + " has not index.ts or index.tsx")
-				} else {
-					pkg.Main = path.Join(pkgFolder, "dist/index.js")
-					pkg.Types = path.Join(pkgFolder, "dist/index.d.ts")
-				}
+				pkg.Main = path.Join(pkgFolder, "dist/index.js")
+				pkg.Types = path.Join(pkgFolder, "dist/index.d.ts")
 			}
 		}
 		repo.Packages[packageName] = pkg

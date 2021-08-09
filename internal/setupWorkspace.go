@@ -86,7 +86,7 @@ out
 .eslintrc.json
 coverage
 .vscode
-
+jest.config.js
 `
 
 	err := ioutil.WriteFile(gitignore, []byte(content), 0644)
@@ -155,8 +155,8 @@ func configureRootTsConfigSettings(repo *Repository) error {
 	meta := TsConfigMetadata{
 		CompilerOptions: TsConfigCompileOptionsMetadata{
 			Incremental:      true,
-			Target:           "ES2021",
-			Module:           "commonjs",
+			Target:           "ESNext",
+			Module:           "ESNext",
 			Declaration:      true,
 			SourceMap:        true,
 			ImportHelpers:    true,
@@ -220,7 +220,18 @@ module.exports = {
 	},
 	moduleNameMapper,
 	transform: {
-		'^.+\\.tsx?$': 'esbuild-jest'
+		'^.+\\.tsx?$': [
+			'esbuild-jest',
+			{
+				sourcemap: 'inline',
+				target: ['es6','node12'],
+				loaders: {
+					'.spec.ts': 'tsx',
+					'.test.ts': 'tsx',
+					'.steps.ts': 'tsx',
+				}
+			}
+		]
 	},
 	coverageReporters: [
 		'text',

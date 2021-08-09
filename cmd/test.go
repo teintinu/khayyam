@@ -24,7 +24,7 @@ var testCmd = &cobra.Command{
 	DisableFlagsInUseLine: true,
 	SilenceErrors:         true,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		repo := mustLoadRepository()
+		repo := mustLoadRepository(true)
 		if err := internal.CheckEngines(repo); err != nil {
 			return err
 		}

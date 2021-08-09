@@ -17,7 +17,7 @@ var buildCmd = &cobra.Command{
 	Args:  cobra.RangeArgs(0, 0),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		internal.Logger.FlagInit()
-		repo := mustLoadRepository()
+		repo := mustLoadRepository(true)
 		if err := internal.CheckEngines(repo); err != nil {
 			return err
 		}

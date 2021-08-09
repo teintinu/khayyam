@@ -10,7 +10,7 @@ import (
 func BuildWithTSC(repo *Repository, pkg *Package) error {
 	args := []string{
 		"--project",
-		path.Join(repo.RootDir, pkg.Folder),
+		path.Join(repo.RootDir, pkg.Folder, "tsconfig.build.json"),
 	}
 
 	bin := path.Join(repo.RootDir, "node_modules", ".bin", "tsc")

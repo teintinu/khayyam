@@ -42,7 +42,6 @@ It will create and maintain automatically package.json, tsconfig.json, eslint.js
 `monoclean build` build everything in the repository
 
 ### another commands
-- [ ] monoclean build
 - [ ] monoclean run
 - [ ] monoclean watch --tray
 -   [ ] https://github.com/getlantern/systray

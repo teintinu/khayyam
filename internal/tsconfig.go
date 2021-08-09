@@ -26,6 +26,7 @@ type TsConfigCompileOptionsMetadata struct {
 	ModuleResolution string              `json:"moduleResolution,omitempty"`
 	Module           string              `json:"module,omitempty"`
 	Lib              []string            `json:"lib,omitempty"`
+	TsBuildInfoFile  string              `json:"tsBuildInfoFile,omitempty"`
 	RootDir          string              `json:"rootDir,omitempty"`
 	BaseURL          string              `json:"baseUrl,omitempty"`
 	Paths            map[string][]string `json:"paths,omitempty"`
@@ -57,7 +58,7 @@ func GetPackageEntryPoint(repo *Repository, pkg *Package) (string, error) {
 	pkgRoot := path.Join(repo.RootDir, pkg.Folder)
 	srcDir := path.Join(pkgRoot, "src")
 
-	if pkg.Layer == ExecutablesLayer {
+	if pkg.Executable {
 		return NeedSomeOfTheseFiles(
 			srcDir,
 			[]string{"main.ts", "main.tsx"},
@@ -68,6 +69,6 @@ func GetPackageEntryPoint(repo *Repository, pkg *Package) (string, error) {
 	return NeedSomeOfTheseFiles(
 		srcDir,
 		[]string{"index.ts", "index.tsx"},
-		"main.ts or main.tsx not found in package "+pkg.Name,
+		"index.ts or index.tsx not found in package "+pkg.Name,
 	)
 }
