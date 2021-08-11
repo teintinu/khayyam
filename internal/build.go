@@ -4,14 +4,14 @@ import (
 	"github.com/teintinu/gjobs"
 )
 
-func BuildWorkspace(repo *Repository) error {
+func BuildWorkspace(repo *Repository, opts *BuildOpts) error {
 	jobs := gjobs.NewJobs()
 	gjobs.VerbosityEvent = func(args ...interface{}) {
 		Logger.Debug(args...)
 	}
 	MakeJobs(jobs, "build", repo, repo.PackageNames, func(pkg *Package) error {
 		if pkg.Executable {
-			return bundleExecutable(repo, pkg)
+			return bundleExecutable(repo, pkg, opts)
 		} else {
 			return buildLibrary(repo, pkg)
 		}
@@ -20,9 +20,9 @@ func BuildWorkspace(repo *Repository) error {
 	return nil
 }
 
-func bundleExecutable(repo *Repository, pkg *Package) error {
+func bundleExecutable(repo *Repository, pkg *Package, opts *BuildOpts) error {
 	Logger.Info("Bundling executable:", pkg.Name)
-	msgs, err := BundleWithEsbuild(repo, pkg)
+	msgs, err := BundleWithEsbuild(repo, pkg, opts)
 	if err != nil {
 		Logger.ErrorObj(err)
 	}

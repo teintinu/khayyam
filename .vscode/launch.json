@@ -23,6 +23,24 @@
       "args": ["deps"]
     },
     {
+      "name": "simple-workspace(dev)",
+      "type": "go",
+      "request": "launch",
+      "mode": "auto",
+      "program": "${workspaceFolder}/main.go",
+      "cwd": "${workspaceFolder}/examples/simple-workspace",
+      "args": ["dev"]
+    },
+    {
+      "name": "simple-workspace(run)",
+      "type": "go",
+      "request": "launch",
+      "mode": "auto",
+      "program": "${workspaceFolder}/main.go",
+      "cwd": "${workspaceFolder}/examples/simple-workspace",
+      "args": ["run"]
+    },
+    {
       "name": "simple-workspace(build)",
       "type": "go",
       "request": "launch",

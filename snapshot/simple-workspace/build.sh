@@ -17,4 +17,8 @@ monoclean run
 
 monoclean lint
 monoclean test
+monoclean run
+monoclean run appA
+monoclean run appD
+
 echo "exit code expected=0 actual=$?"

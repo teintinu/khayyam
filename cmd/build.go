@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"github.com/evanw/esbuild/pkg/api"
 	"github.com/spf13/cobra"
 	"github.com/teintinu/monoclean/internal"
 )
@@ -21,6 +22,10 @@ var buildCmd = &cobra.Command{
 		if err := internal.CheckEngines(repo); err != nil {
 			return err
 		}
-		return internal.BuildWorkspace(repo)
+		return internal.BuildWorkspace(repo, &internal.BuildOpts{
+			Target: api.ES5,
+			Minify: true,
+			Mode:   internal.BuildOnly,
+		})
 	},
 }

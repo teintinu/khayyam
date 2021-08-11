@@ -9,16 +9,18 @@ import (
 
 func init() {
 	rootCmd.AddCommand(runCmd)
+	internal.Logger.FlagDeclare(runCmd)
 }
 
 var runCmd = &cobra.Command{
-	Use:                   "run [flags] <executable...>",
-	Short:                 "Build and run",
-	Long:                  `Builds and runs one or more executables. If not specified will run all executables in repository`,
-	Args:                  cobra.MinimumNArgs(1),
-	DisableFlagsInUseLine: true,
-	SilenceErrors:         true,
+	Use:   "run [flags] <executable...>",
+	Short: "Build and run",
+	Long:  `Builds and runs one or more executables. If not specified will run all executables in repository`,
+	//Args:  cobra.MinimumNArgs(1),
+	// DisableFlagsInUseLine: true,
+	// SilenceErrors:         true,
 	RunE: func(cmd *cobra.Command, args []string) error {
+		internal.Logger.FlagInit()
 		repo := mustLoadRepository(true)
 		var packagesToRun []string = []string{}
 
@@ -41,6 +43,8 @@ var runCmd = &cobra.Command{
 				packagesToRun = append(packagesToRun, pkgName)
 			}
 		}
-		return internal.Run(repo, packagesToRun)
+		return internal.Run(repo, packagesToRun, &internal.RunOpts{
+			Watch: false,
+		})
 	},
 }
