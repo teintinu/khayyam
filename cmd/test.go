@@ -9,7 +9,9 @@ import (
 	"github.com/teintinu/monoclean/internal"
 )
 
-var testOpts = internal.TestOptions{}
+var testOpts = internal.TestOptions{
+	Colors: true,
+}
 
 func init() {
 	rootCmd.AddCommand(testCmd)
@@ -29,7 +31,11 @@ var testCmd = &cobra.Command{
 			return err
 		}
 
-		err := internal.Test(repo, testOpts)
+		jestCmd := internal.CreateJestCommand(repo, testOpts)
+		jestCmd.Stdin = os.Stdin
+		jestCmd.Stdout = os.Stdout
+		jestCmd.Stderr = os.Stderr
+		err := jestCmd.Run()
 		var exitErr *exec.ExitError
 		if errors.As(err, &exitErr) {
 			os.Exit(exitErr.ExitCode())

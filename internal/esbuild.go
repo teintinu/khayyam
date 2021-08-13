@@ -43,8 +43,6 @@ func BundleWithEsbuild(repo *Repository, pkg *Package, opts *BuildOpts) (*BuildJ
 
 	if opts.Mode == WatchAndRun {
 		watch = &api.WatchMode{
-			SpinnerBusy: "building",
-			SpinnerIdle: []string{""},
 			OnRebuild: func(result api.BuildResult) {
 				if len(result.Errors) > 0 {
 					for _, msg := range result.Errors {

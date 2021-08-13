@@ -1,12 +1,6 @@
 package cmd
 
 import (
-	"errors"
-	"os"
-	"os/exec"
-	"sync"
-
-	"github.com/evanw/esbuild/pkg/api"
 	"github.com/spf13/cobra"
 	"github.com/teintinu/monoclean/internal"
 )
@@ -30,36 +24,6 @@ var devCmd = &cobra.Command{
 			return err
 		}
 
-		wg := &sync.WaitGroup{}
-
-		wg.Add(2)
-		go devTestApps(repo, wg)
-		go devRunExecutables(repo, wg)
-
-		wg.Wait()
-		return nil
+		return internal.Dev(repo)
 	},
-}
-
-func devTestApps(repo *internal.Repository, wg *sync.WaitGroup) {
-	err := internal.Test(repo, internal.TestOptions{
-		Watch: true,
-	})
-
-	var exitErr *exec.ExitError
-	if errors.As(err, &exitErr) {
-		os.Exit(exitErr.ExitCode())
-	}
-	wg.Done()
-}
-
-func devRunExecutables(repo *internal.Repository, wg *sync.WaitGroup) {
-	for _, pkg := range repo.Packages {
-		internal.BundleWithEsbuild(repo, pkg, &internal.BuildOpts{
-			Target: api.ESNext,
-			Minify: false,
-			Mode:   internal.WatchAndRun,
-		})
-	}
-	wg.Done()
 }
