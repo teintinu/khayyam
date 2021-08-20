@@ -48,7 +48,30 @@ It will create and maintain automatically package.json, tsconfig.json, eslint.js
 - [ ] monoclean deploy
 - [ ] component diagram
 - [ ] class diagram
+- [ ] commitizen
+- [ ] clean architecture sample
+
+```
+public class Order {
+    items
+}
+public class Accounting { 
+    public {[tax:Double]} calculateTax() {...}
+    // or 
+    public produceInvocice()
+}
+public class SalesPolicy {
+    public void applyPromotions() {...}
+}
+public class StockManagement {
+    public Stock checkItemsAvailability() {...}
+}
+public class OrderReporting {
+    public String describeOrder() {...}
+}
+```
 
 ## Notes
 - This project is in alfa version, use responsibly.
 - This project is based on https://github.com/deref/uni
+

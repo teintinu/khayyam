@@ -23,7 +23,7 @@ var buildCmd = &cobra.Command{
 			return err
 		}
 		return internal.BuildWorkspace(repo, &internal.BuildOpts{
-			Target: api.ES5,
+			Target: api.ES2015,
 			Minify: true,
 			Mode:   internal.BuildOnly,
 		})

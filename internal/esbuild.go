@@ -88,9 +88,11 @@ func BundleWithEsbuild(repo *Repository, pkg *Package, opts *BuildOpts) (*BuildJ
 	if watch == nil {
 		esbuildResult := api.Build(buildOpts)
 		Logger.Debug("esbuild", buildOpts, esbuildResult)
-		cmd, err = run(repo, pkg, cmd)
-		if err != nil {
-			fmt.Println(err)
+		if opts.Mode != BuildOnly {
+			cmd, err = run(repo, pkg, cmd)
+			if err != nil {
+				fmt.Println(err)
+			}
 		}
 		return &BuildJSResult{
 			Errors:   esbuildResult.Errors,
