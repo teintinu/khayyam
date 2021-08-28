@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "title": "A clean repository automation for Typescript mono workspace projects",
   "description": "A clean repository automation for Typescript mono workspace projects. Includes yarn, jest and eslint predifined configurations. Customizations and new automations automations are planned.",
-  "$id": "http://github.com/khayyam/khayyam.json",
+  "$id": "http://github.com/khayyam/dos/khayyam-schema.json",
   "type": "object",
   "required": [
     "workspace"

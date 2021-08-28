@@ -8,6 +8,7 @@ import (
 	"os"
 	"os/exec"
 	"strconv"
+	"strings"
 	"sync"
 	"syscall"
 	"time"
@@ -27,14 +28,31 @@ type WebTerm struct {
 
 const tcExecuteAllTests = "a"
 
+type WebTermTabStateEnum uint8
+
+const (
+	TabRunning WebTermTabStateEnum = iota
+	TabSuccess
+	TabError
+)
+
 type WebTermTab struct {
-	path  string
-	title string
+	id      string
+	path    string
+	title   string
+	state   WebTermTabStateEnum
+	actions []*WebTermTab
 
 	ws        *websocket.Conn
 	pty       *os.File
 	ptyBuffer bytes.Buffer
 	ptyLock   sync.Mutex
+}
+
+type WebTermTabAction struct {
+	title  string
+	icon   string
+	action string
 }
 
 type WebTermTabState struct {
@@ -92,113 +110,10 @@ func (webterm *WebTerm) Start(port int32) {
 
 }
 
-func home(tabs []*WebTermTab) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `<html>
-<head>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/xterm/3.14.5/xterm.min.js" integrity="sha512-2PRgAav8Os8vLcOAh1gSaDoNLe1fAyq8/G3QSdyjFFD+OqNjLeHE/8q4+S4MEZgPsuo+itHopj+hJvqS8XUQ8A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/xterm/3.14.5/xterm.min.css" integrity="sha512-iLYuqv+v/P4u9erpk+KM83Ioe/l7SEmr7wB6g+Kg1qmEit8EShDKnKtLHlv2QXUp7GGJhmqDI+1PhJYLTsfb8w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-	<style>
-		* {
-			padding: 0px;
-			margin: 0px;
-		}
-		document, body {
-			width: 100%;
-			height: 100%;
-		}
-  	#app {
-			display: flex;			
-			flex-direction: column;
-			width: 100%;
-			height: 100%;
-		}
-		#frame {
-			flex-grow: 1;
-		}
-	</style>
-	<script>
-	  function openframe(path) {
-			var frame=document.getElementById('frame')
-			frame.src = '/_tab?q=' + path
-		}
-	</script>
-</head>
-<body>
-<div id="app">
-`)
-		fmt.Fprintln(w, `<div class="tabs">`)
-		for _, tab := range tabs {
-			onClick := `openframe('` + tab.path + `')`
-			fmt.Fprintln(w, `<span class="tab" onClick="`+onClick+`">`+tab.title+`</span>`)
-		}
-		fmt.Fprintln(w, `</div>`)
-		fmt.Fprintln(w, `<iframe id='frame' src="/_tab?q=`+tabs[0].path+`" />`)
-		fmt.Fprint(w, `</div></body></html>`)
-	}
-}
-
-func tab() http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		r.ParseForm()
-		q := r.FormValue("q")
-		fmt.Fprintln(w, `<html>
-<head>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xterm/3.14.5/xterm.min.js" integrity="sha512-2PRgAav8Os8vLcOAh1gSaDoNLe1fAyq8/G3QSdyjFFD+OqNjLeHE/8q4+S4MEZgPsuo+itHopj+hJvqS8XUQ8A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/xterm/3.14.5/xterm.min.css" integrity="sha512-iLYuqv+v/P4u9erpk+KM83Ioe/l7SEmr7wB6g+Kg1qmEit8EShDKnKtLHlv2QXUp7GGJhmqDI+1PhJYLTsfb8w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-	<style>
-	  * {
-			padding: 0px;
-			margin: 0px;
-		}
-	  document, body {
-      width: 100%;
-      height: 100%;
-  	}
-		#terminal {
-	    background: #000000;
-		  color: #ffffff;
-		  display: inline-block;
-		  padding: 10px;
-      width: 100%;
-      height: 100%;
-		}
-	</style>
-</head>
-<body>
-
-	<pre id="terminal"></pre>
-
-	<script>
-	
-	debugger
-		var elem = document.getElementById("terminal");
-		elem.tabindex = 0;
-
-		var terminal = new Terminal();
-		terminal.open(elem);
-
-		var socket = new WebSocket('ws://'+document.location.host+"`+q+`", 'echo');
-
-		socket.addEventListener("open", function () {
-			terminal.on('data', function (evt) {
-						socket.send(evt);
-		 		});
-		 });
-
-		socket.addEventListener("message", function (evt) {
-				terminal.write(event.data);
-		});
-	</script>
-</body>
-</html>
-`)
-	}
-}
-
 func newWebTermTab(path string, title string) *WebTermTab {
 
 	tab := &WebTermTab{
+		id:    strings.ReplaceAll(path, "/", "_"),
 		path:  path,
 		title: title,
 

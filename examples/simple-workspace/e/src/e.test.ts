@@ -1,5 +1,5 @@
 import { functionE } from './'
 
 it('module e', () => {
-  expect(functionE()).toEqual({ e: 'e' })
+  expect(functionE()).toEqual({ e: 'e1' })
 })
