@@ -4,13 +4,13 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
-	"github.com/teintinu/monoclean/internal"
+	"github.com/teintinu/khayyam/internal"
 )
 
-const rootDescription = "monoclean is a tool for managing uniform TypeScript monorepos."
+const rootDescription = "khayyam is a tool for managing uniform TypeScript monorepos."
 
 var rootCmd = &cobra.Command{
-	Use:          "monoclean",
+	Use:          "khayyam",
 	Short:        rootDescription,
 	Long:         rootDescription,
 	SilenceUsage: true,

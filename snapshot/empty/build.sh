@@ -2,6 +2,6 @@
 
 set -euo pipefail
 
-monoclean deps
-monoclean clean
-monoclean build
+khayyam deps
+khayyam clean
+khayyam build

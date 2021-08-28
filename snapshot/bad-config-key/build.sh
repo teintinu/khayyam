@@ -4,6 +4,6 @@ set -euo pipefail
 
 (
   set +e
-  monoclean env
+  khayyam env
   echo "exit code expected=1 actual=$?"
 )

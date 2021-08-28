@@ -19,12 +19,12 @@ func configurePkg(repo *Repository, pkg *Package) error {
 	metadata := PackageMetadata{
 		Name:            pkg.Name,
 		Version:         packageVersion,
-		Description:     "GENERATED FILE: DO NOT EDIT! This file is managed by monoclean.",
+		Description:     "GENERATED FILE: DO NOT EDIT! This file is managed by khayyam.",
 		Dependencies:    make(map[string]string),
 		DevDependencies: make(map[string]string),
 		Repository:      repo.Url,
 		Scripts: map[string]string{
-			"clean":        "monoclean clean",
+			"clean":        "khayyam clean",
 			"buildWithTSC": "tsc -p ./tsconfig.build.json",
 			"buildDTS":     "dts-bundle-generator --project ./tsconfig.build.json --verbose",
 		},

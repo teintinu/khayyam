@@ -23,7 +23,7 @@ func Watch() error {
 		defer watcher.Close()
 
 		watchPlugin := api.Plugin{
-			Name: "monoclean:watch",
+			Name: "khayyam:watch",
 			Setup: func(build api.PluginBuild) {
 				build.OnLoad(api.OnLoadOptions{
 					Filter: ".*",

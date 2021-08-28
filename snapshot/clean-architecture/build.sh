@@ -7,11 +7,11 @@ DIR=$(realpath `dirname $0`/../..)
 cd $DIR/examples/clean-architecture
 
 bash "$NVM_DIR/nvm.sh" use
-monoclean deps
-monoclean clean
+khayyam deps
+khayyam clean
 
 set +e
 
-monoclean lint
-monoclean test
+khayyam lint
+khayyam test
 echo "exit code expected=0 actual=$?"

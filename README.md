@@ -1,14 +1,14 @@
-# monoclean
+# khayyam
 
 A clean repository automation for Typescript mono workspace projects. Includes yarn, jest and eslint predifined configurations. Customizations and new automations automations are planned.
 
 # install
 
-`npm i -g monoclean`
+`npm i -g khayyam`
 
 # Get stared
 
-## declare you workspace `monoclean.yml`
+## declare you workspace `khayyam.yml`
 
 ```
 workspace:
@@ -25,27 +25,27 @@ packages:
     folder: "b"
 ```
 
-### `monoclean deps`
+### `khayyam deps`
 
 It will create and maintain automatically package.json, tsconfig.json, eslint.json, jest.config.js...
 
-### `monoclean run`
+### `khayyam run`
 
-`monoclean run [PACKAGE]` use esbuild to fasterly run `src/index.ts` on desired `[PACKAGE]`
+`khayyam run [PACKAGE]` use esbuild to fasterly run `src/index.ts` on desired `[PACKAGE]`
 
-### `monoclean test`
+### `khayyam test`
 
-`monoclean test [--watch] [--coverage]` use esbuild and jest to fasterly test all packages in the workspace
+`khayyam test [--watch] [--coverage]` use esbuild and jest to fasterly test all packages in the workspace
 
-### `monoclean build`
+### `khayyam build`
 
-`monoclean build` build everything in the repository
+`khayyam build` build everything in the repository
 
 ### another commands
-- [ ] monoclean run
-- [ ] monoclean watch --tray
+- [ ] khayyam run
+- [ ] khayyam watch --tray
 -   [ ] https://github.com/getlantern/systray
-- [ ] monoclean deploy
+- [ ] khayyam deploy
 - [ ] component diagram
 - [ ] class diagram
 - [ ] commitizen

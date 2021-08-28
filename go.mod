@@ -1,4 +1,4 @@
-module github.com/teintinu/monoclean
+module github.com/teintinu/khayyam
 
 go 1.15
 

@@ -285,7 +285,7 @@ func validateLayer(repo *Repository, pkg *Package) error {
 	return avoidCircularReferences(repo, repo.Packages, map[string]bool{})
 }
 
-const configName = "monoclean.yml"
+const configName = "khayyam.yml"
 
 var ErrNoConfig = fmt.Errorf("cannot find %s config file", configName)
 

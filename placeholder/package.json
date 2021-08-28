@@ -1,12 +1,12 @@
 {
-  "name": "@monoclean/placeholder",
+  "name": "@khayyam/placeholder",
   "version": "1.0.0",
   "private": false,
   "description": "An empty package to reserve this package name.",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/teintinu/monoclean.git"
+    "url": "git+https://github.com/teintinu/khayyam.git"
   },
   "license": "MIT",
-  "homepage": "https://github.com/teintinu/monoclean#readme"
+  "homepage": "https://github.com/teintinu/khayyam#readme"
 }

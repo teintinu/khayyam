@@ -44,7 +44,7 @@ func ConfigureRepository(repo *Repository) error {
 		Name:            workspaceName,
 		Version:         workspaceVersion,
 		Private:         true,
-		Description:     "GENERATED FILE: DO NOT EDIT! This file is managed by monoclean.",
+		Description:     "GENERATED FILE: DO NOT EDIT! This file is managed by khayyam.",
 		DevDependencies: make(map[string]string),
 		Repository:      repo.Url,
 	}
@@ -55,10 +55,10 @@ func ConfigureRepository(repo *Repository) error {
 	}
 
 	metadata.Scripts = map[string]string{
-		"clean":     "monoclean clean",
-		"start":     "monoclean run",
-		"build":     "monoclean build",
-		"publish":   "monoclean publish",
+		"clean":     "khayyam clean",
+		"start":     "khayyam run",
+		"build":     "khayyam build",
+		"publish":   "khayyam publish",
 		"tsc-watch": "tsc -p . --watch",
 	}
 
@@ -72,7 +72,7 @@ func ConfigureRepository(repo *Repository) error {
 func configureGitIgnore(repo *Repository) error {
 
 	gitignore := path.Join(repo.RootDir, ".gitignore")
-	var content = `# monoclean
+	var content = `# khayyam
 node_modules
 .nvm.rc
 package.json
@@ -115,8 +115,8 @@ func configureVsCodeSettings(repo *Repository) error {
 		"env-*": true
 	},
   "yaml.schemas": {
-    "https://teintinu.github.io/monoclean/monoclean-schema.json": [
-      "monoclean.yml"
+    "https://teintinu.github.io/khayyam/khayyam-schema.json": [
+      "khayyam.yml"
     ]
   },
 	"typescript.disableAutomaticTypeAcquisition": true

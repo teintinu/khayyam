@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/teintinu/monoclean/cmd"
+	"github.com/teintinu/khayyam/cmd"
 )
 
 func main() {

@@ -4,7 +4,7 @@ import (
 	"runtime/debug"
 
 	"github.com/spf13/cobra"
-	"github.com/teintinu/monoclean/internal"
+	"github.com/teintinu/khayyam/internal"
 )
 
 var detailed bool
@@ -16,8 +16,8 @@ func init() {
 
 var versionCmd = &cobra.Command{
 	Use:   "version",
-	Short: "Print the version of monoclean.",
-	Long:  "Print the version of monoclean.",
+	Short: "Print the version of khayyam.",
+	Long:  "Print the version of khayyam.",
 	Run: func(cmd *cobra.Command, args []string) {
 		buildInfo, ok := debug.ReadBuildInfo()
 		if !ok {

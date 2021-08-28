@@ -3,7 +3,7 @@ package cmd
 import (
 	"github.com/evanw/esbuild/pkg/api"
 	"github.com/spf13/cobra"
-	"github.com/teintinu/monoclean/internal"
+	"github.com/teintinu/khayyam/internal"
 )
 
 func init() {

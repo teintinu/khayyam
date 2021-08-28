@@ -10,15 +10,15 @@ set +e
 
 bash "$NVM_DIR/nvm.sh" use
 
-monoclean deps
-monoclean clean
-monoclean build
-monoclean run
+khayyam deps
+khayyam clean
+khayyam build
+khayyam run
 
-monoclean lint
-monoclean test
-monoclean run
-monoclean run appA
-monoclean run appD
+khayyam lint
+khayyam test
+khayyam run
+khayyam run appA
+khayyam run appD
 
 echo "exit code expected=0 actual=$?"
