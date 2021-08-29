@@ -1,9 +1,10 @@
 package internal
 
 import (
-	"fmt"
+	"os"
 	"os/exec"
 	"regexp"
+	"strings"
 	"sync"
 
 	"github.com/evanw/esbuild/pkg/api"
@@ -35,14 +36,21 @@ func devTestApps(repo *Repository, wg *sync.WaitGroup, webterm *WebTerm) {
 			Colors:   true,
 		}), nil
 	}
-	processAction := func(ac []string, wtts *WebTermTabState) {
-		fmt.Println(ac)
-		if ac[0] == tcExecuteAllTests {
-			wtts.input("a")
-		}
+	executeAllTests := &WebTermTabAction{
+		id:    "executeAllTests",
+		title: "Run All Tests",
+		icon:  "play",
+		action: func(pty *os.File, args ...string) {
+			pty.WriteString("a")
+		},
+	}
+	actions := []*WebTermTabAction{
+		executeAllTests,
 	}
 	rgTestSummary := regexp.MustCompile(`^.*Tests:.+(?:(\d+)\s+failed,)?.+(\d+).+passed,.+(\d+).+total.*$`)
-	processNotification := func(line string, wtts *WebTermTabState) {
+	rgRUNS := regexp.MustCompile(`^.*RUNS.*\.\.\..*$`)
+	processConsoleOutput := func(line string, wtts *WebTermTabRoutines) {
+		println("dev " + line)
 		// Tests:       5 passed, 5 total
 		// Tests:       1 failed, 4 passed, 5 total
 		testResult := rgTestSummary.FindStringSubmatch(line)
@@ -50,10 +58,18 @@ func devTestApps(repo *Repository, wg *sync.WaitGroup, webterm *WebTerm) {
 			failed := testResult[1]
 			passed := testResult[2]
 			total := testResult[3]
-			wtts.notify("testResult", failed, passed, total)
+			if failed == "" {
+				wtts.setSuccess(line, failed, passed, total)
+			} else {
+				wtts.setError(line, failed, passed, total)
+			}
+		} else if strings.Contains(line, "No tests found related to files changed since last commit.") {
+			wtts.setSuccess(line)
+		} else if rgRUNS.MatchString(line) {
+			wtts.setBusy()
 		}
 	}
-	webterm.AddShell("/jest", "Tests", getCommand, processAction, processNotification)
+	webterm.AddShell("/jest", "Tests", false, getCommand, actions, processConsoleOutput)
 }
 
 func devRunExecutables(repo *Repository, wg *sync.WaitGroup, webterm *WebTerm) {

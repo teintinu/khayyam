@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-func home(tabs []*WebTermTab) http.HandlerFunc {
+func webtermHome(tabs []*WebTermTab) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 
 		wTabsContainer := func() {
@@ -18,8 +18,8 @@ func home(tabs []*WebTermTab) http.HandlerFunc {
 				<ul>`)
 			for _, tab := range tabs {
 				onClick := `openframe('` + tab.path + `')`
-				fmt.Fprintln(w, `<li class="tab" onClick="`+onClick+`">`)
-				fmt.Fprintln(w, `<i class="fas fa-home icon"></i>`)
+				fmt.Fprintln(w, `<li class="tab" id="`+tab.id+`Btn" onClick="`+onClick+`">`)
+				fmt.Fprintln(w, `<i class="fas fa-spinner fa-pulse"></i>`)
 				fmt.Fprintln(w, `<span>`+tab.title+`</span>`)
 				fmt.Fprintln(w, `</li>`)
 			}
@@ -28,6 +28,35 @@ func home(tabs []*WebTermTab) http.HandlerFunc {
 		</div>
 	</div>`)
 			fmt.Fprintln(w)
+		}
+
+		wUpdateStatus := func() {
+			fmt.Fprintln(w, `		  function updateStatus(tabId, status, args) {
+					   const btn = document.getElementById(tabId+'Btn');
+						 const icon = btn.getElementsByTagName('i')[0];
+						 icon.classList.remove('fa-spinner');
+						 icon.classList.remove('fa-check-circle');
+						 icon.classList.remove('fa-exclamation-circle');
+						 if (status === 'busy') {
+						   icon.classList.add('fa-spinner');
+						 } else if (status === 'success') {
+							 icon.classList.add('fa-check-circle');
+						 } else {
+							 icon.classList.add('fa-exclamation-circle');
+						 }
+				}`)
+		}
+
+		wCommStatus := func() {
+			fmt.Fprintln(w, `debugger;		var socket = new WebSocket('ws://'+document.location.host+"/_comm", 'echo');			
+	
+			socket.addEventListener("message", function (evt) {
+				debugger;
+				  const [tabid, action, ...args] = evt.data.split('\v');
+					if (['busy','success', 'error'].contains(action)) {
+					  updateStatus(tabid, action, args);
+					}
+			});`)
 		}
 
 		wHTML := func() {
@@ -46,7 +75,7 @@ func home(tabs []*WebTermTab) http.HandlerFunc {
 						border: 0px;
 					}
 					body {
-						display: flex;			
+						display: flex;
 						flex-direction: columns;
 						overflow: hidden;
 					}
@@ -152,8 +181,10 @@ func home(tabs []*WebTermTab) http.HandlerFunc {
 						elements.forEach(element => {
 							element.setAttribute('z-index', element.id === id ? '1' : '-1');
 						})
-					}
-				</script>
+					}`)
+			wUpdateStatus()
+			wCommStatus()
+			fmt.Fprint(w, `		</script>
 			</head>
 			<body>
 			<div id="app">`)

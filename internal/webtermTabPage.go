@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-func tab() http.HandlerFunc {
+func webtermTab() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		r.ParseForm()
 		q := r.FormValue("q")
@@ -39,30 +39,30 @@ func tab() http.HandlerFunc {
 
 	<script>
 	
-		var elem = document.getElementById("terminal");
+		const elem = document.getElementById("terminal");
 		elem.tabindex = 0;
 
 		webLinks.apply(Terminal);
 		fit.apply(Terminal);
 
-		var terminal = new Terminal();
+		const terminal = new Terminal();
 		terminal.open(elem);
 
 		terminal.webLinksInit();
-		var socket = new WebSocket('ws://'+document.location.host+"`+q+`", 'echo');
+		const socket = new WebSocket('ws://'+document.location.host+"`+q+`", 'echo');
 
 		socket.addEventListener("open", function () {
 			terminal.on('data', function (evt) {
-						socket.send(evt);
-		 		});
-		 });
+				socket.send(evt);
+		 	});
+		});
 
-		 setInterval(function () {
+		setInterval(function () {
 			terminal.fit();
-		 }, 1000)
+		}, 1000)
 
 		socket.addEventListener("message", function (evt) {
-				terminal.write(event.data);
+			terminal.write(event.data);
 		});
 	</script>
 </body>
