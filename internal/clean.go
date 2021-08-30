@@ -16,11 +16,26 @@ func CleanRepository(repo *Repository) error {
 }
 
 func CleanPackage(repo *Repository, pkg *Package) error {
-	distDir := path.Join(repo.RootDir, pkg.Folder, "dist")
-	Logger.Debug("clearing ", distDir)
-	err := os.RemoveAll(distDir)
-	if err != nil {
-		Logger.ErrorObj(err)
+	folders := []string{
+		"dist",
+		"package*.json",
+		"yarn*.json",
+		"yarn.lock",
+		"tsconfig*.json",
+		".nvm.rc",
+		".vscode",
+		".jest",
+		"jest.config.js",
+		".eslintrc.json",
 	}
-	return err
+	for _, folder := range folders {
+		distDir := path.Join(repo.RootDir, pkg.Folder, folder)
+		Logger.Debug("clearing ", distDir)
+		err := os.RemoveAll(distDir)
+		if err != nil {
+			Logger.ErrorObj(err)
+			return err
+		}
+	}
+	return nil
 }

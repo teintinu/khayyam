@@ -3,7 +3,6 @@ package internal
 import (
 	"os"
 	"os/exec"
-	"regexp"
 	"strings"
 	"sync"
 
@@ -33,7 +32,7 @@ func devTestApps(repo *Repository, wg *sync.WaitGroup, webterm *WebTerm) {
 		return CreateJestCommand(repo, TestOptions{
 			Watch:    true,
 			Coverage: false,
-			Colors:   true,
+			Colors:   false,
 		}), nil
 	}
 	executeAllTests := &WebTermTabAction{
@@ -47,14 +46,15 @@ func devTestApps(repo *Repository, wg *sync.WaitGroup, webterm *WebTerm) {
 	actions := []*WebTermTabAction{
 		executeAllTests,
 	}
-	rgTestSummary := regexp.MustCompile(`^.*Tests:.+(?:(\d+)\s+failed,)?.+(\d+).+passed,.+(\d+).+total.*$`)
-	rgRUNS := regexp.MustCompile(`^.*RUNS.*\.\.\..*$`)
-	processConsoleOutput := func(line string, wtts *WebTermTabRoutines) {
-		println("dev " + line)
-		// Tests:       5 passed, 5 total
-		// Tests:       1 failed, 4 passed, 5 total
-		testResult := rgTestSummary.FindStringSubmatch(line)
-		if len(testResult[0]) > 0 {
+
+	processConsoleOutput := func(lineWithColors string, wtts *WebTermTabRoutines) {
+		// println(strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(lineWithColors, "\b", "BS"), "\r", "CR"), "\x1b", "ESC"))
+		println("a:", strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(lineWithColors, "\b", "BS"), "\r", "CR"), "\x1b", "ESC"))
+		line := RegRemoveANSI.ReplaceAllString(lineWithColors, "")
+		println("b:", line)
+		testResult := RegExpJestSummary.FindStringSubmatch(line)
+
+		if len(testResult) > 0 {
 			failed := testResult[1]
 			passed := testResult[2]
 			total := testResult[3]
@@ -64,9 +64,11 @@ func devTestApps(repo *Repository, wg *sync.WaitGroup, webterm *WebTerm) {
 				wtts.setError(line, failed, passed, total)
 			}
 		} else if strings.Contains(line, "No tests found related to files changed since last commit.") {
-			wtts.setSuccess(line)
-		} else if rgRUNS.MatchString(line) {
-			wtts.setBusy()
+			wtts.setUnknow()
+		} else if strings.Contains(line, "Determining test suites to run") {
+			wtts.setRunning()
+		} else if RegExpJestRunning.MatchString(line) {
+			wtts.setRunning()
 		}
 	}
 	webterm.AddShell("/jest", "Tests", false, getCommand, actions, processConsoleOutput)

@@ -10,21 +10,19 @@ import (
 func webtermComm(webterm *WebTerm) websocket.Handler {
 	return websocket.Handler(func(ws *websocket.Conn) {
 
+		webterm.toFrontend = ws
 		wsFromFrontend := bufio.NewReader(ws)
-		wsToFrontEnd := bufio.NewWriter(ws)
 
-		go func() {
-			for !webterm.IsClosed() {
-				s, err := wsFromFrontend.ReadString(10)
-				if err == nil {
-					sa := strings.Split(s, "\v")
-					go webterm.processCommand(sa)
-				}
+		for _, tab := range webterm.tabs {
+			tab.routines.refreshState()
+		}
+
+		for !webterm.IsClosed() {
+			s, err := wsFromFrontend.ReadString(10)
+			if err == nil {
+				sa := strings.Split(s, "\v")
+				go webterm.processCommand(sa)
 			}
-		}()
-		for !webterm.closed {
-			s := <-webterm.toFrontend
-			wsToFrontEnd.WriteString(strings.Join(s, "\v") + "\n")
 		}
 
 	})

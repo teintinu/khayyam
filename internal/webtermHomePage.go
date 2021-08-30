@@ -30,31 +30,39 @@ func webtermHome(tabs []*WebTermTab) http.HandlerFunc {
 			fmt.Fprintln(w)
 		}
 
-		wUpdateStatus := func() {
-			fmt.Fprintln(w, `		  function updateStatus(tabId, status, args) {
+		wRefreshState := func() {
+			fmt.Fprintln(w, `		  function refreshState(tabId, status, ...args) {
 					   const btn = document.getElementById(tabId+'Btn');
 						 const icon = btn.getElementsByTagName('i')[0];
+						 icon.removeAttribute('style')
+						 icon.classList.remove('fa-pulse');
 						 icon.classList.remove('fa-spinner');
 						 icon.classList.remove('fa-check-circle');
 						 icon.classList.remove('fa-exclamation-circle');
-						 if (status === 'busy') {
+						 icon.classList.remove('fa-question-circle');
+						 if (status === 'unknow') {
+						   icon.classList.add('fa-question-circle');
+							 icon.setAttribute('style', 'color: yellow')
+						 } else if (status === 'running') {
 						   icon.classList.add('fa-spinner');
+							 icon.classList.add('fa-pulse');
 						 } else if (status === 'success') {
 							 icon.classList.add('fa-check-circle');
-						 } else {
+							 icon.setAttribute('style', 'color: green')
+ 					   } else {
 							 icon.classList.add('fa-exclamation-circle');
+							 icon.setAttribute('style', 'color: red')
 						 }
 				}`)
 		}
 
 		wCommStatus := func() {
-			fmt.Fprintln(w, `debugger;		var socket = new WebSocket('ws://'+document.location.host+"/_comm", 'echo');			
+			fmt.Fprintln(w, `		var socket = new WebSocket('ws://'+document.location.host+"/_comm", 'echo');			
 	
 			socket.addEventListener("message", function (evt) {
-				debugger;
-				  const [tabid, action, ...args] = evt.data.split('\v');
-					if (['busy','success', 'error'].contains(action)) {
-					  updateStatus(tabid, action, args);
+				  const [tabid, action, ...args] = evt.data.replace('\n', '').split('\v');
+					if (action === 'refreshState') {
+					  refreshState(tabid, ...args);
 					}
 			});`)
 		}
@@ -62,6 +70,7 @@ func webtermHome(tabs []*WebTermTab) http.HandlerFunc {
 		wHTML := func() {
 			fmt.Fprint(w, `<html>
 			<head>
+			  <link rel=icon href=https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15/svgs/solid/rocket.svg>
 			  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
 				<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/xterm/3.14.5/xterm.min.css" integrity="sha512-iLYuqv+v/P4u9erpk+KM83Ioe/l7SEmr7wB6g+Kg1qmEit8EShDKnKtLHlv2QXUp7GGJhmqDI+1PhJYLTsfb8w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 				<script src="https://cdnjs.cloudflare.com/ajax/libs/xterm/3.14.5/xterm.min.js" integrity="sha512-2PRgAav8Os8vLcOAh1gSaDoNLe1fAyq8/G3QSdyjFFD+OqNjLeHE/8q4+S4MEZgPsuo+itHopj+hJvqS8XUQ8A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -169,6 +178,7 @@ func webtermHome(tabs []*WebTermTab) http.HandlerFunc {
 
 					.frame iframe {
 						position: relative;
+						border: 0px;
 						top: 0px;
 						left: 0px;
 						width: 100%;
@@ -182,7 +192,7 @@ func webtermHome(tabs []*WebTermTab) http.HandlerFunc {
 							element.setAttribute('z-index', element.id === id ? '1' : '-1');
 						})
 					}`)
-			wUpdateStatus()
+			wRefreshState()
 			wCommStatus()
 			fmt.Fprint(w, `		</script>
 			</head>

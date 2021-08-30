@@ -12,14 +12,6 @@ import (
 	"golang.org/x/net/websocket"
 )
 
-type WebTermTabStateEnum uint8
-
-const (
-	TabRunning WebTermTabStateEnum = iota
-	TabSuccess
-	TabError
-)
-
 type WebTermTabAction struct {
 	title  string
 	icon   string
@@ -28,25 +20,28 @@ type WebTermTabAction struct {
 }
 
 type WebTermTab struct {
-	id       string
-	path     string
-	title    string
-	readonly bool
-	state    WebTermTabStateEnum
-	actions  []*WebTermTabAction
+	id        string
+	path      string
+	title     string
+	readonly  bool
+	actions   []*WebTermTabAction
+	lastState []string
 
-	ws                     *websocket.Conn
-	pty                    *os.File
-	consoleOutput          chan string
-	lastConsoleOutputLines []string
+	ws  *websocket.Conn
+	pty *os.File
 
 	routines *WebTermTabRoutines
+
+	processConsoleOutput   func(line string, wtts *WebTermTabRoutines)
+	lastConsoleOutputLines []string
 }
 
 type WebTermTabRoutines struct {
-	setBusy    func()
-	setSuccess func(...string)
-	setError   func(...string)
+	refreshState func()
+	setUnknow    func()
+	setRunning   func()
+	setSuccess   func(...string)
+	setError     func(...string)
 }
 
 func (webterm *WebTerm) AddShell(
@@ -57,27 +52,38 @@ func (webterm *WebTerm) AddShell(
 
 	tabid := strings.ReplaceAll(path, "/", "_")
 
-	routines := &WebTermTabRoutines{
-		setBusy: func() {
-			webterm.toFrontend <- []string{tabid, "busy"}
-		},
-		setSuccess: func(args ...string) {
-			n := []string{tabid, "success"}
-			n = append(n, args...)
-			webterm.toFrontend <- n
-		},
-		setError: func(args ...string) {
-			n := []string{tabid, "error"}
-			n = append(n, args...)
-			webterm.toFrontend <- n
-		},
-	}
+	routines := &WebTermTabRoutines{}
 	tab := &WebTermTab{
-		id:       tabid,
-		path:     path,
-		title:    title,
-		readonly: readonly,
-		routines: routines,
+		id:                   tabid,
+		path:                 path,
+		title:                title,
+		readonly:             readonly,
+		routines:             routines,
+		processConsoleOutput: processConsoleOutput,
+	}
+	routines.refreshState = func() {
+		webterm.sendToFrontEnd(tab.lastState...)
+	}
+
+	routines.setUnknow = func() {
+		tab.lastState = []string{tabid, "refreshState", "unknow"}
+		routines.refreshState()
+	}
+	routines.setRunning = func() {
+		tab.lastState = []string{tabid, "refreshState", "running"}
+		routines.refreshState()
+	}
+	routines.setSuccess = func(args ...string) {
+		n := []string{tabid, "refreshState", "success"}
+		n = append(n, args...)
+		tab.lastState = n
+		routines.refreshState()
+	}
+	routines.setError = func(args ...string) {
+		n := []string{tabid, "refreshState", "error"}
+		n = append(n, args...)
+		tab.lastState = n
+		routines.refreshState()
 	}
 
 	webterm.tabs = append(webterm.tabs, tab)
@@ -85,20 +91,23 @@ func (webterm *WebTerm) AddShell(
 	tab.tabHandler(webterm)
 	go tab.Pty(webterm, getCommand)
 
-	go func() {
-		for !webterm.IsClosed() {
-			var line string = <-tab.consoleOutput
-			processConsoleOutput(line, tab.routines)
-			var limit = len(tab.lastConsoleOutputLines)
-			if limit > 100 {
-				limit = 100
-			}
-			a := []string{line}
-			b := append(a, tab.lastConsoleOutputLines...)
-			tab.lastConsoleOutputLines = b[:limit]
-		}
-	}()
 	return tab
+}
+
+func (tab *WebTermTab) consoleOutput(line string) {
+	// line = strings.ReplaceAll(line, "\r", "CR")
+	if tab.ws != nil {
+		if _, err := tab.ws.Write(append([]byte(line), linefeedDelimiter)); err != nil {
+			tab.ws = nil
+		}
+	}
+	tab.processConsoleOutput(line, tab.routines)
+	var limit = len(tab.lastConsoleOutputLines) - 100
+	if limit < 0 {
+		limit = 0
+	}
+	b := append(tab.lastConsoleOutputLines, line)[limit:]
+	tab.lastConsoleOutputLines = b
 }
 
 func (tab *WebTermTab) Pty(
@@ -107,27 +116,25 @@ func (tab *WebTermTab) Pty(
 ) {
 
 	cmd, err := getCommand()
-	println("cmd", cmd)
 	if err != nil {
-		tab.consoleOutput <- fmt.Sprintf("Error getting pty command: %s\r\n", err)
+		tab.consoleOutput(fmt.Sprintf("Error getting pty command: %s\r\n", err))
 		return
 	}
 
 	tab.pty, err = pty.Start(cmd)
 	if err != nil {
-		tab.consoleOutput <- fmt.Sprintf("Error creating pty: %s\r\n", err)
+		tab.consoleOutput(fmt.Sprintf("Error creating pty: %s\r\n", err))
 		return
 	}
 
 	cmdConsole := bufio.NewReader(tab.pty)
 	for !webterm.IsClosed() {
 		line, err := cmdConsole.ReadString(linefeedDelimiter)
-		println("console", line)
 		if err != nil {
-			tab.consoleOutput <- fmt.Sprintf("Error reading from pty: %s\r\n", err)
+			tab.consoleOutput(fmt.Sprintf("Error reading from pty: %s\r\n", err))
 			return
 		}
-		tab.consoleOutput <- line
+		tab.consoleOutput(line)
 	}
 
 }
@@ -139,22 +146,12 @@ func (tab *WebTermTab) tabHandler(
 	webterm.Handle(tab.path, websocket.Handler(func(ws *websocket.Conn) {
 
 		tab.ws = ws
-		defer func() {
-			tab.ws = nil
-		}()
 
 		for _, line := range tab.lastConsoleOutputLines {
-			tab.ws.Write([]byte(line))
-			tab.ws.Write([]byte{linefeedDelimiter})
+			ws.Write(append([]byte(line), linefeedDelimiter))
 		}
 		if !tab.readonly {
-			go io.Copy(ws, tab.pty)
-		}
-
-		for !webterm.IsClosed() {
-			line := <-tab.consoleOutput
-			tab.ws.Write([]byte(line))
-			tab.ws.Write([]byte{linefeedDelimiter})
+			io.Copy(ws, tab.pty)
 		}
 
 	}))

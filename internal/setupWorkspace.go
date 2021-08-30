@@ -36,6 +36,9 @@ func ConfigureRepository(repo *Repository) error {
 	if err := configureJest(repo); err != nil {
 		return err
 	}
+	if err := configureJestCustomReport(repo); err != nil {
+		return err
+	}
 	if err := configureEsLint(repo); err != nil {
 		return err
 	}
@@ -80,12 +83,12 @@ package-lock.json
 yarn-error.log
 yarn.lock
 tsconfig.**
-jest.config.js
 tmp
 out
 .eslintrc.json
 coverage
 .vscode
+.jest
 jest.config.js
 `
 
@@ -203,52 +206,92 @@ func configureRootTsConfigTest(repo *Repository) error {
 }
 
 func configureJest(repo *Repository) error {
-	const content = `const { pathsToModuleNameMapper } = require('ts-jest/utils')
+	const content = `
+const { pathsToModuleNameMapper } = require('ts-jest/utils')
 const { compilerOptions } = require('./tsconfig.test')
 
 const moduleNameMapper = pathsToModuleNameMapper(compilerOptions.paths, { prefix: '<rootDir>/' })
 
 module.exports = {
-	preset: 'ts-jest',
-	modulePathIgnorePatterns: ['dist'],
-	testPathIgnorePatterns: ['node_modules', 'dist'],
-	testRegex: '(\\.(test|spec|steps))\\.(ts|tsx)$',
-	globals: {
-		'ts-jest': {
-			tsConfig: 'tsconfig.test.json'
-		}
-	},
-	moduleNameMapper,
-	transform: {
-		'^.+\\.tsx?$': [
-			'esbuild-jest',
-			{
-				sourcemap: 'inline',
-				target: ['es6','node12'],
-				loaders: {
-					'.spec.ts': 'tsx',
-					'.test.ts': 'tsx',
-					'.steps.ts': 'tsx',
-				}
-			}
-		]
-	},
-	coverageReporters: [
-		'text',
-		'html',
-		'cobertura',
-		'json-summary'
-	],
-	coverageThreshold: {
-		global: {
-			lines: 90,
-			statements: 90,
-			functions: 90,
-			branches: 90
-		}
-	}
-}`
+  preset: 'ts-jest',
+  modulePathIgnorePatterns: ['dist'],
+  testPathIgnorePatterns: ['node_modules', 'dist', '.jest'],
+  testRegex: '(\\.(test|spec|steps))\\.(ts|tsx)$',
+  globals: {
+    'ts-jest': {
+      tsConfig: 'tsconfig.test.json'
+    }
+  },
+  moduleNameMapper,
+  transform: {
+    '^.+\\.tsx?$': [
+      'esbuild-jest',
+      {
+        sourcemap: 'inline',
+        target: ['es6', 'node12'],
+        loaders: {
+          '.spec.ts': 'tsx',
+          '.test.ts': 'tsx',
+          '.steps.ts': 'tsx'
+        }
+      }
+    ]
+  },
+  reporters: [
+    './.jest/jest.report',
+    ['jest-html-reporters', {
+      publicPath: './.jest/html-report',
+      filename: 'report.html',
+      expand: true
+    }]
+  ],
+  coverageDirectory: './.jest/coverage/',
+  coverageReporters: [
+    'text',
+    'html',
+    'cobertura',
+    'json-summary'
+  ],
+  coverageThreshold: {
+    global: {
+      lines: 90,
+      statements: 90,
+      functions: 90,
+      branches: 90
+    }
+  }
+}
+`
 	jestConfig := path.Join(repo.RootDir, "jest.config.js")
+	err := ioutil.WriteFile(jestConfig, []byte(content), 0644)
+	return err
+}
+
+func configureJestCustomReport(repo *Repository) error {
+	var vscodeDir = path.Join(repo.RootDir, ".jest")
+	if err := os.MkdirAll(vscodeDir, 0755); err != nil {
+		return err
+	}
+	const content = `
+module.exports = class CustomReport {
+  onRunStart () {
+    this.testcount = 0
+    this.errorcount = 0
+    console.log('')
+    console.log('jest-runStart')
+  }
+
+  onRunComplete () {
+    console.log('jest.runComplete count=' + this.testcount + ' errors=' + this.errorcount)
+  }
+
+  onTestResult (test, testResult) {
+    this.testcount++
+    this.errorcount += testResult.numFailingTests
+  }
+}
+`
+	jestConfig := path.Join(repo.RootDir, ".jest/jest.report.js")
 	err := ioutil.WriteFile(jestConfig, []byte(content), 0644)
 	return err
 }

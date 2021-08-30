@@ -4,8 +4,12 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"regexp"
 	"strconv"
+	"strings"
 	"time"
+
+	"golang.org/x/net/websocket"
 )
 
 type WebTerm struct {
@@ -13,7 +17,7 @@ type WebTerm struct {
 	server *http.Server
 	mux    *http.ServeMux
 
-	toFrontend chan []string
+	toFrontend *websocket.Conn
 
 	tabs []*WebTermTab
 }
@@ -74,3 +78,25 @@ func (webterm *WebTerm) processCommand(command []string) {
 		}
 	}
 }
+
+func (webterm *WebTerm) sendToFrontEnd(command ...string) {
+	if webterm.toFrontend != nil {
+		s := strings.Join(command, "\v")
+		println("toFrontend:", command[0], command[1], command[2])
+		if _, err := webterm.toFrontend.Write([]byte(s + "\n")); err != nil {
+			webterm.toFrontend = nil
+			fmt.Println("perdeu conexao:", err)
+		}
+	} else {
+		println("NAO CONECTADO toFrontend:", command[0], command[1], command[2])
+	}
+}
+
+var RegExpJestRunning = regexp.MustCompile(`^.*RUNS.*\.\.\..*$`)
+
+// var RegRemoveANSI = regexp.MustCompile(`\x1b\[[0-9;]*m`)
+var RegRemoveANSI = regexp.MustCompile("[\u001B\u009B][[\\]()#;?]*(?:(?:(?:[a-zA-Z\\d]*(?:;[a-zA-Z\\d]*)*)?\u0007)|(?:(?:\\d{1,4}(?:;\\d{0,4})*)?[\\dA-PRZcf-ntqry=><~]))")
+
+// Tests:       5 passed, 5 total
+// Tests:       1 failed, 4 passed, 5 total
+var RegExpJestSummary = regexp.MustCompile(`^\s*Tests:\s+(?:(\d+)\s+failed,)?\s*(?:(\d+).+passed,)?\s*(\d+)\s+total\s*$`)
