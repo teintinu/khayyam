@@ -60,6 +60,7 @@ func (webterm *WebTerm) AddShell(
 		id:                   tabid,
 		path:                 path,
 		title:                title,
+		actions:              actions,
 		staticFolder:         staticFolder,
 		wsIn:                 wsin,
 		routines:             routines,

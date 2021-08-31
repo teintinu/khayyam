@@ -9,7 +9,7 @@ func webtermHome(tabs []*WebTermTab) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 
 		wTabsContainer := func() {
-			fmt.Fprint(w, `<div class="tabs">
+			fmt.Fprint(w, `<div class="side">
 		<div class="card">
 			<div class="header">
 				<h3>Khayyam <i class="fas fa-angle-down iconM"></i></h3>
@@ -21,6 +21,13 @@ func webtermHome(tabs []*WebTermTab) http.HandlerFunc {
 				fmt.Fprintln(w, `<li class="tab" id="`+tab.id+`Btn" onClick="`+onClick+`">`)
 				fmt.Fprintln(w, `<i class="fas fa-spinner fa-pulse"></i>`)
 				fmt.Fprintln(w, `<span>`+tab.title+`</span>`)
+				fmt.Fprintln(w, `<div>`)
+				for _, action := range tab.actions {
+					fmt.Fprintln(w, `<a href="#" onClick="sendToBackend('`+tab.id+"','"+action.id+`');return false;">`)
+					fmt.Fprintln(w, `<i class="fas fa-`+action.icon+`"></i>`)
+					fmt.Fprintln(w, `</a`)
+				}
+				fmt.Fprintln(w, `</div>`)
 				fmt.Fprintln(w, `</li>`)
 			}
 			fmt.Fprintln(w, ` </ul>
@@ -59,14 +66,7 @@ func webtermHome(tabs []*WebTermTab) http.HandlerFunc {
 		wReloadTab := func() {
 			fmt.Fprintln(w, `		  function reloadTab(tabId) {
 					   const frame = document.getElementById(tabId);
-						 const parent = frame.parentNode
-						 const id = frame.getAttribute('id')
-						 const src = frame.getAttribute('src')
-						 parent.removeChild(frame);
-						 const newFrame = document.createElement('iframe');
-						 newFrame.setAttribute('id', id);
-						 newFrame.setAttribute('src', src);
-						 parent.appendChild(newFrame);
+						 frame.contentWindow.location.reload(true);
 				}`)
 		}
 
@@ -80,7 +80,12 @@ func webtermHome(tabs []*WebTermTab) http.HandlerFunc {
 					} else if (action === 'reloadTab') {
 					  reloadTab(tabid);
 					}
-			});`)
+			});
+			
+			function sendToBackend(tabid, actionId) {
+				socket.send(tabid+'\v'+actionId+'\n');
+			}
+			`)
 		}
 
 		wHTML := func() {
@@ -105,15 +110,15 @@ func webtermHome(tabs []*WebTermTab) http.HandlerFunc {
 						overflow: hidden;
 					}
 					#app {
-						display: flex;			
-						flex-direction: rows;
+						display: grid;			
+						grid-template-columns: 400px 1fr;
 						overflow: hidden;
 						width: 100%;
 						height: 100%;
 						background-color: black;
 					}
 			
-					.tabs {
+					.side {
 						padding: 50px;
 					}
 					
@@ -188,11 +193,7 @@ func webtermHome(tabs []*WebTermTab) http.HandlerFunc {
 						cursor: pointer;
 					}
 			
-					.frame {
-						flex-grow: 1;
-					}
-
-					.frame iframe {
+					.frames iframe {
 						position: relative;
 						border: 0px;
 						top: 0px;
@@ -200,6 +201,14 @@ func webtermHome(tabs []*WebTermTab) http.HandlerFunc {
 						width: 100%;
 						height: 100%;
 					}
+
+					.tab {
+						display: flex;
+					}
+
+					.tab span {
+            flex-grow: 1;
+					}					
 				</style>
 				<script>
 					function openframe(id) {
@@ -216,7 +225,7 @@ func webtermHome(tabs []*WebTermTab) http.HandlerFunc {
 			<body>
 			<div id="app">`)
 			wTabsContainer()
-			fmt.Fprint(w, `<div class="frame">`)
+			fmt.Fprint(w, `<div class="frames">`)
 			for _, tab := range tabs {
 				if tab.staticFolder == "" {
 					fmt.Fprint(w, `<iframe id="`+tab.id+`" src="/_tab?q=`+tab.path+`" />`)
