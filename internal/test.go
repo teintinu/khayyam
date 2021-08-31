@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os/exec"
 	"path"
+	"regexp"
 )
 
 type TestOptions struct {
@@ -34,3 +35,8 @@ func CreateJestCommand(repo *Repository, opts TestOptions) *exec.Cmd {
 	jestCmd := exec.Command(bin, args...)
 	return jestCmd
 }
+
+var RegExpJestRunStart = regexp.MustCompile(`^\s+jestRunStart\s+$`)
+
+// jestRunComplete count=0 failed=0
+var RegExpJestRunComplete = regexp.MustCompile(`^\s+jestRunComplete\s+count=(\d+)\s+failed=(\d+)\s+$`)

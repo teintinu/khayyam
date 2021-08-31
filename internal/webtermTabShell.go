@@ -94,22 +94,6 @@ func (webterm *WebTerm) AddShell(
 	return tab
 }
 
-func (tab *WebTermTab) consoleOutput(line string) {
-	// line = strings.ReplaceAll(line, "\r", "CR")
-	if tab.ws != nil {
-		if _, err := tab.ws.Write(append([]byte(line), linefeedDelimiter)); err != nil {
-			tab.ws = nil
-		}
-	}
-	tab.processConsoleOutput(line, tab.routines)
-	var limit = len(tab.lastConsoleOutputLines) - 100
-	if limit < 0 {
-		limit = 0
-	}
-	b := append(tab.lastConsoleOutputLines, line)[limit:]
-	tab.lastConsoleOutputLines = b
-}
-
 func (tab *WebTermTab) Pty(
 	webterm *WebTerm,
 	getCommand func() (*exec.Cmd, error),
@@ -136,7 +120,22 @@ func (tab *WebTermTab) Pty(
 		}
 		tab.consoleOutput(line)
 	}
+}
 
+func (tab *WebTermTab) consoleOutput(line string) {
+	print(line)
+	if tab.ws != nil {
+		if _, err := tab.ws.Write(append([]byte(line), linefeedDelimiter)); err != nil {
+			tab.ws = nil
+		}
+	}
+	tab.processConsoleOutput(line, tab.routines)
+	var limit = len(tab.lastConsoleOutputLines) - 100
+	if limit < 0 {
+		limit = 0
+	}
+	b := append(tab.lastConsoleOutputLines, line)[limit:]
+	tab.lastConsoleOutputLines = b
 }
 
 func (tab *WebTermTab) tabHandler(
@@ -151,7 +150,7 @@ func (tab *WebTermTab) tabHandler(
 			ws.Write(append([]byte(line), linefeedDelimiter))
 		}
 		if !tab.readonly {
-			io.Copy(ws, tab.pty)
+			io.Copy(tab.pty, ws)
 		}
 
 	}))

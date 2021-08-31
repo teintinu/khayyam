@@ -49,25 +49,27 @@ func devTestApps(repo *Repository, wg *sync.WaitGroup, webterm *WebTerm) {
 
 	processConsoleOutput := func(lineWithColors string, wtts *WebTermTabRoutines) {
 		// println(strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(lineWithColors, "\b", "BS"), "\r", "CR"), "\x1b", "ESC"))
-		println("a:", strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(lineWithColors, "\b", "BS"), "\r", "CR"), "\x1b", "ESC"))
+		// println("a:", strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(lineWithColors, "\b", "BS"), "\r", "CR"), "\x1b", "ESC"))
 		line := RegRemoveANSI.ReplaceAllString(lineWithColors, "")
-		println("b:", line)
-		testResult := RegExpJestSummary.FindStringSubmatch(line)
+		testResult := RegExpJestRunComplete.FindStringSubmatch(line)
+		// fmt.Println("b:", line)
+		// fmt.Println()
+		// fmt.Println()
+		// fmt.Println(testResult)
 
 		if len(testResult) > 0 {
-			failed := testResult[1]
-			passed := testResult[2]
-			total := testResult[3]
-			if failed == "" {
-				wtts.setSuccess(line, failed, passed, total)
+			total := testResult[1]
+			failed := testResult[2]
+			if total == "0" {
+				wtts.setUnknow()
+			} else if failed == "0" {
+				wtts.setSuccess(line, total, failed)
 			} else {
-				wtts.setError(line, failed, passed, total)
+				wtts.setError(line, total, failed)
 			}
 		} else if strings.Contains(line, "No tests found related to files changed since last commit.") {
 			wtts.setUnknow()
-		} else if strings.Contains(line, "Determining test suites to run") {
-			wtts.setRunning()
-		} else if RegExpJestRunning.MatchString(line) {
+		} else if RegExpJestRunStart.MatchString(line) {
 			wtts.setRunning()
 		}
 	}

@@ -276,18 +276,18 @@ func configureJestCustomReport(repo *Repository) error {
 module.exports = class CustomReport {
   onRunStart () {
     this.testcount = 0
-    this.errorcount = 0
+    this.failcount = 0
     console.log('')
-    console.log('jest-runStart')
+    console.log('\njestRunStart\n')
   }
 
   onRunComplete () {
-    console.log('jest.runComplete count=' + this.testcount + ' errors=' + this.errorcount)
+    console.log('\njestRunComplete count=' + this.testcount + ' failed=' + this.failcount +"\n")
   }
 
   onTestResult (test, testResult) {
-    this.testcount++
-    this.errorcount += testResult.numFailingTests
+		this.testcount++
+    this.failcount += testResult.numFailingTests
   }
 }
 `

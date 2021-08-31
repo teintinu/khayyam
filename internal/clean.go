@@ -6,8 +6,12 @@ import (
 )
 
 func CleanRepository(repo *Repository) error {
+	err := cleanFolder(repo, "")
+	if err != nil {
+		return err
+	}
 	for _, pkg := range repo.Packages {
-		err := CleanPackage(repo, pkg)
+		err := cleanFolder(repo, pkg.Folder)
 		if err != nil {
 			return err
 		}
@@ -15,21 +19,25 @@ func CleanRepository(repo *Repository) error {
 	return nil
 }
 
-func CleanPackage(repo *Repository, pkg *Package) error {
-	folders := []string{
+func cleanFolder(repo *Repository, parentfolder string) error {
+	subfolders := []string{
 		"dist",
-		"package*.json",
-		"yarn*.json",
+		"node_modules",
+		"package.json",
+		"package-lock.json",
 		"yarn.lock",
-		"tsconfig*.json",
-		".nvm.rc",
+		"yarn-error.log",
+		"tsconfig.json",
+		"tsconfig.settings.json",
+		"tsconfig.build.json",
+		"tsconfig.test.json",
 		".vscode",
 		".jest",
 		"jest.config.js",
 		".eslintrc.json",
 	}
-	for _, folder := range folders {
-		distDir := path.Join(repo.RootDir, pkg.Folder, folder)
+	for _, subfolder := range subfolders {
+		distDir := path.Join(repo.RootDir, parentfolder, subfolder)
 		Logger.Debug("clearing ", distDir)
 		err := os.RemoveAll(distDir)
 		if err != nil {
