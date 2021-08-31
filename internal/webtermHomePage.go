@@ -56,6 +56,20 @@ func webtermHome(tabs []*WebTermTab) http.HandlerFunc {
 				}`)
 		}
 
+		wReloadTab := func() {
+			fmt.Fprintln(w, `		  function reloadTab(tabId) {
+					   const frame = document.getElementById(tabId);
+						 const parent = frame.parentNode
+						 const id = frame.getAttribute('id')
+						 const src = frame.getAttribute('src')
+						 parent.removeChild(frame);
+						 const newFrame = document.createElement('iframe');
+						 newFrame.setAttribute('id', id);
+						 newFrame.setAttribute('src', src);
+						 parent.appendChild(newFrame);
+				}`)
+		}
+
 		wCommStatus := func() {
 			fmt.Fprintln(w, `		var socket = new WebSocket('ws://'+document.location.host+"/_comm", 'echo');			
 	
@@ -63,6 +77,8 @@ func webtermHome(tabs []*WebTermTab) http.HandlerFunc {
 				  const [tabid, action, ...args] = evt.data.replace('\n', '').split('\v');
 					if (action === 'refreshState') {
 					  refreshState(tabid, ...args);
+					} else if (action === 'reloadTab') {
+					  reloadTab(tabid);
 					}
 			});`)
 		}
@@ -193,6 +209,7 @@ func webtermHome(tabs []*WebTermTab) http.HandlerFunc {
 						})
 					}`)
 			wRefreshState()
+			wReloadTab()
 			wCommStatus()
 			fmt.Fprint(w, `		</script>
 			</head>
@@ -201,7 +218,11 @@ func webtermHome(tabs []*WebTermTab) http.HandlerFunc {
 			wTabsContainer()
 			fmt.Fprint(w, `<div class="frame">`)
 			for _, tab := range tabs {
-				fmt.Fprint(w, `<iframe id="`+tab.path+`" src="/_tab?q=`+tab.path+`" />`)
+				if tab.staticFolder == "" {
+					fmt.Fprint(w, `<iframe id="`+tab.id+`" src="/_tab?q=`+tab.path+`" />`)
+				} else {
+					fmt.Fprint(w, `<iframe id="`+tab.id+`" src="`+tab.path+`" />`)
+				}
 			}
 			fmt.Fprint(w, `</div>`)
 			fmt.Fprint(w, `</div></body></html>`)

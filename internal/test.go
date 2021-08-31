@@ -40,3 +40,5 @@ var RegExpJestRunStart = regexp.MustCompile(`^\s+jestRunStart\s+$`)
 
 // jestRunComplete count=0 failed=0
 var RegExpJestRunComplete = regexp.MustCompile(`^\s+jestRunComplete\s+count=(\d+)\s+failed=(\d+)\s+$`)
+
+var RegExpJestReportCreated = regexp.MustCompile(`reporter is created on`)

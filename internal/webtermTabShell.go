@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"io"
+	"net/http"
 	"os"
 	"os/exec"
 	"strings"
@@ -20,12 +21,13 @@ type WebTermTabAction struct {
 }
 
 type WebTermTab struct {
-	id        string
-	path      string
-	title     string
-	readonly  bool
-	actions   []*WebTermTabAction
-	lastState []string
+	id           string
+	path         string
+	title        string
+	staticFolder string
+	wsIn         bool
+	actions      []*WebTermTabAction
+	lastState    []string
 
 	ws  *websocket.Conn
 	pty *os.File
@@ -37,15 +39,16 @@ type WebTermTab struct {
 }
 
 type WebTermTabRoutines struct {
-	refreshState func()
-	setUnknow    func()
-	setRunning   func()
-	setSuccess   func(...string)
-	setError     func(...string)
+	sendToFrontEnd func(action string, args ...string)
+	refreshState   func()
+	setUnknow      func()
+	setRunning     func()
+	setSuccess     func(...string)
+	setError       func(...string)
 }
 
 func (webterm *WebTerm) AddShell(
-	path string, title string, readonly bool,
+	path string, title string, staticFolder string, wsin bool,
 	getCommand func() (*exec.Cmd, error),
 	actions []*WebTermTabAction,
 	processConsoleOutput func(line string, wtts *WebTermTabRoutines)) *WebTermTab {
@@ -57,30 +60,34 @@ func (webterm *WebTerm) AddShell(
 		id:                   tabid,
 		path:                 path,
 		title:                title,
-		readonly:             readonly,
+		staticFolder:         staticFolder,
+		wsIn:                 wsin,
 		routines:             routines,
 		processConsoleOutput: processConsoleOutput,
 	}
+	routines.sendToFrontEnd = func(action string, args ...string) {
+		webterm.sendToFrontEnd(tabid, action, args...)
+	}
 	routines.refreshState = func() {
-		webterm.sendToFrontEnd(tab.lastState...)
+		webterm.sendToFrontEnd(tabid, "refreshState", tab.lastState...)
 	}
 
 	routines.setUnknow = func() {
-		tab.lastState = []string{tabid, "refreshState", "unknow"}
+		tab.lastState = []string{"unknow"}
 		routines.refreshState()
 	}
 	routines.setRunning = func() {
-		tab.lastState = []string{tabid, "refreshState", "running"}
+		tab.lastState = []string{"running"}
 		routines.refreshState()
 	}
 	routines.setSuccess = func(args ...string) {
-		n := []string{tabid, "refreshState", "success"}
+		n := []string{"success"}
 		n = append(n, args...)
 		tab.lastState = n
 		routines.refreshState()
 	}
 	routines.setError = func(args ...string) {
-		n := []string{tabid, "refreshState", "error"}
+		n := []string{"error"}
 		n = append(n, args...)
 		tab.lastState = n
 		routines.refreshState()
@@ -88,7 +95,11 @@ func (webterm *WebTerm) AddShell(
 
 	webterm.tabs = append(webterm.tabs, tab)
 
-	tab.tabHandler(webterm)
+	if staticFolder == "" {
+		tab.tabHandlerForWS(webterm)
+	} else {
+		tab.tabHandlerForStaticFolder(webterm, staticFolder)
+	}
 	go tab.Pty(webterm, getCommand)
 
 	return tab
@@ -138,21 +149,30 @@ func (tab *WebTermTab) consoleOutput(line string) {
 	tab.lastConsoleOutputLines = b
 }
 
-func (tab *WebTermTab) tabHandler(
+func (tab *WebTermTab) tabHandlerForWS(
 	webterm *WebTerm,
 ) {
 
-	webterm.Handle(tab.path, websocket.Handler(func(ws *websocket.Conn) {
+	webterm.Handle(tab.path, "websocket for "+tab.title, websocket.Handler(func(ws *websocket.Conn) {
 
 		tab.ws = ws
 
 		for _, line := range tab.lastConsoleOutputLines {
 			ws.Write(append([]byte(line), linefeedDelimiter))
 		}
-		if !tab.readonly {
+		if tab.wsIn {
 			io.Copy(tab.pty, ws)
 		}
 
 	}))
 
+}
+
+func (tab *WebTermTab) tabHandlerForStaticFolder(
+	webterm *WebTerm,
+	staticFolder string,
+) {
+	fileServer := http.FileServer(http.Dir(staticFolder))
+	webterm.Handle(tab.path, "fileserver "+staticFolder,
+		http.StripPrefix(tab.path, fileServer))
 }

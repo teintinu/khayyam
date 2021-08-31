@@ -3,6 +3,7 @@ package internal
 import (
 	"os"
 	"os/exec"
+	"path"
 	"strings"
 	"sync"
 
@@ -27,6 +28,8 @@ func Dev(repo *Repository) error {
 }
 
 func devTestApps(repo *Repository, wg *sync.WaitGroup, webterm *WebTerm) {
+
+	jestReport := path.Join(repo.RootDir, ".jest/html-report")
 
 	getCommand := func() (*exec.Cmd, error) {
 		return CreateJestCommand(repo, TestOptions{
@@ -71,9 +74,11 @@ func devTestApps(repo *Repository, wg *sync.WaitGroup, webterm *WebTerm) {
 			wtts.setUnknow()
 		} else if RegExpJestRunStart.MatchString(line) {
 			wtts.setRunning()
+		} else if RegExpJestReportCreated.MatchString(line) {
+			wtts.sendToFrontEnd("reloadTab")
 		}
 	}
-	webterm.AddShell("/jest", "Tests", false, getCommand, actions, processConsoleOutput)
+	webterm.AddShell("/jest", "Tests", jestReport, true, getCommand, actions, processConsoleOutput)
 }
 
 func devRunExecutables(repo *Repository, wg *sync.WaitGroup, webterm *WebTerm) {
