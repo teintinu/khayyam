@@ -18,7 +18,8 @@ func webtermHome(tabs []*WebTermTab) http.HandlerFunc {
 				<ul>`)
 			for _, tab := range tabs {
 				onClick := `openframe('` + tab.path + `')`
-				fmt.Fprintln(w, `<li class="tab" id="`+tab.id+`Btn" onClick="`+onClick+`">`)
+				fmt.Fprintln(w, `<li id="`+tab.id+`Btn" onClick="`+onClick+`">`)
+				fmt.Fprintln(w, `<div class="tab">`)
 				fmt.Fprintln(w, `<i class="fas fa-spinner fa-pulse"></i>`)
 				fmt.Fprintln(w, `<span>`+tab.title+`</span>`)
 				fmt.Fprintln(w, `<div>`)
@@ -27,6 +28,7 @@ func webtermHome(tabs []*WebTermTab) http.HandlerFunc {
 					fmt.Fprintln(w, `<i class="fas fa-`+action.icon+`"></i>`)
 					fmt.Fprintln(w, `</a`)
 				}
+				fmt.Fprintln(w, `</div>`)
 				fmt.Fprintln(w, `</div>`)
 				fmt.Fprintln(w, `</li>`)
 			}
@@ -106,15 +108,16 @@ func webtermHome(tabs []*WebTermTab) http.HandlerFunc {
 					}
 					body {
 						display: flex;
-						flex-direction: columns;
+						flex-direction: column;
 						overflow: hidden;
+						width: 100%;
+						height: 100%;
 					}
 					#app {
 						display: grid;			
 						grid-template-columns: 400px 1fr;
 						overflow: hidden;
-						width: 100%;
-						height: 100%;
+						flex-grow: 1;
 						background-color: black;
 					}
 			
@@ -207,8 +210,12 @@ func webtermHome(tabs []*WebTermTab) http.HandlerFunc {
 					}
 
 					.tab span {
-            flex-grow: 1;
+						flex-grow: 1;
+						padding-left: 8px;
 					}					
+					.tab a {
+            color: white;
+					}
 				</style>
 				<script>
 					function openframe(id) {

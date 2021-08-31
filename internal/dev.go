@@ -43,6 +43,7 @@ func devTestApps(repo *Repository, wg *sync.WaitGroup, webterm *WebTerm) {
 		title: "Run All Tests",
 		icon:  "play",
 		action: func(pty *os.File, args ...string) {
+			println("executeAllTests-cmd")
 			pty.WriteString("a")
 		},
 	}

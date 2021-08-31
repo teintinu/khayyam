@@ -20,7 +20,7 @@ func webtermComm(webterm *WebTerm) websocket.Handler {
 		for !webterm.IsClosed() {
 			s, err := wsFromFrontend.ReadString(10)
 			if err == nil {
-				sa := strings.Split(s, "\v")
+				sa := strings.Split(strings.Replace(s, "\n", "", 1), "\v")
 				go webterm.processCommand(sa)
 			}
 		}
