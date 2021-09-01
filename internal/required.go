@@ -6,7 +6,6 @@ var requiredWorkspaceDevDependencies = map[string]string{
 	"typescript":                       "^4.3.5",
 	"jest":                             "^27.0.6",
 	"@types/jest":                      "^26.0.24",
-	"jest-html-reporters":              "^2.1.6",
 	"ts-jest":                          "^27.0.3",
 	"esbuild":                          "^0.12.15",
 	"esbuild-jest":                     "^0.5.0",

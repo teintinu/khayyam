@@ -237,14 +237,6 @@ module.exports = {
       }
     ]
   },
-  reporters: [
-    './.jest/jest.report',
-    ['jest-html-reporters', {
-      publicPath: './.jest/html-report',
-      filename: 'index.html',
-      expand: true
-    }]
-  ],
   coverageDirectory: './.jest/coverage/',
   coverageReporters: [
     'text',

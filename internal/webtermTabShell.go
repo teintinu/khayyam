@@ -135,7 +135,6 @@ func (tab *WebTermTab) Pty(
 }
 
 func (tab *WebTermTab) consoleOutput(line string) {
-	print(line)
 	if tab.ws != nil {
 		if _, err := tab.ws.Write(append([]byte(line), linefeedDelimiter)); err != nil {
 			tab.ws = nil

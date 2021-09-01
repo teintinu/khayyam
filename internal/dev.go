@@ -3,9 +3,9 @@ package internal
 import (
 	"os"
 	"os/exec"
-	"path"
 	"strings"
 	"sync"
+	"time"
 
 	"github.com/evanw/esbuild/pkg/api"
 )
@@ -17,9 +17,9 @@ func Dev(repo *Repository) error {
 
 	webterm := NewWebTerm()
 
-	wg.Add(2)
+	wg.Add(1)
+	devRunExecutables(repo, wg, webterm)
 	devTestApps(repo, wg, webterm)
-	// devRunExecutables(repo, wg, webterm)
 
 	webterm.Start(DevPort)
 	wg.Wait()
@@ -29,13 +29,15 @@ func Dev(repo *Repository) error {
 
 func devTestApps(repo *Repository, wg *sync.WaitGroup, webterm *WebTerm) {
 
-	jestReport := path.Join(repo.RootDir, ".jest/html-report")
+	jestReport := ""
+	total := ""
+	failed := ""
 
 	getCommand := func() (*exec.Cmd, error) {
 		return CreateJestCommand(repo, TestOptions{
 			Watch:    true,
 			Coverage: false,
-			Colors:   false,
+			Colors:   true,
 		}), nil
 	}
 	executeAllTests := &WebTermTabAction{
@@ -43,7 +45,6 @@ func devTestApps(repo *Repository, wg *sync.WaitGroup, webterm *WebTerm) {
 		title: "Run All Tests",
 		icon:  "play",
 		action: func(pty *os.File, args ...string) {
-			println("executeAllTests-cmd")
 			pty.WriteString("a")
 		},
 	}
@@ -52,38 +53,47 @@ func devTestApps(repo *Repository, wg *sync.WaitGroup, webterm *WebTerm) {
 	}
 
 	processConsoleOutput := func(lineWithColors string, wtts *WebTermTabRoutines) {
+		if strings.Contains(lineWithColors, "\x1b[K") {
+			wtts.setRunning()
+			return
+		}
 		// println(strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(lineWithColors, "\b", "BS"), "\r", "CR"), "\x1b", "ESC"))
 		// println("a:", strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(lineWithColors, "\b", "BS"), "\r", "CR"), "\x1b", "ESC"))
 		line := RegRemoveANSI.ReplaceAllString(lineWithColors, "")
 		testResult := RegExpJestRunComplete.FindStringSubmatch(line)
-		// fmt.Println("b:", line)
-		// fmt.Println()
-		// fmt.Println()
-		// fmt.Println(testResult)
+		//fmt.Println()
+		//fmt.Println("b:", line)
+		//fmt.Println()
+		//fmt.Println(testResult)
 
 		if len(testResult) > 0 {
-			total := testResult[1]
-			failed := testResult[2]
+			total = testResult[3]
+			failed = testResult[1]
+		} else if strings.Contains(line, "Ran all test suites") {
 			if total == "0" {
 				wtts.setUnknow()
-			} else if failed == "0" {
+			} else if failed == "" {
 				wtts.setSuccess(line, total, failed)
 			} else {
 				wtts.setError(line, total, failed)
 			}
-		} else if strings.Contains(line, "No tests found related to files changed since last commit.") {
-			wtts.setUnknow()
-		} else if RegExpJestRunStart.MatchString(line) {
-			wtts.setRunning()
 		} else if RegExpJestReportCreated.MatchString(line) {
 			wtts.sendToFrontEnd("reloadTab")
 		}
 	}
 	webterm.AddShell("/jest", "Tests", jestReport, true, getCommand, actions, processConsoleOutput)
+
+	go func() {
+		for !webterm.IsClosed() {
+			time.Sleep(time.Second)
+		}
+		wg.Done()
+	}()
 }
 
 func devRunExecutables(repo *Repository, wg *sync.WaitGroup, webterm *WebTerm) {
 	for _, pkg := range repo.Packages {
+		wg.Add(1)
 		BundleWithEsbuild(repo, pkg, &BuildOpts{
 			Target: api.ESNext,
 			Minify: false,

@@ -61,7 +61,6 @@ func (webterm *WebTerm) Start(port int32) {
 }
 
 func (webterm *WebTerm) processCommand(command []string) {
-	fmt.Println(command)
 	tabId := command[0]
 	actionId := command[1]
 	if tabId == "*" {
@@ -71,9 +70,7 @@ func (webterm *WebTerm) processCommand(command []string) {
 	} else {
 		for _, tab := range webterm.tabs {
 			if tab.id == tabId {
-				println("tab", tab.id, "==", tabId)
 				for _, ac := range tab.actions {
-					println("action", ac.id, "==", actionId)
 					if ac.id == actionId {
 						ac.action(tab.pty, command[2:]...)
 					}

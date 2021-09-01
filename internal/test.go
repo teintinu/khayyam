@@ -36,9 +36,8 @@ func CreateJestCommand(repo *Repository, opts TestOptions) *exec.Cmd {
 	return jestCmd
 }
 
-var RegExpJestRunStart = regexp.MustCompile(`^\s+jestRunStart\s+$`)
-
-// jestRunComplete count=0 failed=0
-var RegExpJestRunComplete = regexp.MustCompile(`^\s+jestRunComplete\s+count=(\d+)\s+failed=(\d+)\s+$`)
+// Tests:       5 passed, 5 total
+// Tests:       1 failed, 4 passed, 5 total
+var RegExpJestRunComplete = regexp.MustCompile(`^\s*Tests:\s+(?:(\d+)\s+failed,)?\s*(?:(\d+).+passed,)?\s*(\d+)\s+total\s*$`)
 
 var RegExpJestReportCreated = regexp.MustCompile(`reporter is created on`)
