@@ -21,6 +21,7 @@ type WebTermTabAction struct {
 }
 
 type WebTermTab struct {
+	webterm      *WebTerm
 	id           string
 	path         string
 	title        string
@@ -43,8 +44,8 @@ type WebTermTabRoutines struct {
 	refreshState   func()
 	setUnknow      func()
 	setRunning     func()
-	setSuccess     func(...string)
-	setError       func(...string)
+	setSuccess     func(string)
+	setError       func(string)
 }
 
 func (webterm *WebTerm) AddShell(
@@ -57,6 +58,7 @@ func (webterm *WebTerm) AddShell(
 
 	routines := &WebTermTabRoutines{}
 	tab := &WebTermTab{
+		webterm:              webterm,
 		id:                   tabid,
 		path:                 path,
 		title:                title,
@@ -81,15 +83,15 @@ func (webterm *WebTerm) AddShell(
 		tab.lastState = []string{"running"}
 		routines.refreshState()
 	}
-	routines.setSuccess = func(args ...string) {
+	routines.setSuccess = func(msg string) {
 		n := []string{"success"}
-		n = append(n, args...)
+		n = append(n, msg)
 		tab.lastState = n
 		routines.refreshState()
 	}
-	routines.setError = func(args ...string) {
+	routines.setError = func(msg string) {
 		n := []string{"error"}
-		n = append(n, args...)
+		n = append(n, msg)
 		tab.lastState = n
 		routines.refreshState()
 	}
@@ -101,12 +103,14 @@ func (webterm *WebTerm) AddShell(
 	} else {
 		tab.tabHandlerForStaticFolder(webterm, staticFolder)
 	}
-	go tab.Pty(webterm, getCommand)
+	if getCommand != nil {
+		go tab.startPty(webterm, getCommand)
+	}
 
 	return tab
 }
 
-func (tab *WebTermTab) Pty(
+func (tab *WebTermTab) startPty(
 	webterm *WebTerm,
 	getCommand func() (*exec.Cmd, error),
 ) {
@@ -117,17 +121,27 @@ func (tab *WebTermTab) Pty(
 		return
 	}
 
-	tab.pty, err = pty.Start(cmd)
+	tab.runInPty(cmd)
+}
+
+func (tab *WebTermTab) runInPty(cmd *exec.Cmd) {
+	if tab.pty != nil {
+		tab.consoleOutput("duplicated pty")
+		return
+	}
+	pty, err := pty.Start(cmd)
 	if err != nil {
 		tab.consoleOutput(fmt.Sprintf("Error creating pty: %s\r\n", err))
 		return
 	}
+	tab.pty = pty
 
 	cmdConsole := bufio.NewReader(tab.pty)
-	for !webterm.IsClosed() {
+	for !tab.webterm.IsClosed() {
 		line, err := cmdConsole.ReadString(linefeedDelimiter)
 		if err != nil {
 			tab.consoleOutput(fmt.Sprintf("Error reading from pty: %s\r\n", err))
+			tab.pty = nil
 			return
 		}
 		tab.consoleOutput(line)
@@ -147,6 +161,7 @@ func (tab *WebTermTab) consoleOutput(line string) {
 	}
 	b := append(tab.lastConsoleOutputLines, line)[limit:]
 	tab.lastConsoleOutputLines = b
+	Logger.Debug("consoleOutput ", tab.title, ":", line)
 }
 
 func (tab *WebTermTab) tabHandlerForWS(

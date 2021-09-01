@@ -63,6 +63,7 @@ func buildAndRun(repo *Repository, pkg *Package, opts *RunOpts) (*BuildJSResult,
 			Target: api.ES2015,
 			Minify: false,
 			Mode:   mode,
+			tab:    nil,
 		},
 	)
 }

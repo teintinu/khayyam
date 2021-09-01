@@ -27,6 +27,7 @@ type BuildOpts struct {
 	Target api.Target
 	Minify bool
 	Mode   EsbuildMode
+	tab    *WebTermTab
 }
 
 func BundleWithEsbuild(repo *Repository, pkg *Package, opts *BuildOpts) (*BuildJSResult, error) {
@@ -46,13 +47,32 @@ func BundleWithEsbuild(repo *Repository, pkg *Package, opts *BuildOpts) (*BuildJ
 			OnRebuild: func(result api.BuildResult) {
 				if len(result.Errors) > 0 {
 					for _, msg := range result.Errors {
-						fmt.Println(msg.Text)
+						if opts.tab == nil {
+							fmt.Println(msg.Text)
+						} else {
+							opts.tab.consoleOutput(msg.Text)
+						}
 					}
-					fmt.Printf("%v has %v errors", pkg.Name, len(result.Errors))
+					if opts.tab == nil {
+						fmt.Printf("%v has %v errors", pkg.Name, len(result.Errors))
+					} else {
+						opts.tab.routines.setError(fmt.Sprintf("%v errors", len(result.Errors)))
+						opts.tab.consoleOutput(fmt.Sprintf("%v has %v errors", pkg.Name, len(result.Errors)))
+					}
 				} else {
-					cmd, err = run(repo, pkg, cmd)
+					cmd, err = run(repo, pkg, opts.tab, cmd)
 					if err != nil {
-						fmt.Println(err)
+						if opts.tab == nil {
+							fmt.Println(err)
+							cmd = nil
+						} else {
+							opts.tab.routines.setError(fmt.Sprintf("%v", err))
+							opts.tab.consoleOutput(fmt.Sprintf("%v", err))
+						}
+					} else {
+						if opts.tab != nil {
+							opts.tab.routines.setSuccess("")
+						}
 					}
 				}
 			},
@@ -89,9 +109,15 @@ func BundleWithEsbuild(repo *Repository, pkg *Package, opts *BuildOpts) (*BuildJ
 		esbuildResult := api.Build(buildOpts)
 		Logger.Debug("esbuild", buildOpts, esbuildResult)
 		if opts.Mode != BuildOnly {
-			cmd, err = run(repo, pkg, cmd)
+			cmd, err = run(repo, pkg, opts.tab, cmd)
 			if err != nil {
-				fmt.Println(err)
+				if opts.tab == nil {
+					fmt.Println(err)
+					cmd = nil
+				} else {
+					opts.tab.routines.setError(fmt.Sprintf("%v", err))
+					opts.tab.consoleOutput(fmt.Sprintf("%v", err))
+				}
 			}
 		}
 		return &BuildJSResult{
@@ -111,16 +137,20 @@ func BundleWithEsbuild(repo *Repository, pkg *Package, opts *BuildOpts) (*BuildJ
 	}
 }
 
-func run(repo *Repository, pkg *Package, old *exec.Cmd) (*exec.Cmd, error) {
+func run(repo *Repository, pkg *Package, tab *WebTermTab, old *exec.Cmd) (*exec.Cmd, error) {
 	if old != nil {
 		old.Process.Kill()
 	}
 	node := exec.Command("node", pkg.Bin)
-	node.Stdin = os.Stdin
-	node.Stdout = os.Stdout
-	node.Stderr = os.Stderr
-	if err := node.Run(); err != nil {
-		return nil, err
+	if tab == nil {
+		node.Stdin = os.Stdin
+		node.Stdout = os.Stdout
+		node.Stderr = os.Stderr
+		if err := node.Run(); err != nil {
+			return nil, err
+		}
+	} else {
+		go tab.runInPty(node)
 	}
 	return node, nil
 }
