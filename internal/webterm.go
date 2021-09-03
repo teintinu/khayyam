@@ -63,6 +63,7 @@ func (webterm *WebTerm) Start(port int32) {
 func (webterm *WebTerm) processCommand(command []string) {
 	tabId := command[0]
 	actionId := command[1]
+	Logger.Debug("<" + strings.Join(command, " "))
 	if tabId == "*" {
 		if actionId == "exit" {
 			os.Exit(0)
@@ -87,6 +88,9 @@ func (webterm *WebTerm) sendToFrontEnd(tabId string, action string, args ...stri
 		if err != nil {
 			webterm.toFrontend = nil
 		}
+	}
+	if Logger.logging >= int(LoggingDebug) {
+		Logger.Debug(">" + tabId + "." + action + "(" + strings.Join(args, ", ") + ")")
 	}
 }
 

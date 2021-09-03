@@ -8,7 +8,7 @@ import (
 
 func init() {
 	rootCmd.AddCommand(buildCmd)
-	internal.Logger.FlagDeclare(buildCmd)
+	internal.Logger.LogFlagDeclare(buildCmd)
 }
 
 var buildCmd = &cobra.Command{
@@ -17,7 +17,7 @@ var buildCmd = &cobra.Command{
 	Long:  "Builds all packages on workspace",
 	Args:  cobra.RangeArgs(0, 0),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		internal.Logger.FlagInit()
+		internal.Logger.LogFlagInit()
 		repo := mustLoadRepository(true)
 		if err := internal.CheckEngines(repo); err != nil {
 			return err

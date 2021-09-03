@@ -9,7 +9,7 @@ import (
 
 func init() {
 	rootCmd.AddCommand(runCmd)
-	internal.Logger.FlagDeclare(runCmd)
+	internal.Logger.LogFlagDeclare(runCmd)
 }
 
 var runCmd = &cobra.Command{
@@ -20,7 +20,7 @@ var runCmd = &cobra.Command{
 	// DisableFlagsInUseLine: true,
 	// SilenceErrors:         true,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		internal.Logger.FlagInit()
+		internal.Logger.LogFlagInit()
 		repo := mustLoadRepository(true)
 		var packagesToRun []string = []string{}
 

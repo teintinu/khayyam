@@ -9,7 +9,7 @@ var DevOpts = internal.TestOptions{}
 
 func init() {
 	rootCmd.AddCommand(devCmd)
-	internal.Logger.FlagDeclare(devCmd)
+	internal.Logger.LogFlagDeclare(devCmd)
 }
 
 var devCmd = &cobra.Command{
@@ -18,7 +18,7 @@ var devCmd = &cobra.Command{
 	Long:  `Test libraries and run executables in watch mode`,
 	Args:  cobra.RangeArgs(0, 0),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		internal.Logger.FlagInit()
+		internal.Logger.LogFlagInit()
 		repo := mustLoadRepository(true)
 		if err := internal.CheckEngines(repo); err != nil {
 			return err

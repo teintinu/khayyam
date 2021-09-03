@@ -28,12 +28,12 @@ type InternalLogger struct {
 var flagVerbose bool
 var flagQuiet bool
 
-func (logger *InternalLogger) FlagDeclare(cmd *cobra.Command, args ...interface{}) {
+func (logger *InternalLogger) LogFlagDeclare(cmd *cobra.Command, args ...interface{}) {
 	cmd.Flags().BoolVar(&flagVerbose, "verbose", false, "")
 	cmd.Flags().BoolVar(&flagQuiet, "quit", false, "")
 }
 
-func (logger *InternalLogger) FlagInit(args ...interface{}) {
+func (logger *InternalLogger) LogFlagInit(args ...interface{}) {
 	if flagVerbose {
 		logger.logging = int(LoggingDebug)
 	} else if flagQuiet {

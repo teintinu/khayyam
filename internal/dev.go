@@ -56,7 +56,7 @@ func devTestApps(repo *Repository, wg *sync.WaitGroup, webterm *WebTerm) {
 		if strings.Contains(lineWithColors, "\x1b[K") {
 			wtts.setRunning()
 			resultLine = ""
-			total = ""
+			total = "0"
 			failed = ""
 			return
 		}
@@ -74,7 +74,8 @@ func devTestApps(repo *Repository, wg *sync.WaitGroup, webterm *WebTerm) {
 			total = testResult[3]
 			failed = testResult[1]
 		} else if strings.Contains(line, "Ran all test suites") ||
-			strings.Contains(line, "No tests found related to files changed since last commit") {
+			strings.Contains(line, "No tests found related to files changed since last commit") ||
+			strings.Contains(line, "Press Enter to trigger a test run") {
 			if total == "0" {
 				wtts.setUnknow()
 			} else if failed == "" {

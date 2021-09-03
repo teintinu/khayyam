@@ -117,7 +117,7 @@ func (tab *WebTermTab) startPty(
 
 	cmd, err := getCommand()
 	if err != nil {
-		tab.consoleOutput(fmt.Sprintf("Error getting pty command: %s\r\n", err))
+		tab.consoleOutput(fmt.Sprintf("Error getting pty on tab %s command: %s\r\n", tab.title, err))
 		return
 	}
 
@@ -126,12 +126,12 @@ func (tab *WebTermTab) startPty(
 
 func (tab *WebTermTab) runInPty(cmd *exec.Cmd) {
 	if tab.pty != nil {
-		tab.consoleOutput("duplicated pty")
+		tab.consoleOutput("duplicated pty tab: " + tab.title)
 		return
 	}
 	pty, err := pty.Start(cmd)
 	if err != nil {
-		tab.consoleOutput(fmt.Sprintf("Error creating pty: %s\r\n", err))
+		tab.consoleOutput(fmt.Sprintf("Error creating pty on tab %s : %s\r\n", tab.title, err))
 		return
 	}
 	tab.pty = pty
@@ -140,7 +140,7 @@ func (tab *WebTermTab) runInPty(cmd *exec.Cmd) {
 	for !tab.webterm.IsClosed() {
 		line, err := cmdConsole.ReadString(linefeedDelimiter)
 		if err != nil {
-			tab.consoleOutput(fmt.Sprintf("Error reading from pty: %s\r\n", err))
+			tab.consoleOutput(fmt.Sprintf("Error reading from pty tab %s: %s\r\n", tab.title, err))
 			tab.pty = nil
 			return
 		}
@@ -161,7 +161,9 @@ func (tab *WebTermTab) consoleOutput(line string) {
 	}
 	b := append(tab.lastConsoleOutputLines, line)[limit:]
 	tab.lastConsoleOutputLines = b
-	Logger.Debug("consoleOutput ", tab.title, ":", line)
+	if Logger.logging >= int(LoggingDebug) {
+		Logger.Debug(tab.title+":", strings.TrimSpace(RegRemoveANSI.ReplaceAllString(line, "")))
+	}
 }
 
 func (tab *WebTermTab) tabHandlerForWS(
