@@ -29,7 +29,7 @@
       "mode": "auto",
       "program": "${workspaceFolder}/main.go",
       "cwd": "${workspaceFolder}/examples/simple-workspace",
-      "args": ["dev"]
+      "args": ["dev", "--verbose"]
     },
     {
       "name": "simple-workspace(run)",

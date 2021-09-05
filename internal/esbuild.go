@@ -10,76 +10,36 @@ import (
 )
 
 type BuildJSResult struct {
-	Errors   []api.Message
-	Warnings []api.Message
+	Errors   func() []api.Message
+	Warnings func() []api.Message
 	stop     func()
 }
-
-type EsbuildMode uint8
-
-const (
-	BuildOnly EsbuildMode = iota
-	RunOnce
-	WatchAndRun
-)
 
 type BuildOpts struct {
 	Target api.Target
 	Minify bool
-	Mode   EsbuildMode
 	tab    *WebTermTab
 }
 
-func BundleWithEsbuild(repo *Repository, pkg *Package, opts *BuildOpts) (*BuildJSResult, error) {
-
-	pkgRoot := path.Join(repo.RootDir, pkg.Folder)
+func newBuildOpts(repo *Repository, pkg *Package, opts *BuildOpts) (
+	pkgRoot string,
+	entryPoint string,
+	buildOpts api.BuildOptions,
+	err error,
+) {
+	pkgRoot = path.Join(repo.RootDir, pkg.Folder)
 	distDir := path.Join(pkgRoot, "dist")
-	err := os.MkdirAll(distDir, 0755)
+	err = os.MkdirAll(distDir, 0755)
 	if err != nil {
-		return nil, err
+		return
 	}
 
-	var watch *api.WatchMode
-	var cmd *exec.Cmd
-
-	if opts.Mode == WatchAndRun {
-		watch = &api.WatchMode{
-			OnRebuild: func(result api.BuildResult) {
-				if len(result.Errors) > 0 {
-					for _, msg := range result.Errors {
-						if opts.tab == nil {
-							fmt.Println(msg.Text)
-						} else {
-							opts.tab.consoleOutput(msg.Text)
-						}
-					}
-					if opts.tab == nil {
-						fmt.Printf("%v has %v errors", pkg.Name, len(result.Errors))
-					} else {
-						opts.tab.routines.setError(fmt.Sprintf("%v errors", len(result.Errors)))
-						opts.tab.consoleOutput(fmt.Sprintf("%v has %v errors", pkg.Name, len(result.Errors)))
-					}
-				} else {
-					cmd, err = run(repo, pkg, opts.tab, cmd)
-					if err != nil {
-						if opts.tab == nil {
-							fmt.Println(err)
-							cmd = nil
-						} else {
-							opts.tab.routines.setError(fmt.Sprintf("%v", err))
-							opts.tab.consoleOutput(fmt.Sprintf("%v", err))
-						}
-					} else {
-						if opts.tab != nil {
-							opts.tab.routines.setSuccess("")
-						}
-					}
-				}
-			},
-		}
+	entryPoint, err = GetPackageEntryPoint(repo, pkg)
+	if err != nil {
+		return
 	}
 
-	buildOpts := api.BuildOptions{
+	buildOpts = api.BuildOptions{
 		AbsWorkingDir:     repo.RootDir,
 		Outdir:            distDir,
 		Bundle:            true,
@@ -90,54 +50,115 @@ func BundleWithEsbuild(repo *Repository, pkg *Package, opts *BuildOpts) (*BuildJ
 		Platform:          api.PlatformNode,
 		Format:            api.FormatCommonJS,
 		Write:             true,
-		LogLevel:          api.LogLevelWarning,
+		LogLevel:          api.LogLevelVerbose,
 		Sourcemap:         api.SourceMapLinked,
 		Plugins:           []api.Plugin{},
 		External:          getExternals(repo),
 		Loader:            loaders,
-		Watch:             watch,
 		// TODO: Splitting: true,
 	}
+	if Logger.logging == int(LoggingDebug) {
+		buildOpts.LogLevel = api.LogLevelVerbose
+	}
+	if Logger.logging == int(LoggingError) {
+		buildOpts.LogLevel = api.LogLevelError
+	}
+	if Logger.logging == int(LoggingWarn) {
+		buildOpts.LogLevel = api.LogLevelWarning
+	}
+	if Logger.logging == int(LoggingInfo) {
+		buildOpts.LogLevel = api.LogLevelInfo
+	}
 
-	entryPoint, err := GetPackageEntryPoint(repo, pkg)
+	buildOpts.EntryPoints = append(buildOpts.EntryPoints, entryPoint)
+	return
+}
+
+func BundleWithEsbuild(repo *Repository, pkg *Package, opts *BuildOpts) (*BuildJSResult, error) {
+	_, entryPoint, buildOpts, err := newBuildOpts(repo, pkg, opts)
 	if err != nil {
 		return nil, err
 	}
-	buildOpts.EntryPoints = append(buildOpts.EntryPoints, entryPoint)
-
-	if watch == nil {
-		esbuildResult := api.Build(buildOpts)
-		Logger.Debug("esbuild", buildOpts, esbuildResult)
-		if opts.Mode != BuildOnly {
-			cmd, err = run(repo, pkg, opts.tab, cmd)
-			if err != nil {
-				if opts.tab == nil {
-					fmt.Println(err)
-					cmd = nil
-				} else {
-					opts.tab.routines.setError(fmt.Sprintf("%v", err))
-					opts.tab.consoleOutput(fmt.Sprintf("%v", err))
-				}
-			}
-		}
-		return &BuildJSResult{
-			Errors:   esbuildResult.Errors,
-			Warnings: esbuildResult.Warnings,
-			stop: func() {
-				if cmd != nil {
-					cmd.Process.Kill()
-				}
-				esbuildResult.Stop()
-			},
-		}, nil
-	} else {
-		result := api.Build(buildOpts)
-		Logger.Debug("esbuild-watch", buildOpts, result)
-		return nil, nil
-	}
+	esbuildResult := api.Build(buildOpts)
+	Logger.Debug("esbuild-BuildOnly", entryPoint)
+	return &BuildJSResult{
+		Errors: func() []api.Message {
+			return esbuildResult.Errors
+		},
+		Warnings: func() []api.Message {
+			return esbuildResult.Warnings
+		},
+		stop: nil,
+	}, nil
 }
 
-func run(repo *Repository, pkg *Package, tab *WebTermTab, old *exec.Cmd) (*exec.Cmd, error) {
+func BundleAndRunWithEsbuild(repo *Repository, pkg *Package, opts *BuildOpts) (*BuildJSResult, error) {
+
+	_, entryPoint, buildOpts, err := newBuildOpts(repo, pkg, opts)
+	if err != nil {
+		return nil, err
+	}
+
+	var cmd *exec.Cmd
+	esbuildResult := api.Build(buildOpts)
+	Logger.Debug("esbuild-RunOnce", entryPoint)
+	cmd = run(repo, pkg, opts.tab, cmd)
+
+	return &BuildJSResult{
+		Errors: func() []api.Message {
+			return esbuildResult.Errors
+		},
+		Warnings: func() []api.Message {
+			return esbuildResult.Warnings
+		},
+		stop: func() {
+			if cmd != nil {
+				cmd.Process.Kill()
+			}
+			esbuildResult.Stop()
+		},
+	}, nil
+}
+
+func WatchWithEsbuild(repo *Repository, pkg *Package, opts *BuildOpts) (*BuildJSResult, error) {
+
+	pkgRoot, entryPoint, buildOpts, err := newBuildOpts(repo, pkg, opts)
+	if err != nil {
+		return nil, err
+	}
+	esbuildResult := api.Build(buildOpts)
+	var cmd *exec.Cmd
+	rebuildAndRun := func() {
+		Logger.Debug("building: ", entryPoint)
+		esbuildResult.Rebuild()
+		cmd = run(repo, pkg, opts.tab, cmd)
+	}
+	var stopWatching func()
+	cancelRebuild := func(canceled func()) {
+		if cmd != nil {
+			cmd.Process.Kill()
+			cmd = nil
+		}
+		esbuildResult.Stop()
+	}
+	stopWatching = WatchFolder(path.Join(pkgRoot, "src"), rebuildAndRun, cancelRebuild, true)
+
+	return &BuildJSResult{
+		Errors: func() []api.Message {
+			return esbuildResult.Errors
+		},
+		Warnings: func() []api.Message {
+			return esbuildResult.Warnings
+		},
+		stop: func() {
+			stopWatching()
+			cancelRebuild(nil)
+		},
+	}, nil
+}
+
+func run(repo *Repository, pkg *Package, tab *WebTermTab, old *exec.Cmd) *exec.Cmd {
+	Logger.Debug("esbuild-run", pkg.Bin)
 	if old != nil {
 		old.Process.Kill()
 	}
@@ -147,10 +168,20 @@ func run(repo *Repository, pkg *Package, tab *WebTermTab, old *exec.Cmd) (*exec.
 		node.Stdout = os.Stdout
 		node.Stderr = os.Stderr
 		if err := node.Run(); err != nil {
-			return nil, err
+			runLogger(tab, err)
+			return nil
 		}
 	} else {
 		go tab.runInPty(node)
 	}
-	return node, nil
+	return node
+}
+
+func runLogger(tab *WebTermTab, args ...interface{}) {
+	if tab == nil {
+		fmt.Println(args...)
+	} else {
+		tab.routines.setError(fmt.Sprintf("%v", args...))
+		tab.consoleOutput(fmt.Sprintf("%v", args...))
+	}
 }

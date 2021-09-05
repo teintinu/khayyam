@@ -17,7 +17,7 @@ func webtermHome(tabs []*WebTermTab) http.HandlerFunc {
 			<div class="body">
 				<ul>`)
 			for _, tab := range tabs {
-				onClick := `openframe('` + tab.path + `')`
+				onClick := `openframe('` + tab.id + `')`
 				fmt.Fprintln(w, `<li id="`+tab.id+`Btn" onClick="`+onClick+`">`)
 				fmt.Fprintln(w, `<div class="tab">`)
 				fmt.Fprintln(w, `<i class="fas fa-spinner fa-pulse"></i>`)
@@ -67,8 +67,9 @@ func webtermHome(tabs []*WebTermTab) http.HandlerFunc {
 
 		wReloadTab := func() {
 			fmt.Fprintln(w, `		  function reloadTab(tabId) {
-					   const frame = document.getElementById(tabId);
-						 frame.contentWindow.location.reload(true);
+					   const frame = document.getElementById("frame"+tabId);
+						 const iframe = frame.getChildNodes()[0];
+						 iframe.contentWindow.location.reload(true);
 				}`)
 		}
 
@@ -196,8 +197,26 @@ func webtermHome(tabs []*WebTermTab) http.HandlerFunc {
 						cursor: pointer;
 					}
 			
-					.frames iframe {
+					.frames  {
 						position: relative;
+						top: 0px;
+						left: 0px;
+						width: 100%;
+						height: 100%;
+					}
+
+					.frame {
+						position: absolute;
+						background-color: #000000;
+						border: 0px;
+						top: 0px;
+						left: 0px;
+						width: 100%;
+						height: 100%;
+					}
+
+					.frame iframe {
+						position: absolute;
 						border: 0px;
 						top: 0px;
 						left: 0px;
@@ -218,12 +237,15 @@ func webtermHome(tabs []*WebTermTab) http.HandlerFunc {
 					}
 				</style>
 				<script>
-					function openframe(id) {
-						const elements = document.querySelectorAll('iframe');
+					function openframe(tabid) {
+						const elements = document.querySelectorAll('.frame');
+						const fid="frame"+tabid;
 						elements.forEach(element => {
-							element.setAttribute('z-index', element.id === id ? '1' : '-1');
+							element.setAttribute('style', 'z-index: ' + (element.id === fid ? '1' : '-1'));
 						})
-					}`)
+					}
+					openframe('`+tabs[0].id+`')
+			`)
 			wRefreshState()
 			wReloadTab()
 			wCommStatus()
@@ -234,11 +256,13 @@ func webtermHome(tabs []*WebTermTab) http.HandlerFunc {
 			wTabsContainer()
 			fmt.Fprint(w, `<div class="frames">`)
 			for _, tab := range tabs {
+				fmt.Fprint(w, `<div class="frame" id="frame`+tab.id+`">`)
 				if tab.staticFolder == "" {
-					fmt.Fprint(w, `<iframe id="`+tab.id+`" src="/_tab?q=`+tab.path+`" />`)
+					fmt.Fprint(w, `<iframe src="/_tab?q=`+tab.path+`" ></iframe>`)
 				} else {
-					fmt.Fprint(w, `<iframe id="`+tab.id+`" src="`+tab.path+`" />`)
+					fmt.Fprint(w, `<iframe src="`+tab.path+`" ></iframe>`)
 				}
+				fmt.Fprint(w, `</div>`)
 			}
 			fmt.Fprint(w, `</div>`)
 			fmt.Fprint(w, `</div></body></html>`)

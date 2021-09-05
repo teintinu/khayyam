@@ -43,8 +43,6 @@ var runCmd = &cobra.Command{
 				packagesToRun = append(packagesToRun, pkgName)
 			}
 		}
-		return internal.Run(repo, packagesToRun, &internal.RunOpts{
-			Watch: false,
-		})
+		return internal.Run(repo, packagesToRun)
 	},
 }

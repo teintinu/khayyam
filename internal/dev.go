@@ -13,13 +13,17 @@ import (
 const DevPort = 37000
 
 func Dev(repo *Repository) error {
+
+	InitializeWatcher(func(err error) {
+		panic(err)
+	})
 	wg := &sync.WaitGroup{}
 
 	webterm := NewWebTerm()
 
 	wg.Add(1)
-	//devRunExecutables(repo, wg, webterm)
-	devTestApps(repo, wg, webterm)
+	devRunExecutables(repo, wg, webterm)
+	// devTestApps(repo, wg, webterm)
 
 	webterm.Start(DevPort)
 	wg.Wait()
@@ -116,10 +120,9 @@ func devRunExecutables(repo *Repository, wg *sync.WaitGroup, webterm *WebTerm) {
 			}
 			tab := webterm.AddShell("/"+pkg.Name, pkg.Name, "", true, nil, actions, processConsoleOutput)
 			tab.routines.setRunning()
-			BundleWithEsbuild(repo, pkg, &BuildOpts{
+			WatchWithEsbuild(repo, pkg, &BuildOpts{
 				Target: api.ESNext,
 				Minify: false,
-				Mode:   WatchAndRun,
 				tab:    tab,
 			})
 		}

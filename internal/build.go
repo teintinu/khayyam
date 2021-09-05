@@ -26,7 +26,7 @@ func bundleExecutable(repo *Repository, pkg *Package, opts *BuildOpts) error {
 	if err != nil {
 		Logger.ErrorObj(err)
 	}
-	for _, msg := range msgs.Errors {
+	for _, msg := range msgs.Errors() {
 		Logger.Error(msg.Text)
 	}
 	Logger.Debug("Bundled  executable:", pkg.Name)

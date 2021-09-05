@@ -30,7 +30,7 @@ var flagQuiet bool
 
 func (logger *InternalLogger) LogFlagDeclare(cmd *cobra.Command, args ...interface{}) {
 	cmd.Flags().BoolVar(&flagVerbose, "verbose", false, "")
-	cmd.Flags().BoolVar(&flagQuiet, "quit", false, "")
+	cmd.Flags().BoolVar(&flagQuiet, "quiet", false, "")
 }
 
 func (logger *InternalLogger) LogFlagInit(args ...interface{}) {

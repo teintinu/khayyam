@@ -23,11 +23,7 @@ import (
 	"github.com/evanw/esbuild/pkg/api"
 )
 
-type RunOpts struct {
-	Watch bool
-}
-
-func Run(repo *Repository, packages []string, opts *RunOpts) error {
+func Run(repo *Repository, packages []string) error {
 	var cmds []*BuildJSResult
 	for _, pkgName := range packages {
 		pkg := repo.Packages[pkgName]
@@ -37,7 +33,15 @@ func Run(repo *Repository, packages []string, opts *RunOpts) error {
 		if !pkg.Executable {
 			return errors.New("no is a executable: " + pkgName)
 		}
-		if cmd, err := buildAndRun(repo, pkg, opts); err != nil {
+		if cmd, err := BundleWithEsbuild(
+			repo,
+			pkg,
+			&BuildOpts{
+				Target: api.ES2015,
+				Minify: false,
+				tab:    nil,
+			},
+		); err != nil {
 			for _, running := range cmds {
 				running.stop()
 			}
@@ -47,23 +51,4 @@ func Run(repo *Repository, packages []string, opts *RunOpts) error {
 		}
 	}
 	return nil
-}
-
-func buildAndRun(repo *Repository, pkg *Package, opts *RunOpts) (*BuildJSResult, error) {
-	var mode EsbuildMode
-	if opts.Watch {
-		mode = WatchAndRun
-	} else {
-		mode = RunOnce
-	}
-	return BundleWithEsbuild(
-		repo,
-		pkg,
-		&BuildOpts{
-			Target: api.ES2015,
-			Minify: false,
-			Mode:   mode,
-			tab:    nil,
-		},
-	)
 }
