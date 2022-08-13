@@ -6,10 +6,10 @@ package-lock.json
 yarn-error.log
 yarn.lock
 tsconfig.**
-jest.config.js
 tmp
 out
 .eslintrc.json
 coverage
 .vscode
+.jest
 jest.config.js
