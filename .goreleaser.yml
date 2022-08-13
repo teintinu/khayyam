@@ -10,6 +10,11 @@ builds:
       - linux
       - windows
       - darwin
+    ignore:
+      - goos: windows
+        goarch: arm
+      - goos: windows
+        goarch: arm64
 checksum:
   name_template: 'checksums.txt'
 snapshot:

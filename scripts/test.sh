@@ -46,4 +46,5 @@ for snapshot in $snapshots; do
   )
 done
 
+git reset --hard
 echo "done"
