@@ -5,6 +5,7 @@ node_modules
 __debug_bin
 
 npm/
+tmp/
 
 snapshot/**/*.js
 snapshot/**/*.map
