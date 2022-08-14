@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+delay=1
+msg=$1
+
+echo "started"
+while [ "$msg" != "" ]
+do
+  shift
+  if [ "$msg" == "READ" ]
+  then
+    echo "INPUT: $1"
+    read -p "TYPE: " input
+    echo "$1: $input"
+    shift
+  else
+    read -p "Pause Time .5 seconds" -t 0.5
+    echo $msg
+    sleep $delay
+  fi
+  msg=$1
+done
+echo "finished"

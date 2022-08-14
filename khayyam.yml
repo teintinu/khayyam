@@ -1,0 +1,28 @@
+workspace:
+  name: "khayyam"
+  version: "1.0.0"
+
+domains:
+  "@khayyam/domains":
+    folder: "domains"
+    publish: public
+
+adapters:
+  "@khayyam/node-library-adapter":
+    folder: "adapters/node-library-adapter"
+    publish: no
+  "@khayyam/node-application":
+    folder: "adapters/node-application"
+    publish: no
+  "@khayyam/react-application":
+    folder: "adapters/react-application"
+    publish: no
+
+applications:
+  "@khayyam/server":
+    folder: "apps/server"
+    publish: "no"
+
+  "@khayyam/client":
+    folder: "apps/client"
+    publish: "no"

@@ -1,0 +1,28 @@
+workspace:
+  name: "khayyam"
+  version: "0.1.1"
+
+domain:
+  "@khayyam/domain":
+    folder: "domain"
+    type: node-library
+
+adapters:
+  "@khayyam/node-library-adapter":
+    folder: "adapters/fake-repository"
+    type: node-library
+  "@khayyam/node-application":
+    folder: "adapters/fake-repository"
+    type: node-library
+  "@khayyam/react-application":
+    folder: "adapters/fake-repository"
+    type: node-library
+
+executables:
+  "@khayyam/server":
+    folder: "apps/server"
+    type: node-application
+
+  "@khayyam/client":
+    folder: "apps/client"
+    type: react-application

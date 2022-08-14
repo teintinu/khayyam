@@ -1,0 +1,52 @@
+/* eslint-disable no-redeclare */
+import { khayyamCI } from './khayyam'
+import { createFakeLog } from './testlib'
+
+describe.skip('Khayyam domain', () => {
+  describe('CI', () => {
+    it('x package', async () => {
+      const logger = createFakeLog()
+      await khayyamCI(
+        logger.fakeSys,
+        'npm/x',
+        logger.jobManager
+      )
+      expect(logger.logged).toMatchSnapshot('log')
+      expect(logger.tree()).toMatchSnapshot('tree')
+    })
+    it('a,b,c,d,e packages', async () => {
+      const logger = createFakeLog()
+      await khayyamCI(
+        logger.fakeSys,
+        'npm/abcde/deps',
+        logger.jobManager
+      )
+      expect(logger.logged).toMatchSnapshot('log')
+      expect(logger.tree()).toMatchSnapshot('tree')
+    }, 10000)
+  })
+  // describe('dev', () => {
+  //   it('x package', async () => {
+  //     const logger = createFakeLog()
+  //     const bundler = createFakeBundlerNPM(logger)
+  //     const ws = createFakeWorkspaceX(logger, bundler)
+  //     await khayyamDev(
+  //       logger.jobManager,
+  //       ws
+  //     )
+  //     expect(logger.logged).toMatchSnapshot('log')
+  //     expect(logger.tree()).toMatchSnapshot('tree')
+  //   })
+  //   it('a,b,c,d,e packages', async () => {
+  //     const logger = createFakeLog()
+  //     const bundler = createFakeBundlerNPM(logger)
+  //     const ws = createFakeWorkspaceABCDE(logger, bundler)
+  //     await khayyamDev(
+  //       logger.jobManager,
+  //       ws
+  //     )
+  //     expect(logger.logged).toMatchSnapshot('log')
+  //     expect(logger.tree()).toMatchSnapshot('tree')
+  //   }, 10000)
+  // })
+})

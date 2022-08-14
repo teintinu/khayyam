@@ -1,0 +1,268 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`workspace just a,b,c,d,e packages create workspace 1`] = `
+Object {
+  "layers": Array [],
+  "pkgs": Array [
+    Object {
+      "bundlers": Array [
+        "fakeBundlerNPM",
+      ],
+      "dependencies": Array [
+        "b",
+        "c",
+      ],
+      "folder": "a",
+      "layer": "",
+      "name": "a",
+    },
+    Object {
+      "bundlers": Array [
+        "fakeBundlerNPM",
+      ],
+      "dependencies": Array [
+        "c",
+        "d",
+      ],
+      "folder": "b",
+      "layer": "",
+      "name": "b",
+    },
+    Object {
+      "bundlers": Array [
+        "fakeBundlerNPM",
+      ],
+      "dependencies": Array [
+        "d",
+      ],
+      "folder": "c",
+      "layer": "",
+      "name": "c",
+    },
+    Object {
+      "bundlers": Array [
+        "fakeBundlerNPM",
+      ],
+      "dependencies": Array [
+        "e",
+      ],
+      "folder": "d",
+      "layer": "",
+      "name": "d",
+    },
+    Object {
+      "bundlers": Array [
+        "fakeBundlerNPM",
+      ],
+      "dependencies": Array [],
+      "folder": "e",
+      "layer": "",
+      "name": "e",
+    },
+  ],
+}
+`;
+
+exports[`workspace just a,b,c,d,e packages walk workspace all: walkedDebug 1`] = `
+Object {
+  "a": Array [
+    "a walkABCDE()",
+  ],
+  "b": Array [
+    "b walkABCDE()",
+  ],
+  "c": Array [
+    "c walkABCDE()",
+  ],
+  "d": Array [
+    "d walkABCDE()",
+  ],
+  "e": Array [
+    "e walkABCDE()",
+  ],
+}
+`;
+
+exports[`workspace just a,b,c,d,e packages walk workspace filter a: walkedDebug 1`] = `
+Object {
+  "a": Array [
+    "a walkABCDE()",
+  ],
+}
+`;
+
+exports[`workspace just a,b,c,d,e packages walk workspace filter b: walkedDebug 1`] = `
+Object {
+  "a": Array [
+    "a walkABCDE()",
+  ],
+  "b": Array [
+    "b walkABCDE()",
+  ],
+}
+`;
+
+exports[`workspace just a,b,c,d,e packages walk workspace filter c,d: walkedDebug 1`] = `
+Object {
+  "a": Array [
+    "a walkABCDE()",
+  ],
+  "b": Array [
+    "b walkABCDE()",
+  ],
+  "c": Array [
+    "c walkABCDE()",
+  ],
+  "d": Array [
+    "d walkABCDE()",
+  ],
+}
+`;
+
+exports[`workspace just a,b,c,d,e packages walk workspace filter c: walkedDebug 1`] = `
+Object {
+  "a": Array [
+    "a walkABCDE()",
+  ],
+  "b": Array [
+    "b walkABCDE()",
+  ],
+  "c": Array [
+    "c walkABCDE()",
+  ],
+}
+`;
+
+exports[`workspace just a,b,c,d,e packages walk workspace filter d: walkedDebug 1`] = `
+Object {
+  "a": Array [
+    "a walkABCDE()",
+  ],
+  "b": Array [
+    "b walkABCDE()",
+  ],
+  "c": Array [
+    "c walkABCDE()",
+  ],
+  "d": Array [
+    "d walkABCDE()",
+  ],
+}
+`;
+
+exports[`workspace just a,b,c,d,e packages walk workspace filter e: walkedDebug 1`] = `
+Object {
+  "a": Array [
+    "a walkABCDE()",
+  ],
+  "b": Array [
+    "b walkABCDE()",
+  ],
+  "c": Array [
+    "c walkABCDE()",
+  ],
+  "d": Array [
+    "d walkABCDE()",
+  ],
+  "e": Array [
+    "e walkABCDE()",
+  ],
+}
+`;
+
+exports[`workspace just a,b,c,d,e packages walk workspace filter none: walkedDebug 1`] = `Object {}`;
+
+exports[`workspace just one package create workspace 1`] = `
+Object {
+  "layers": Array [],
+  "pkgs": Array [
+    Object {
+      "bundlers": Array [
+        "fakeBundlerNPM",
+      ],
+      "dependencies": Array [],
+      "folder": "x",
+      "layer": "",
+      "name": "x",
+    },
+  ],
+}
+`;
+
+exports[`workspace just one package walk workspace all: walkedDebug 1`] = `
+Object {
+  "x": Array [
+    "x walk()",
+  ],
+}
+`;
+
+exports[`workspace just one package walk workspace filter none: walkedDebug 1`] = `Object {}`;
+
+exports[`workspace just one package walk workspace filter x: walkedDebug 1`] = `
+Object {
+  "x": Array [
+    "x walk()",
+  ],
+}
+`;
+
+exports[`workspace just x,y packages create workspace 1`] = `
+Object {
+  "layers": Array [],
+  "pkgs": Array [
+    Object {
+      "bundlers": Array [
+        "fakeBundlerNPM",
+      ],
+      "dependencies": Array [
+        "y",
+      ],
+      "folder": "x",
+      "layer": "",
+      "name": "x",
+    },
+    Object {
+      "bundlers": Array [
+        "fakeBundlerNPM",
+      ],
+      "dependencies": Array [],
+      "folder": "y",
+      "layer": "",
+      "name": "y",
+    },
+  ],
+}
+`;
+
+exports[`workspace just x,y packages walk workspace all: walkedDebug 1`] = `
+Object {
+  "x": Array [
+    "x walkXY()",
+  ],
+  "y": Array [
+    "y walkXY()",
+  ],
+}
+`;
+
+exports[`workspace just x,y packages walk workspace filter none: walkedDebug 1`] = `Object {}`;
+
+exports[`workspace just x,y packages walk workspace filter x: walkedDebug 1`] = `
+Object {
+  "x": Array [
+    "x walkXY()",
+  ],
+}
+`;
+
+exports[`workspace just x,y packages walk workspace filter y: walkedDebug 1`] = `
+Object {
+  "x": Array [
+    "x walkXY()",
+  ],
+  "y": Array [
+    "y walkXY()",
+  ],
+}
+`;

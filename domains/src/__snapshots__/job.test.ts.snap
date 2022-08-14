@@ -1,0 +1,356 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`job auto-start dependencies: 01:log-dep working 1`] = `
+Array [
+  "pg-main waiting undefined",
+  "pg-dep waiting undefined",
+  "pg-dep working undefined",
+  "pg-dep working started",
+  "pg-dep working INPUT: b",
+]
+`;
+
+exports[`job auto-start dependencies: 02:tree-dep working 1`] = `
+Array [
+  Array [
+    "main=>[]",
+    Array [
+      Array [
+        "dep=>[main]",
+        Array [],
+      ],
+    ],
+  ],
+]
+`;
+
+exports[`job auto-start dependencies: 03:log-dep finished 1`] = `
+Array [
+  "pg-main waiting undefined",
+  "pg-dep waiting undefined",
+  "pg-dep working undefined",
+  "pg-dep working started",
+  "pg-dep working INPUT: b",
+  "pg-dep working b: dep-ok",
+  "pg-dep working finished",
+  "pg-dep finished undefined",
+  "pg-main working undefined",
+  "pg-main working started",
+  "pg-main working INPUT: a",
+]
+`;
+
+exports[`job auto-start dependencies: 04:tree-dep finished 1`] = `
+Array [
+  Array [
+    "main=>[]",
+    Array [
+      Array [
+        "dep=>[main]",
+        Array [],
+      ],
+    ],
+  ],
+]
+`;
+
+exports[`job auto-start dependencies: 05:log-finished 1`] = `
+Array [
+  "pg-main waiting undefined",
+  "pg-dep waiting undefined",
+  "pg-dep working undefined",
+  "pg-dep working started",
+  "pg-dep working INPUT: b",
+  "pg-dep working b: dep-ok",
+  "pg-dep working finished",
+  "pg-dep finished undefined",
+  "pg-main working undefined",
+  "pg-main working started",
+  "pg-main working INPUT: a",
+  "pg-main working a: main-ok",
+  "pg-main working finished",
+  "pg-main finished undefined",
+]
+`;
+
+exports[`job auto-start dependencies: 06:tree-finished 1`] = `
+Array [
+  Array [
+    "main=>[]",
+    Array [
+      Array [
+        "dep=>[main]",
+        Array [],
+      ],
+    ],
+  ],
+]
+`;
+
+exports[`job multiline: 01:log-aOk 1`] = `
+Array [
+  "pg multi: waiting undefined",
+  "pg multi: working undefined",
+  "pg multi: working started",
+  "pg multi: working a",
+]
+`;
+
+exports[`job multiline: 02:tree-aOk 1`] = `
+Array [
+  Array [
+    "multi=>[]",
+    Array [],
+  ],
+]
+`;
+
+exports[`job multiline: 03:log-bOk 1`] = `
+Array [
+  "pg multi: waiting undefined",
+  "pg multi: working undefined",
+  "pg multi: working started",
+  "pg multi: working a",
+  "pg multi: working b",
+]
+`;
+
+exports[`job multiline: 04:tree-bOk 1`] = `
+Array [
+  Array [
+    "multi=>[]",
+    Array [],
+  ],
+]
+`;
+
+exports[`job multiline: 05:log-finished 1`] = `
+Array [
+  "pg multi: waiting undefined",
+  "pg multi: working undefined",
+  "pg multi: working started",
+  "pg multi: working a",
+  "pg multi: working b",
+  "pg multi: working finished",
+  "pg multi: finished undefined",
+]
+`;
+
+exports[`job multiline: 06:tree-finished 1`] = `
+Array [
+  Array [
+    "multi=>[]",
+    Array [],
+  ],
+]
+`;
+
+exports[`job typing: 01:log-aOk 1`] = `
+Array [
+  "pg typing: waiting undefined",
+  "pg typing: working undefined",
+  "pg typing: working started",
+  "pg typing: working INPUT: a",
+]
+`;
+
+exports[`job typing: 02:tree-aOk 1`] = `
+Array [
+  Array [
+    "typing=>[]",
+    Array [],
+  ],
+]
+`;
+
+exports[`job typing: 03:log-bOk 1`] = `
+Array [
+  "pg typing: waiting undefined",
+  "pg typing: working undefined",
+  "pg typing: working started",
+  "pg typing: working INPUT: a",
+  "pg typing: working a: 123",
+  "pg typing: working INPUT: b",
+]
+`;
+
+exports[`job typing: 04:tree-bOk 1`] = `
+Array [
+  Array [
+    "typing=>[]",
+    Array [],
+  ],
+]
+`;
+
+exports[`job typing: 05:log-cOk 1`] = `
+Array [
+  "pg typing: waiting undefined",
+  "pg typing: working undefined",
+  "pg typing: working started",
+  "pg typing: working INPUT: a",
+  "pg typing: working a: 123",
+  "pg typing: working INPUT: b",
+  "pg typing: working b: 456",
+  "pg typing: working INPUT: c",
+]
+`;
+
+exports[`job typing: 06:tree-cOk 1`] = `
+Array [
+  Array [
+    "typing=>[]",
+    Array [],
+  ],
+]
+`;
+
+exports[`job typing: 07:log-finished 1`] = `
+Array [
+  "pg typing: waiting undefined",
+  "pg typing: working undefined",
+  "pg typing: working started",
+  "pg typing: working INPUT: a",
+  "pg typing: working a: 123",
+  "pg typing: working INPUT: b",
+  "pg typing: working b: 456",
+  "pg typing: working INPUT: c",
+  "pg typing: working c: 789",
+  "pg typing: working finished",
+  "pg typing: finished undefined",
+]
+`;
+
+exports[`job typing: 08:tree-finished 1`] = `
+Array [
+  Array [
+    "typing=>[]",
+    Array [],
+  ],
+]
+`;
+
+exports[`job with dependencies: 01:log-dep working 1`] = `
+Array [
+  "pg-main waiting undefined",
+  "pg-dep waiting undefined",
+  "pg-dep working undefined",
+  "pg-dep working started",
+  "pg-dep working INPUT: b",
+]
+`;
+
+exports[`job with dependencies: 02:tree-dep working 1`] = `
+Array [
+  Array [
+    "main=>[]",
+    Array [
+      Array [
+        "dep=>[main]",
+        Array [],
+      ],
+    ],
+  ],
+]
+`;
+
+exports[`job with dependencies: 03:log-dep finished 1`] = `
+Array [
+  "pg-main waiting undefined",
+  "pg-dep waiting undefined",
+  "pg-dep working undefined",
+  "pg-dep working started",
+  "pg-dep working INPUT: b",
+  "pg-dep working b: dep-ok",
+  "pg-dep working finished",
+  "pg-dep finished undefined",
+  "pg-main working undefined",
+  "pg-main working started",
+  "pg-main working INPUT: a",
+]
+`;
+
+exports[`job with dependencies: 04:tree-dep finished 1`] = `
+Array [
+  Array [
+    "main=>[]",
+    Array [
+      Array [
+        "dep=>[main]",
+        Array [],
+      ],
+    ],
+  ],
+]
+`;
+
+exports[`job with dependencies: 05:log-dep working 1`] = `
+Array [
+  "pg-main waiting undefined",
+  "pg-dep waiting undefined",
+  "pg-dep working undefined",
+  "pg-dep working started",
+  "pg-dep working INPUT: b",
+  "pg-dep working b: dep-ok",
+  "pg-dep working finished",
+  "pg-dep finished undefined",
+  "pg-main working undefined",
+  "pg-main working started",
+  "pg-main working INPUT: a",
+  "pg-main working a: main-ok",
+  "pg-main working finished",
+  "pg-main finished undefined",
+]
+`;
+
+exports[`job with dependencies: 06:tree-dep working 1`] = `
+Array [
+  Array [
+    "main=>[]",
+    Array [
+      Array [
+        "dep=>[main]",
+        Array [],
+      ],
+    ],
+  ],
+]
+`;
+
+exports[`job without dependencies: 01:log-working 1`] = `
+Array [
+  "pg job: waiting undefined",
+  "pg job: working undefined",
+  "pg job: working started",
+  "pg job: working a",
+]
+`;
+
+exports[`job without dependencies: 02:tree-working 1`] = `
+Array [
+  Array [
+    "job=>[]",
+    Array [],
+  ],
+]
+`;
+
+exports[`job without dependencies: 03:log-finished 1`] = `
+Array [
+  "pg job: waiting undefined",
+  "pg job: working undefined",
+  "pg job: working started",
+  "pg job: working a",
+  "pg job: working finished",
+  "pg job: finished undefined",
+]
+`;
+
+exports[`job without dependencies: 04:tree-finished 1`] = `
+Array [
+  Array [
+    "job=>[]",
+    Array [],
+  ],
+]
+`;
