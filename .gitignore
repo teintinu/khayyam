@@ -13,6 +13,7 @@ snapshot/**/*.json
 snapshot/**/stderr
 snapshot/**/stdout
 snapshot/**/yarn-lock
+snapshot/init
 
 dist/
 

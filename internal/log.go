@@ -54,11 +54,9 @@ func (logger *InternalLogger) Info(args ...interface{}) {
 }
 
 func (logger *InternalLogger) Error(args ...interface{}) {
-	if logger.logging >= int(LoggingError) {
-		color.Set(color.FgRed)
-		fmt.Println(args...)
-		color.Unset()
-	}
+	color.Set(color.FgRed)
+	fmt.Println(args...)
+	color.Unset()
 }
 
 func (logger *InternalLogger) Warn(args ...interface{}) {
