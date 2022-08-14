@@ -15,7 +15,7 @@ func init() {
 var runCmd = &cobra.Command{
 	Use:   "run [flags] <executable...>",
 	Short: "Build and run",
-	Long:  `Builds and runs one or more executables. If not specified will run all executables in repository`,
+	Long:  `Builds and runs one or more applications. If not specified will run all applications in repository`,
 	//Args:  cobra.MinimumNArgs(1),
 	// DisableFlagsInUseLine: true,
 	// SilenceErrors:         true,

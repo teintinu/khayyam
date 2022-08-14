@@ -175,8 +175,8 @@ func initializeEmptySources(repo *Repository, pkg *Package) error {
 	err := os.MkdirAll(sourceDir, 0755)
 	if err == nil {
 		// TODO
-		// if pkg.Layer == BusinessRulesLayer {
-		// 	err = initializeBusinessRulesLayer(sourceDir, indexTs)
+		// if pkg.Layer == DomainsLayer {
+		// 	err = initializeDomainsLayer(sourceDir, indexTs)
 		// }
 		if pkg.Executable {
 			err = initializeExecutable(sourceDir)

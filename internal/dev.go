@@ -18,7 +18,7 @@ func Dev(repo *Repository) error {
 	webterm := NewWebTerm()
 
 	wg.Add(1)
-	//devRunExecutables(repo, wg, webterm)
+	//devRunApplications(repo, wg, webterm)
 	devTestApps(repo, wg, webterm)
 
 	webterm.Start(DevPort)
@@ -97,7 +97,7 @@ func devTestApps(repo *Repository, wg *sync.WaitGroup, webterm *WebTerm) {
 	}()
 }
 
-func devRunExecutables(repo *Repository, wg *sync.WaitGroup, webterm *WebTerm) {
+func devRunApplications(repo *Repository, wg *sync.WaitGroup, webterm *WebTerm) {
 	for _, pkg := range repo.Packages {
 		if pkg.Executable {
 			wg.Add(1)

@@ -14,8 +14,8 @@ func init() {
 
 var devCmd = &cobra.Command{
 	Use:   "dev",
-	Short: "Test libraries and run executables in watch mode",
-	Long:  `Test libraries and run executables in watch mode`,
+	Short: "Test libraries and run applications in watch mode",
+	Long:  `Test libraries and run applications in watch mode`,
 	Args:  cobra.RangeArgs(0, 0),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		internal.Logger.LogFlagInit()

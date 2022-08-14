@@ -9,9 +9,9 @@ type Config struct {
 	Registry      string
 	Workspace     WorkspaceConfig
 	Packages      map[string]PackageConfig
-	BusinessRules map[string]PackageConfig `yaml:"business-rules"`
-	Executables   map[string]PackageConfig
+	Domains       map[string]PackageConfig `yaml:"domains"` 
 	Adapters      map[string]PackageConfig
+	Applications  map[string]PackageConfig
 }
 
 type WorkspaceConfig struct {

@@ -40,8 +40,8 @@ type PackageLayer = int
 
 const (
 	NormalLayer PackageLayer = iota
-	BusinessRulesLayer
-	ExecutablesLayer
+	DomainsLayer
+	ApplicationsLayer
 	AdaptersLayer
 )
 
@@ -119,11 +119,11 @@ func LoadRepository(searchDir string, checkEntryPoints bool) (*Repository, error
 	if err != nil {
 		return nil, err
 	}
-	err = loadPackages(&repo, cfg.BusinessRules, BusinessRulesLayer, checkEntryPoints)
+	err = loadPackages(&repo, cfg.Domains, DomainsLayer, checkEntryPoints)
 	if err != nil {
 		return nil, err
 	}
-	err = loadPackages(&repo, cfg.Executables, ExecutablesLayer, checkEntryPoints)
+	err = loadPackages(&repo, cfg.Applications, ApplicationsLayer, checkEntryPoints)
 	if err != nil {
 		return nil, err
 	}
@@ -185,7 +185,7 @@ func loadPackages(repo *Repository, packages map[string]PackageConfig, layer Pac
 			Description:     packageConfig.Description,
 			Folder:          packageConfig.Folder,
 			Layer:           layer,
-			Executable:      layer == ExecutablesLayer || (layer == NormalLayer && packageConfig.Executable),
+			Executable:      layer == ApplicationsLayer || (layer == NormalLayer && packageConfig.Executable),
 			Dependencies:    make(map[string]*Dependency),
 			devDependencies: make(map[string]*Dependency),
 		}
@@ -261,7 +261,7 @@ func MakeJobs(jobs *gjobs.GJobs, jobPrefix string, repo *Repository, witchPackag
 
 func validateLayer(repo *Repository, pkg *Package) error {
 
-	if pkg.Layer == BusinessRulesLayer {
+	if pkg.Layer == DomainsLayer {
 		if pkg.Executable {
 			return errors.New("Business layer " + pkg.Name + " can't be an executble")
 		}
@@ -273,7 +273,7 @@ func validateLayer(repo *Repository, pkg *Package) error {
 			if depPkg.Layer == AdaptersLayer {
 				return errors.New("business layer " + pkg.Name + "can't depends of adapter layer " + depName)
 			}
-			if depPkg.Layer == ExecutablesLayer {
+			if depPkg.Layer == ApplicationsLayer {
 				return errors.New("business layer " + pkg.Name + "can't depends of executable layer " + depName)
 			}
 		}

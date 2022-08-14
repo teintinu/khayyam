@@ -2,9 +2,9 @@ workspace:
   name: "todo"
   version: "1.0.0"
 
-business-rules:
-  "@todo/business-rules":
-    folder: "business-rules"
+domains:
+  "@todo/domains":
+    folder: "domains"
     publish: public
 
 adapters:
@@ -16,7 +16,7 @@ adapters:
     folder: "adapters/postgres-repository"
     publish: public
 
-executables:
+applications:
   "@todo/server":
     folder: "apps/server"
     publish: "no"

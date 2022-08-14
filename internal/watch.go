@@ -4,7 +4,7 @@ func Watch() error {
 	return nil
 }
 
-/*	var optsTypes bool = opts.Package.Layer != ExecutablesLayer
+/*	var optsTypes bool = opts.Package.Layer != ApplicationsLayer
 	if opts.Watch && optsTypes {
 		return errors.New("cannot build types with watch")
 	}

@@ -19,6 +19,6 @@ dist/
 examples/new/a
 examples/new/b
 
-examples/clean-architecture/business-rules
+examples/clean-architecture/domains
 examples/clean-architecture/apps
 examples/clean-architecture/adapters
