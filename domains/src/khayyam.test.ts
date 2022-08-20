@@ -2,7 +2,7 @@
 import { khayyamCI } from './khayyam'
 import { createFakeLog } from './testlib'
 
-describe.skip('Khayyam domain', () => {
+describe('Khayyam domain', () => {
   describe('CI', () => {
     it('x package', async () => {
       const logger = createFakeLog(true)

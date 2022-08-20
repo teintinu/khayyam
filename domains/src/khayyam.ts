@@ -16,20 +16,20 @@ export async function khayyamCI (
   jobManager:JobManager
 ) {
   const workspace = sys.loadWorkspace(folder)
-  const build = workspace.walk('all', (pkg, bundler) =>
+  const build = workspace.walk('all', true, (pkg, bundler) =>
     bundler.build(pkg, jobManager, 'production')
   )
-  const test = workspace.walk('all', (pkg, bundler) =>
+  const test = workspace.walk('all', true, (pkg, bundler) =>
     bundler.test(pkg, jobManager)
   )
-  const lint = workspace.walk('all', (pkg, bundler) =>
+  const lint = workspace.walk('all', false, (pkg, bundler) =>
     bundler.lint(pkg, jobManager)
   )
-  const publish = workspace.walk('all', (pkg, bundler) =>
+  const publish = workspace.walk('all', false, (pkg, bundler) =>
     bundler.publish(pkg, jobManager)
   )
-  test.depends(build)
-  publish.depends(build, test, lint)
+  test.depends('each', [build])
+  publish.depends('each', [build, test, lint])
   await jobManager.execute()
 }
 

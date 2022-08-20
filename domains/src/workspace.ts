@@ -11,12 +11,13 @@ export interface Workspace {
   findBundler (bundlerName: string): Bundler|undefined
   walk (
     filter: 'all'|ByPackage<boolean>,
+    treeDep: boolean,
     fn: (pkg: Package, bundler: Bundler)=>Job): WalkedJobs
 }
 
 export interface WalkedJobs {
   jobs: ByPackage<Job[]>
-  depends(mode: 'each'|'all', ...deps:WalkedJobs[]): void
+  depends(mode: 'each'|'all', deps:WalkedJobs[]): void
 }
 export interface Layer {
     readonly name: string;
@@ -74,10 +75,11 @@ export function createWorkspace ({
   }
   function walk (
     filter: 'all'|ByPackage<boolean>,
+    treeDep: boolean,
     fn: (pkg: Package, bundler: Bundler)=>Job): WalkedJobs {
     const ret: WalkedJobs = {
       jobs: {},
-      depends (mode: 'each'|'all', ...deps:WalkedJobs[]): void {
+      depends (mode: 'each'|'all', deps:WalkedJobs[]): void {
         Object.keys(ret.jobs).forEach(nDependant => {
           const tDependants = ret.jobs[nDependant]
           tDependants.forEach(tDependant => {
@@ -123,11 +125,13 @@ export function createWorkspace ({
             if (b) {
               const nJob = fn(pkg, b)
               flat[pkg.name].push(nJob)
-              pkg.dependencies.forEach((depName) => {
-                if (flat[depName]) {
-                  nJob.depends(...flat[depName])
-                }
-              })
+              if (treeDep) {
+                pkg.dependencies.forEach((depName) => {
+                  if (flat[depName]) {
+                    nJob.depends(...flat[depName])
+                  }
+                })
+              }
               if (ret.jobs[pkg.name]) {
                 ret.jobs[pkg.name].push(nJob)
               } else {
