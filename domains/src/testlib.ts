@@ -12,11 +12,6 @@ export const cwd = process.cwd()
 const fakeProcess = './scripts/fake-process.js'
 const shell = true
 
-export type TreeOfNode = [
-  job: string,
-  dependencies: TreeOfNode[],
-]
-
 export type Logger=ReturnType<typeof createFakeLog>
 
 export function createFakeLog (verbose?: 'verbose') {
@@ -71,23 +66,25 @@ export function createFakeLog (verbose?: 'verbose') {
     tree () {
       const done: {[id: number]:boolean} = {}
       const tree = jobManager.getTree()
-      return tree.map(treeOfNode)
-      function treeOfNode (node: Node): TreeOfNode {
-        const id = node.job.id
-        if (done[id]) {
-          return [
-            node.job.title + '(rec)',
-            []
-          ]
-        }
-        done[id] = true
-        const n: TreeOfNode = [
-          node.job.title + '=>[' +
-          node.dependents.map(d => d.job.title).join() + ']',
-          node.dependencies.map(treeOfNode)
-        ]
-        done[id] = false
-        return n
+      const lines:string[] = []
+      treeOfNode(tree, '')
+      return lines.join('\n')
+      function treeOfNode (nodes: Node[], ident:string) {
+        nodes.forEach((node) => {
+          const id = node.job.id
+          if (done[id]) {
+            lines.push(node.job.title + '(rec)')
+          }
+          done[id] = true
+          lines.push(ident + node.job.title)
+          lines.push(ident + '  dependents:')
+          node.dependents.forEach((dependent) => {
+            lines.push(ident + '    ' + dependent.job.title)
+          })
+          lines.push(ident + '  dependencies:')
+          treeOfNode(node.dependencies, ident + '    ')
+          done[id] = false
+        })
       }
     }
   }
@@ -122,7 +119,7 @@ export function createFakeLog (verbose?: 'verbose') {
     fakeLogger.log('fsNotify:' + msg + ' on package: ' + pkgName)
   }
   function fsCreateProcess ({ cmd, args, handleOutput }: ProcessParams): RunningProcess {
-    let childProcess:ChildProcessWithoutNullStreams|undefined
+    let childProcess: ChildProcessWithoutNullStreams|undefined
     let sendStream : Writable|undefined
     let receiveStream: Readable|undefined
     let exitCode = 0
@@ -251,7 +248,7 @@ function createFakeBundlerNPM (logger:Logger) {
   const fakeBundler: Bundler = {
     name: 'fakeBundlerNPM',
     watch (pkg) {
-      return ['fakeBundlerNPM']
+      return ['fakeBundlerNPM/' + pkg.name]
     },
     build (pkg, jobManager, goal) {
       return createFakeBundlerCommand(pkg, jobManager, 'npm-build-' + goal)
@@ -262,11 +259,14 @@ function createFakeBundlerNPM (logger:Logger) {
     serve (pkg, jobManager) {
       return createFakeBundlerCommand(pkg, jobManager, 'npm-serve')
     },
+    publish (pkg, jobManager) {
+      return createFakeBundlerCommand(pkg, jobManager, 'npm-publish')
+    },
     lint (pkg, jobManager) {
       return createFakeBundlerCommand(pkg, jobManager, 'npm-lint')
     },
-    publish (pkg, jobManager) {
-      return createFakeBundlerCommand(pkg, jobManager, 'npm-publish')
+    measure (pkg, jobManager) {
+      return createFakeBundlerCommand(pkg, jobManager, 'npm-measure')
     }
   }
   return fakeBundler
@@ -292,7 +292,7 @@ function createFakeWorkspace (
       [n:string]:Package
     } = {}
   for (const n of packages) {
-    const pkg: Readonly<Package > = {
+    const pkg: Readonly<Package> = {
       name: n,
       layer: layers ? n : '',
       dependencies: [],

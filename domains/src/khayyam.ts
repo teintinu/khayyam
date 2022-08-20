@@ -22,14 +22,17 @@ export async function khayyamCI (
   const test = workspace.walk('all', true, (pkg, bundler) =>
     bundler.test(pkg, jobManager)
   )
-  const lint = workspace.walk('all', false, (pkg, bundler) =>
-    bundler.lint(pkg, jobManager)
-  )
   const publish = workspace.walk('all', false, (pkg, bundler) =>
     bundler.publish(pkg, jobManager)
   )
+  const lint = workspace.walk('all', false, (pkg, bundler) =>
+    bundler.lint(pkg, jobManager)
+  )
+  const measure = workspace.walk('all', false, (pkg, bundler) =>
+    bundler.measure(pkg, jobManager)
+  )
   test.depends('each', [build])
-  publish.depends('each', [build, test, lint])
+  publish.depends('each', [build, test, lint, measure])
   await jobManager.execute()
 }
 

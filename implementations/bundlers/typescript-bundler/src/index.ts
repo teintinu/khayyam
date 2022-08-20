@@ -1,4 +1,5 @@
+// cognitive-complexity-ts
 
-export function doSomething() {
-  return 'something';
+export function doSomething () {
+  return 'something'
 }

@@ -20,17 +20,13 @@ Array [
 `;
 
 exports[`job auto-start dependencies: 02:tree-dep working 1`] = `
-Array [
-  Array [
-    "main=>[]",
-    Array [
-      Array [
-        "dep=>[main]",
-        Array [],
-      ],
-    ],
-  ],
-]
+"main
+  dependents:
+  dependencies:
+    dep
+      dependents:
+        main
+      dependencies:"
 `;
 
 exports[`job auto-start dependencies: 03:log-dep finished 1`] = `
@@ -52,17 +48,13 @@ Array [
 `;
 
 exports[`job auto-start dependencies: 04:tree-dep finished 1`] = `
-Array [
-  Array [
-    "main=>[]",
-    Array [
-      Array [
-        "dep=>[main]",
-        Array [],
-      ],
-    ],
-  ],
-]
+"main
+  dependents:
+  dependencies:
+    dep
+      dependents:
+        main
+      dependencies:"
 `;
 
 exports[`job auto-start dependencies: 05:log-finished 1`] = `
@@ -87,17 +79,13 @@ Array [
 `;
 
 exports[`job auto-start dependencies: 06:tree-finished 1`] = `
-Array [
-  Array [
-    "main=>[]",
-    Array [
-      Array [
-        "dep=>[main]",
-        Array [],
-      ],
-    ],
-  ],
-]
+"main
+  dependents:
+  dependencies:
+    dep
+      dependents:
+        main
+      dependencies:"
 `;
 
 exports[`job multiline: 00:create 1`] = `
@@ -117,12 +105,9 @@ Array [
 `;
 
 exports[`job multiline: 02:tree-aOk 1`] = `
-Array [
-  Array [
-    "multi=>[]",
-    Array [],
-  ],
-]
+"multi
+  dependents:
+  dependencies:"
 `;
 
 exports[`job multiline: 03:log-bOk 1`] = `
@@ -137,12 +122,9 @@ Array [
 `;
 
 exports[`job multiline: 04:tree-bOk 1`] = `
-Array [
-  Array [
-    "multi=>[]",
-    Array [],
-  ],
-]
+"multi
+  dependents:
+  dependencies:"
 `;
 
 exports[`job multiline: 05:log-finished 1`] = `
@@ -159,12 +141,9 @@ Array [
 `;
 
 exports[`job multiline: 06:tree-finished 1`] = `
-Array [
-  Array [
-    "multi=>[]",
-    Array [],
-  ],
-]
+"multi
+  dependents:
+  dependencies:"
 `;
 
 exports[`job typing: 00:create 1`] = `
@@ -184,12 +163,9 @@ Array [
 `;
 
 exports[`job typing: 02:tree-aOk 1`] = `
-Array [
-  Array [
-    "typing=>[]",
-    Array [],
-  ],
-]
+"typing
+  dependents:
+  dependencies:"
 `;
 
 exports[`job typing: 03:log-bOk 1`] = `
@@ -205,12 +181,9 @@ Array [
 `;
 
 exports[`job typing: 04:tree-bOk 1`] = `
-Array [
-  Array [
-    "typing=>[]",
-    Array [],
-  ],
-]
+"typing
+  dependents:
+  dependencies:"
 `;
 
 exports[`job typing: 05:log-cOk 1`] = `
@@ -228,12 +201,9 @@ Array [
 `;
 
 exports[`job typing: 06:tree-cOk 1`] = `
-Array [
-  Array [
-    "typing=>[]",
-    Array [],
-  ],
-]
+"typing
+  dependents:
+  dependencies:"
 `;
 
 exports[`job typing: 07:log-finished 1`] = `
@@ -254,12 +224,9 @@ Array [
 `;
 
 exports[`job typing: 08:tree-finished 1`] = `
-Array [
-  Array [
-    "typing=>[]",
-    Array [],
-  ],
-]
+"typing
+  dependents:
+  dependencies:"
 `;
 
 exports[`job with dependencies: 00:create 1`] = `
@@ -282,17 +249,13 @@ Array [
 `;
 
 exports[`job with dependencies: 02:tree-dep working 1`] = `
-Array [
-  Array [
-    "main=>[]",
-    Array [
-      Array [
-        "dep=>[main]",
-        Array [],
-      ],
-    ],
-  ],
-]
+"main
+  dependents:
+  dependencies:
+    dep
+      dependents:
+        main
+      dependencies:"
 `;
 
 exports[`job with dependencies: 03:log-dep finished 1`] = `
@@ -314,17 +277,13 @@ Array [
 `;
 
 exports[`job with dependencies: 04:tree-dep finished 1`] = `
-Array [
-  Array [
-    "main=>[]",
-    Array [
-      Array [
-        "dep=>[main]",
-        Array [],
-      ],
-    ],
-  ],
-]
+"main
+  dependents:
+  dependencies:
+    dep
+      dependents:
+        main
+      dependencies:"
 `;
 
 exports[`job with dependencies: 05:log-dep working 1`] = `
@@ -349,17 +308,13 @@ Array [
 `;
 
 exports[`job with dependencies: 06:tree-dep working 1`] = `
-Array [
-  Array [
-    "main=>[]",
-    Array [
-      Array [
-        "dep=>[main]",
-        Array [],
-      ],
-    ],
-  ],
-]
+"main
+  dependents:
+  dependencies:
+    dep
+      dependents:
+        main
+      dependencies:"
 `;
 
 exports[`job without dependencies: 00:create 1`] = `
@@ -379,12 +334,9 @@ Array [
 `;
 
 exports[`job without dependencies: 02:tree-working 1`] = `
-Array [
-  Array [
-    "job=>[]",
-    Array [],
-  ],
-]
+"job
+  dependents:
+  dependencies:"
 `;
 
 exports[`job without dependencies: 03:log-finished 1`] = `
@@ -400,10 +352,7 @@ Array [
 `;
 
 exports[`job without dependencies: 04:tree-finished 1`] = `
-Array [
-  Array [
-    "job=>[]",
-    Array [],
-  ],
-]
+"job
+  dependents:
+  dependencies:"
 `;

@@ -31,6 +31,11 @@ export interface Package {
     readonly repository?: string
     readonly bundlers: ReadonlyArray<string>
     readonly dependencies: ReadonlyArray<string>
+    readonly measures?: Measure
+}
+
+export interface Measure {
+
 }
 
 export interface ByPackage<T> {

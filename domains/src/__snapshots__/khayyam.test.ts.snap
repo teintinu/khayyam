@@ -12,541 +12,712 @@ Array [
   "creating job [c(npm-test)]",
   "creating job [b(npm-test)]",
   "creating job [a(npm-test)]",
-  "creating job [e(npm-lint)]",
-  "creating job [d(npm-lint)]",
-  "creating job [c(npm-lint)]",
-  "creating job [b(npm-lint)]",
-  "creating job [a(npm-lint)]",
   "creating job [e(npm-publish)]",
   "creating job [d(npm-publish)]",
   "creating job [c(npm-publish)]",
   "creating job [b(npm-publish)]",
   "creating job [a(npm-publish)]",
+  "creating job [e(npm-lint)]",
+  "creating job [d(npm-lint)]",
+  "creating job [c(npm-lint)]",
+  "creating job [b(npm-lint)]",
+  "creating job [a(npm-lint)]",
+  "creating job [e(npm-measure)]",
+  "creating job [d(npm-measure)]",
+  "creating job [c(npm-measure)]",
+  "creating job [b(npm-measure)]",
+  "creating job [a(npm-measure)]",
 ]
 `;
 
 exports[`Khayyam domain CI a,b,c,d,e packages: tree 1`] = `
-Array [
-  Array [
-    "e(npm-publish)=>[]",
-    Array [
-      Array [
-        "e(npm-build-production)=>[d(npm-build-production),e(npm-test),e(npm-publish)]",
-        Array [],
-      ],
-      Array [
-        "e(npm-test)=>[d(npm-test),e(npm-publish)]",
-        Array [
-          Array [
-            "e(npm-build-production)=>[d(npm-build-production),e(npm-test),e(npm-publish)]",
-            Array [],
-          ],
-        ],
-      ],
-      Array [
-        "e(npm-lint)=>[e(npm-publish)]",
-        Array [],
-      ],
-    ],
-  ],
-  Array [
-    "d(npm-publish)=>[]",
-    Array [
-      Array [
-        "d(npm-build-production)=>[c(npm-build-production),b(npm-build-production),d(npm-test),d(npm-publish)]",
-        Array [
-          Array [
-            "e(npm-build-production)=>[d(npm-build-production),e(npm-test),e(npm-publish)]",
-            Array [],
-          ],
-        ],
-      ],
-      Array [
-        "d(npm-test)=>[c(npm-test),b(npm-test),d(npm-publish)]",
-        Array [
-          Array [
-            "e(npm-test)=>[d(npm-test),e(npm-publish)]",
-            Array [
-              Array [
-                "e(npm-build-production)=>[d(npm-build-production),e(npm-test),e(npm-publish)]",
-                Array [],
-              ],
-            ],
-          ],
-          Array [
-            "d(npm-build-production)=>[c(npm-build-production),b(npm-build-production),d(npm-test),d(npm-publish)]",
-            Array [
-              Array [
-                "e(npm-build-production)=>[d(npm-build-production),e(npm-test),e(npm-publish)]",
-                Array [],
-              ],
-            ],
-          ],
-        ],
-      ],
-      Array [
-        "d(npm-lint)=>[d(npm-publish)]",
-        Array [],
-      ],
-    ],
-  ],
-  Array [
-    "c(npm-publish)=>[]",
-    Array [
-      Array [
-        "c(npm-build-production)=>[b(npm-build-production),a(npm-build-production),c(npm-test),c(npm-publish)]",
-        Array [
-          Array [
-            "d(npm-build-production)=>[c(npm-build-production),b(npm-build-production),d(npm-test),d(npm-publish)]",
-            Array [
-              Array [
-                "e(npm-build-production)=>[d(npm-build-production),e(npm-test),e(npm-publish)]",
-                Array [],
-              ],
-            ],
-          ],
-        ],
-      ],
-      Array [
-        "c(npm-test)=>[b(npm-test),a(npm-test),c(npm-publish)]",
-        Array [
-          Array [
-            "d(npm-test)=>[c(npm-test),b(npm-test),d(npm-publish)]",
-            Array [
-              Array [
-                "e(npm-test)=>[d(npm-test),e(npm-publish)]",
-                Array [
-                  Array [
-                    "e(npm-build-production)=>[d(npm-build-production),e(npm-test),e(npm-publish)]",
-                    Array [],
-                  ],
-                ],
-              ],
-              Array [
-                "d(npm-build-production)=>[c(npm-build-production),b(npm-build-production),d(npm-test),d(npm-publish)]",
-                Array [
-                  Array [
-                    "e(npm-build-production)=>[d(npm-build-production),e(npm-test),e(npm-publish)]",
-                    Array [],
-                  ],
-                ],
-              ],
-            ],
-          ],
-          Array [
-            "c(npm-build-production)=>[b(npm-build-production),a(npm-build-production),c(npm-test),c(npm-publish)]",
-            Array [
-              Array [
-                "d(npm-build-production)=>[c(npm-build-production),b(npm-build-production),d(npm-test),d(npm-publish)]",
-                Array [
-                  Array [
-                    "e(npm-build-production)=>[d(npm-build-production),e(npm-test),e(npm-publish)]",
-                    Array [],
-                  ],
-                ],
-              ],
-            ],
-          ],
-        ],
-      ],
-      Array [
-        "c(npm-lint)=>[c(npm-publish)]",
-        Array [],
-      ],
-    ],
-  ],
-  Array [
-    "b(npm-publish)=>[]",
-    Array [
-      Array [
-        "b(npm-build-production)=>[a(npm-build-production),b(npm-test),b(npm-publish)]",
-        Array [
-          Array [
-            "c(npm-build-production)=>[b(npm-build-production),a(npm-build-production),c(npm-test),c(npm-publish)]",
-            Array [
-              Array [
-                "d(npm-build-production)=>[c(npm-build-production),b(npm-build-production),d(npm-test),d(npm-publish)]",
-                Array [
-                  Array [
-                    "e(npm-build-production)=>[d(npm-build-production),e(npm-test),e(npm-publish)]",
-                    Array [],
-                  ],
-                ],
-              ],
-            ],
-          ],
-          Array [
-            "d(npm-build-production)=>[c(npm-build-production),b(npm-build-production),d(npm-test),d(npm-publish)]",
-            Array [
-              Array [
-                "e(npm-build-production)=>[d(npm-build-production),e(npm-test),e(npm-publish)]",
-                Array [],
-              ],
-            ],
-          ],
-        ],
-      ],
-      Array [
-        "b(npm-test)=>[a(npm-test),b(npm-publish)]",
-        Array [
-          Array [
-            "c(npm-test)=>[b(npm-test),a(npm-test),c(npm-publish)]",
-            Array [
-              Array [
-                "d(npm-test)=>[c(npm-test),b(npm-test),d(npm-publish)]",
-                Array [
-                  Array [
-                    "e(npm-test)=>[d(npm-test),e(npm-publish)]",
-                    Array [
-                      Array [
-                        "e(npm-build-production)=>[d(npm-build-production),e(npm-test),e(npm-publish)]",
-                        Array [],
-                      ],
-                    ],
-                  ],
-                  Array [
-                    "d(npm-build-production)=>[c(npm-build-production),b(npm-build-production),d(npm-test),d(npm-publish)]",
-                    Array [
-                      Array [
-                        "e(npm-build-production)=>[d(npm-build-production),e(npm-test),e(npm-publish)]",
-                        Array [],
-                      ],
-                    ],
-                  ],
-                ],
-              ],
-              Array [
-                "c(npm-build-production)=>[b(npm-build-production),a(npm-build-production),c(npm-test),c(npm-publish)]",
-                Array [
-                  Array [
-                    "d(npm-build-production)=>[c(npm-build-production),b(npm-build-production),d(npm-test),d(npm-publish)]",
-                    Array [
-                      Array [
-                        "e(npm-build-production)=>[d(npm-build-production),e(npm-test),e(npm-publish)]",
-                        Array [],
-                      ],
-                    ],
-                  ],
-                ],
-              ],
-            ],
-          ],
-          Array [
-            "d(npm-test)=>[c(npm-test),b(npm-test),d(npm-publish)]",
-            Array [
-              Array [
-                "e(npm-test)=>[d(npm-test),e(npm-publish)]",
-                Array [
-                  Array [
-                    "e(npm-build-production)=>[d(npm-build-production),e(npm-test),e(npm-publish)]",
-                    Array [],
-                  ],
-                ],
-              ],
-              Array [
-                "d(npm-build-production)=>[c(npm-build-production),b(npm-build-production),d(npm-test),d(npm-publish)]",
-                Array [
-                  Array [
-                    "e(npm-build-production)=>[d(npm-build-production),e(npm-test),e(npm-publish)]",
-                    Array [],
-                  ],
-                ],
-              ],
-            ],
-          ],
-          Array [
-            "b(npm-build-production)=>[a(npm-build-production),b(npm-test),b(npm-publish)]",
-            Array [
-              Array [
-                "c(npm-build-production)=>[b(npm-build-production),a(npm-build-production),c(npm-test),c(npm-publish)]",
-                Array [
-                  Array [
-                    "d(npm-build-production)=>[c(npm-build-production),b(npm-build-production),d(npm-test),d(npm-publish)]",
-                    Array [
-                      Array [
-                        "e(npm-build-production)=>[d(npm-build-production),e(npm-test),e(npm-publish)]",
-                        Array [],
-                      ],
-                    ],
-                  ],
-                ],
-              ],
-              Array [
-                "d(npm-build-production)=>[c(npm-build-production),b(npm-build-production),d(npm-test),d(npm-publish)]",
-                Array [
-                  Array [
-                    "e(npm-build-production)=>[d(npm-build-production),e(npm-test),e(npm-publish)]",
-                    Array [],
-                  ],
-                ],
-              ],
-            ],
-          ],
-        ],
-      ],
-      Array [
-        "b(npm-lint)=>[b(npm-publish)]",
-        Array [],
-      ],
-    ],
-  ],
-  Array [
-    "a(npm-publish)=>[]",
-    Array [
-      Array [
-        "a(npm-build-production)=>[a(npm-test),a(npm-publish)]",
-        Array [
-          Array [
-            "b(npm-build-production)=>[a(npm-build-production),b(npm-test),b(npm-publish)]",
-            Array [
-              Array [
-                "c(npm-build-production)=>[b(npm-build-production),a(npm-build-production),c(npm-test),c(npm-publish)]",
-                Array [
-                  Array [
-                    "d(npm-build-production)=>[c(npm-build-production),b(npm-build-production),d(npm-test),d(npm-publish)]",
-                    Array [
-                      Array [
-                        "e(npm-build-production)=>[d(npm-build-production),e(npm-test),e(npm-publish)]",
-                        Array [],
-                      ],
-                    ],
-                  ],
-                ],
-              ],
-              Array [
-                "d(npm-build-production)=>[c(npm-build-production),b(npm-build-production),d(npm-test),d(npm-publish)]",
-                Array [
-                  Array [
-                    "e(npm-build-production)=>[d(npm-build-production),e(npm-test),e(npm-publish)]",
-                    Array [],
-                  ],
-                ],
-              ],
-            ],
-          ],
-          Array [
-            "c(npm-build-production)=>[b(npm-build-production),a(npm-build-production),c(npm-test),c(npm-publish)]",
-            Array [
-              Array [
-                "d(npm-build-production)=>[c(npm-build-production),b(npm-build-production),d(npm-test),d(npm-publish)]",
-                Array [
-                  Array [
-                    "e(npm-build-production)=>[d(npm-build-production),e(npm-test),e(npm-publish)]",
-                    Array [],
-                  ],
-                ],
-              ],
-            ],
-          ],
-        ],
-      ],
-      Array [
-        "a(npm-test)=>[a(npm-publish)]",
-        Array [
-          Array [
-            "b(npm-test)=>[a(npm-test),b(npm-publish)]",
-            Array [
-              Array [
-                "c(npm-test)=>[b(npm-test),a(npm-test),c(npm-publish)]",
-                Array [
-                  Array [
-                    "d(npm-test)=>[c(npm-test),b(npm-test),d(npm-publish)]",
-                    Array [
-                      Array [
-                        "e(npm-test)=>[d(npm-test),e(npm-publish)]",
-                        Array [
-                          Array [
-                            "e(npm-build-production)=>[d(npm-build-production),e(npm-test),e(npm-publish)]",
-                            Array [],
-                          ],
-                        ],
-                      ],
-                      Array [
-                        "d(npm-build-production)=>[c(npm-build-production),b(npm-build-production),d(npm-test),d(npm-publish)]",
-                        Array [
-                          Array [
-                            "e(npm-build-production)=>[d(npm-build-production),e(npm-test),e(npm-publish)]",
-                            Array [],
-                          ],
-                        ],
-                      ],
-                    ],
-                  ],
-                  Array [
-                    "c(npm-build-production)=>[b(npm-build-production),a(npm-build-production),c(npm-test),c(npm-publish)]",
-                    Array [
-                      Array [
-                        "d(npm-build-production)=>[c(npm-build-production),b(npm-build-production),d(npm-test),d(npm-publish)]",
-                        Array [
-                          Array [
-                            "e(npm-build-production)=>[d(npm-build-production),e(npm-test),e(npm-publish)]",
-                            Array [],
-                          ],
-                        ],
-                      ],
-                    ],
-                  ],
-                ],
-              ],
-              Array [
-                "d(npm-test)=>[c(npm-test),b(npm-test),d(npm-publish)]",
-                Array [
-                  Array [
-                    "e(npm-test)=>[d(npm-test),e(npm-publish)]",
-                    Array [
-                      Array [
-                        "e(npm-build-production)=>[d(npm-build-production),e(npm-test),e(npm-publish)]",
-                        Array [],
-                      ],
-                    ],
-                  ],
-                  Array [
-                    "d(npm-build-production)=>[c(npm-build-production),b(npm-build-production),d(npm-test),d(npm-publish)]",
-                    Array [
-                      Array [
-                        "e(npm-build-production)=>[d(npm-build-production),e(npm-test),e(npm-publish)]",
-                        Array [],
-                      ],
-                    ],
-                  ],
-                ],
-              ],
-              Array [
-                "b(npm-build-production)=>[a(npm-build-production),b(npm-test),b(npm-publish)]",
-                Array [
-                  Array [
-                    "c(npm-build-production)=>[b(npm-build-production),a(npm-build-production),c(npm-test),c(npm-publish)]",
-                    Array [
-                      Array [
-                        "d(npm-build-production)=>[c(npm-build-production),b(npm-build-production),d(npm-test),d(npm-publish)]",
-                        Array [
-                          Array [
-                            "e(npm-build-production)=>[d(npm-build-production),e(npm-test),e(npm-publish)]",
-                            Array [],
-                          ],
-                        ],
-                      ],
-                    ],
-                  ],
-                  Array [
-                    "d(npm-build-production)=>[c(npm-build-production),b(npm-build-production),d(npm-test),d(npm-publish)]",
-                    Array [
-                      Array [
-                        "e(npm-build-production)=>[d(npm-build-production),e(npm-test),e(npm-publish)]",
-                        Array [],
-                      ],
-                    ],
-                  ],
-                ],
-              ],
-            ],
-          ],
-          Array [
-            "c(npm-test)=>[b(npm-test),a(npm-test),c(npm-publish)]",
-            Array [
-              Array [
-                "d(npm-test)=>[c(npm-test),b(npm-test),d(npm-publish)]",
-                Array [
-                  Array [
-                    "e(npm-test)=>[d(npm-test),e(npm-publish)]",
-                    Array [
-                      Array [
-                        "e(npm-build-production)=>[d(npm-build-production),e(npm-test),e(npm-publish)]",
-                        Array [],
-                      ],
-                    ],
-                  ],
-                  Array [
-                    "d(npm-build-production)=>[c(npm-build-production),b(npm-build-production),d(npm-test),d(npm-publish)]",
-                    Array [
-                      Array [
-                        "e(npm-build-production)=>[d(npm-build-production),e(npm-test),e(npm-publish)]",
-                        Array [],
-                      ],
-                    ],
-                  ],
-                ],
-              ],
-              Array [
-                "c(npm-build-production)=>[b(npm-build-production),a(npm-build-production),c(npm-test),c(npm-publish)]",
-                Array [
-                  Array [
-                    "d(npm-build-production)=>[c(npm-build-production),b(npm-build-production),d(npm-test),d(npm-publish)]",
-                    Array [
-                      Array [
-                        "e(npm-build-production)=>[d(npm-build-production),e(npm-test),e(npm-publish)]",
-                        Array [],
-                      ],
-                    ],
-                  ],
-                ],
-              ],
-            ],
-          ],
-          Array [
-            "a(npm-build-production)=>[a(npm-test),a(npm-publish)]",
-            Array [
-              Array [
-                "b(npm-build-production)=>[a(npm-build-production),b(npm-test),b(npm-publish)]",
-                Array [
-                  Array [
-                    "c(npm-build-production)=>[b(npm-build-production),a(npm-build-production),c(npm-test),c(npm-publish)]",
-                    Array [
-                      Array [
-                        "d(npm-build-production)=>[c(npm-build-production),b(npm-build-production),d(npm-test),d(npm-publish)]",
-                        Array [
-                          Array [
-                            "e(npm-build-production)=>[d(npm-build-production),e(npm-test),e(npm-publish)]",
-                            Array [],
-                          ],
-                        ],
-                      ],
-                    ],
-                  ],
-                  Array [
-                    "d(npm-build-production)=>[c(npm-build-production),b(npm-build-production),d(npm-test),d(npm-publish)]",
-                    Array [
-                      Array [
-                        "e(npm-build-production)=>[d(npm-build-production),e(npm-test),e(npm-publish)]",
-                        Array [],
-                      ],
-                    ],
-                  ],
-                ],
-              ],
-              Array [
-                "c(npm-build-production)=>[b(npm-build-production),a(npm-build-production),c(npm-test),c(npm-publish)]",
-                Array [
-                  Array [
-                    "d(npm-build-production)=>[c(npm-build-production),b(npm-build-production),d(npm-test),d(npm-publish)]",
-                    Array [
-                      Array [
-                        "e(npm-build-production)=>[d(npm-build-production),e(npm-test),e(npm-publish)]",
-                        Array [],
-                      ],
-                    ],
-                  ],
-                ],
-              ],
-            ],
-          ],
-        ],
-      ],
-      Array [
-        "a(npm-lint)=>[a(npm-publish)]",
-        Array [],
-      ],
-    ],
-  ],
-]
+"e(npm-publish)
+  dependents:
+  dependencies:
+    e(npm-build-production)
+      dependents:
+        d(npm-build-production)
+        e(npm-test)
+        e(npm-publish)
+      dependencies:
+    e(npm-test)
+      dependents:
+        d(npm-test)
+        e(npm-publish)
+      dependencies:
+        e(npm-build-production)
+          dependents:
+            d(npm-build-production)
+            e(npm-test)
+            e(npm-publish)
+          dependencies:
+    e(npm-lint)
+      dependents:
+        e(npm-publish)
+      dependencies:
+    e(npm-measure)
+      dependents:
+        e(npm-publish)
+      dependencies:
+d(npm-publish)
+  dependents:
+  dependencies:
+    d(npm-build-production)
+      dependents:
+        c(npm-build-production)
+        b(npm-build-production)
+        d(npm-test)
+        d(npm-publish)
+      dependencies:
+        e(npm-build-production)
+          dependents:
+            d(npm-build-production)
+            e(npm-test)
+            e(npm-publish)
+          dependencies:
+    d(npm-test)
+      dependents:
+        c(npm-test)
+        b(npm-test)
+        d(npm-publish)
+      dependencies:
+        e(npm-test)
+          dependents:
+            d(npm-test)
+            e(npm-publish)
+          dependencies:
+            e(npm-build-production)
+              dependents:
+                d(npm-build-production)
+                e(npm-test)
+                e(npm-publish)
+              dependencies:
+        d(npm-build-production)
+          dependents:
+            c(npm-build-production)
+            b(npm-build-production)
+            d(npm-test)
+            d(npm-publish)
+          dependencies:
+            e(npm-build-production)
+              dependents:
+                d(npm-build-production)
+                e(npm-test)
+                e(npm-publish)
+              dependencies:
+    d(npm-lint)
+      dependents:
+        d(npm-publish)
+      dependencies:
+    d(npm-measure)
+      dependents:
+        d(npm-publish)
+      dependencies:
+c(npm-publish)
+  dependents:
+  dependencies:
+    c(npm-build-production)
+      dependents:
+        b(npm-build-production)
+        a(npm-build-production)
+        c(npm-test)
+        c(npm-publish)
+      dependencies:
+        d(npm-build-production)
+          dependents:
+            c(npm-build-production)
+            b(npm-build-production)
+            d(npm-test)
+            d(npm-publish)
+          dependencies:
+            e(npm-build-production)
+              dependents:
+                d(npm-build-production)
+                e(npm-test)
+                e(npm-publish)
+              dependencies:
+    c(npm-test)
+      dependents:
+        b(npm-test)
+        a(npm-test)
+        c(npm-publish)
+      dependencies:
+        d(npm-test)
+          dependents:
+            c(npm-test)
+            b(npm-test)
+            d(npm-publish)
+          dependencies:
+            e(npm-test)
+              dependents:
+                d(npm-test)
+                e(npm-publish)
+              dependencies:
+                e(npm-build-production)
+                  dependents:
+                    d(npm-build-production)
+                    e(npm-test)
+                    e(npm-publish)
+                  dependencies:
+            d(npm-build-production)
+              dependents:
+                c(npm-build-production)
+                b(npm-build-production)
+                d(npm-test)
+                d(npm-publish)
+              dependencies:
+                e(npm-build-production)
+                  dependents:
+                    d(npm-build-production)
+                    e(npm-test)
+                    e(npm-publish)
+                  dependencies:
+        c(npm-build-production)
+          dependents:
+            b(npm-build-production)
+            a(npm-build-production)
+            c(npm-test)
+            c(npm-publish)
+          dependencies:
+            d(npm-build-production)
+              dependents:
+                c(npm-build-production)
+                b(npm-build-production)
+                d(npm-test)
+                d(npm-publish)
+              dependencies:
+                e(npm-build-production)
+                  dependents:
+                    d(npm-build-production)
+                    e(npm-test)
+                    e(npm-publish)
+                  dependencies:
+    c(npm-lint)
+      dependents:
+        c(npm-publish)
+      dependencies:
+    c(npm-measure)
+      dependents:
+        c(npm-publish)
+      dependencies:
+b(npm-publish)
+  dependents:
+  dependencies:
+    b(npm-build-production)
+      dependents:
+        a(npm-build-production)
+        b(npm-test)
+        b(npm-publish)
+      dependencies:
+        c(npm-build-production)
+          dependents:
+            b(npm-build-production)
+            a(npm-build-production)
+            c(npm-test)
+            c(npm-publish)
+          dependencies:
+            d(npm-build-production)
+              dependents:
+                c(npm-build-production)
+                b(npm-build-production)
+                d(npm-test)
+                d(npm-publish)
+              dependencies:
+                e(npm-build-production)
+                  dependents:
+                    d(npm-build-production)
+                    e(npm-test)
+                    e(npm-publish)
+                  dependencies:
+        d(npm-build-production)
+          dependents:
+            c(npm-build-production)
+            b(npm-build-production)
+            d(npm-test)
+            d(npm-publish)
+          dependencies:
+            e(npm-build-production)
+              dependents:
+                d(npm-build-production)
+                e(npm-test)
+                e(npm-publish)
+              dependencies:
+    b(npm-test)
+      dependents:
+        a(npm-test)
+        b(npm-publish)
+      dependencies:
+        c(npm-test)
+          dependents:
+            b(npm-test)
+            a(npm-test)
+            c(npm-publish)
+          dependencies:
+            d(npm-test)
+              dependents:
+                c(npm-test)
+                b(npm-test)
+                d(npm-publish)
+              dependencies:
+                e(npm-test)
+                  dependents:
+                    d(npm-test)
+                    e(npm-publish)
+                  dependencies:
+                    e(npm-build-production)
+                      dependents:
+                        d(npm-build-production)
+                        e(npm-test)
+                        e(npm-publish)
+                      dependencies:
+                d(npm-build-production)
+                  dependents:
+                    c(npm-build-production)
+                    b(npm-build-production)
+                    d(npm-test)
+                    d(npm-publish)
+                  dependencies:
+                    e(npm-build-production)
+                      dependents:
+                        d(npm-build-production)
+                        e(npm-test)
+                        e(npm-publish)
+                      dependencies:
+            c(npm-build-production)
+              dependents:
+                b(npm-build-production)
+                a(npm-build-production)
+                c(npm-test)
+                c(npm-publish)
+              dependencies:
+                d(npm-build-production)
+                  dependents:
+                    c(npm-build-production)
+                    b(npm-build-production)
+                    d(npm-test)
+                    d(npm-publish)
+                  dependencies:
+                    e(npm-build-production)
+                      dependents:
+                        d(npm-build-production)
+                        e(npm-test)
+                        e(npm-publish)
+                      dependencies:
+        d(npm-test)
+          dependents:
+            c(npm-test)
+            b(npm-test)
+            d(npm-publish)
+          dependencies:
+            e(npm-test)
+              dependents:
+                d(npm-test)
+                e(npm-publish)
+              dependencies:
+                e(npm-build-production)
+                  dependents:
+                    d(npm-build-production)
+                    e(npm-test)
+                    e(npm-publish)
+                  dependencies:
+            d(npm-build-production)
+              dependents:
+                c(npm-build-production)
+                b(npm-build-production)
+                d(npm-test)
+                d(npm-publish)
+              dependencies:
+                e(npm-build-production)
+                  dependents:
+                    d(npm-build-production)
+                    e(npm-test)
+                    e(npm-publish)
+                  dependencies:
+        b(npm-build-production)
+          dependents:
+            a(npm-build-production)
+            b(npm-test)
+            b(npm-publish)
+          dependencies:
+            c(npm-build-production)
+              dependents:
+                b(npm-build-production)
+                a(npm-build-production)
+                c(npm-test)
+                c(npm-publish)
+              dependencies:
+                d(npm-build-production)
+                  dependents:
+                    c(npm-build-production)
+                    b(npm-build-production)
+                    d(npm-test)
+                    d(npm-publish)
+                  dependencies:
+                    e(npm-build-production)
+                      dependents:
+                        d(npm-build-production)
+                        e(npm-test)
+                        e(npm-publish)
+                      dependencies:
+            d(npm-build-production)
+              dependents:
+                c(npm-build-production)
+                b(npm-build-production)
+                d(npm-test)
+                d(npm-publish)
+              dependencies:
+                e(npm-build-production)
+                  dependents:
+                    d(npm-build-production)
+                    e(npm-test)
+                    e(npm-publish)
+                  dependencies:
+    b(npm-lint)
+      dependents:
+        b(npm-publish)
+      dependencies:
+    b(npm-measure)
+      dependents:
+        b(npm-publish)
+      dependencies:
+a(npm-publish)
+  dependents:
+  dependencies:
+    a(npm-build-production)
+      dependents:
+        a(npm-test)
+        a(npm-publish)
+      dependencies:
+        b(npm-build-production)
+          dependents:
+            a(npm-build-production)
+            b(npm-test)
+            b(npm-publish)
+          dependencies:
+            c(npm-build-production)
+              dependents:
+                b(npm-build-production)
+                a(npm-build-production)
+                c(npm-test)
+                c(npm-publish)
+              dependencies:
+                d(npm-build-production)
+                  dependents:
+                    c(npm-build-production)
+                    b(npm-build-production)
+                    d(npm-test)
+                    d(npm-publish)
+                  dependencies:
+                    e(npm-build-production)
+                      dependents:
+                        d(npm-build-production)
+                        e(npm-test)
+                        e(npm-publish)
+                      dependencies:
+            d(npm-build-production)
+              dependents:
+                c(npm-build-production)
+                b(npm-build-production)
+                d(npm-test)
+                d(npm-publish)
+              dependencies:
+                e(npm-build-production)
+                  dependents:
+                    d(npm-build-production)
+                    e(npm-test)
+                    e(npm-publish)
+                  dependencies:
+        c(npm-build-production)
+          dependents:
+            b(npm-build-production)
+            a(npm-build-production)
+            c(npm-test)
+            c(npm-publish)
+          dependencies:
+            d(npm-build-production)
+              dependents:
+                c(npm-build-production)
+                b(npm-build-production)
+                d(npm-test)
+                d(npm-publish)
+              dependencies:
+                e(npm-build-production)
+                  dependents:
+                    d(npm-build-production)
+                    e(npm-test)
+                    e(npm-publish)
+                  dependencies:
+    a(npm-test)
+      dependents:
+        a(npm-publish)
+      dependencies:
+        b(npm-test)
+          dependents:
+            a(npm-test)
+            b(npm-publish)
+          dependencies:
+            c(npm-test)
+              dependents:
+                b(npm-test)
+                a(npm-test)
+                c(npm-publish)
+              dependencies:
+                d(npm-test)
+                  dependents:
+                    c(npm-test)
+                    b(npm-test)
+                    d(npm-publish)
+                  dependencies:
+                    e(npm-test)
+                      dependents:
+                        d(npm-test)
+                        e(npm-publish)
+                      dependencies:
+                        e(npm-build-production)
+                          dependents:
+                            d(npm-build-production)
+                            e(npm-test)
+                            e(npm-publish)
+                          dependencies:
+                    d(npm-build-production)
+                      dependents:
+                        c(npm-build-production)
+                        b(npm-build-production)
+                        d(npm-test)
+                        d(npm-publish)
+                      dependencies:
+                        e(npm-build-production)
+                          dependents:
+                            d(npm-build-production)
+                            e(npm-test)
+                            e(npm-publish)
+                          dependencies:
+                c(npm-build-production)
+                  dependents:
+                    b(npm-build-production)
+                    a(npm-build-production)
+                    c(npm-test)
+                    c(npm-publish)
+                  dependencies:
+                    d(npm-build-production)
+                      dependents:
+                        c(npm-build-production)
+                        b(npm-build-production)
+                        d(npm-test)
+                        d(npm-publish)
+                      dependencies:
+                        e(npm-build-production)
+                          dependents:
+                            d(npm-build-production)
+                            e(npm-test)
+                            e(npm-publish)
+                          dependencies:
+            d(npm-test)
+              dependents:
+                c(npm-test)
+                b(npm-test)
+                d(npm-publish)
+              dependencies:
+                e(npm-test)
+                  dependents:
+                    d(npm-test)
+                    e(npm-publish)
+                  dependencies:
+                    e(npm-build-production)
+                      dependents:
+                        d(npm-build-production)
+                        e(npm-test)
+                        e(npm-publish)
+                      dependencies:
+                d(npm-build-production)
+                  dependents:
+                    c(npm-build-production)
+                    b(npm-build-production)
+                    d(npm-test)
+                    d(npm-publish)
+                  dependencies:
+                    e(npm-build-production)
+                      dependents:
+                        d(npm-build-production)
+                        e(npm-test)
+                        e(npm-publish)
+                      dependencies:
+            b(npm-build-production)
+              dependents:
+                a(npm-build-production)
+                b(npm-test)
+                b(npm-publish)
+              dependencies:
+                c(npm-build-production)
+                  dependents:
+                    b(npm-build-production)
+                    a(npm-build-production)
+                    c(npm-test)
+                    c(npm-publish)
+                  dependencies:
+                    d(npm-build-production)
+                      dependents:
+                        c(npm-build-production)
+                        b(npm-build-production)
+                        d(npm-test)
+                        d(npm-publish)
+                      dependencies:
+                        e(npm-build-production)
+                          dependents:
+                            d(npm-build-production)
+                            e(npm-test)
+                            e(npm-publish)
+                          dependencies:
+                d(npm-build-production)
+                  dependents:
+                    c(npm-build-production)
+                    b(npm-build-production)
+                    d(npm-test)
+                    d(npm-publish)
+                  dependencies:
+                    e(npm-build-production)
+                      dependents:
+                        d(npm-build-production)
+                        e(npm-test)
+                        e(npm-publish)
+                      dependencies:
+        c(npm-test)
+          dependents:
+            b(npm-test)
+            a(npm-test)
+            c(npm-publish)
+          dependencies:
+            d(npm-test)
+              dependents:
+                c(npm-test)
+                b(npm-test)
+                d(npm-publish)
+              dependencies:
+                e(npm-test)
+                  dependents:
+                    d(npm-test)
+                    e(npm-publish)
+                  dependencies:
+                    e(npm-build-production)
+                      dependents:
+                        d(npm-build-production)
+                        e(npm-test)
+                        e(npm-publish)
+                      dependencies:
+                d(npm-build-production)
+                  dependents:
+                    c(npm-build-production)
+                    b(npm-build-production)
+                    d(npm-test)
+                    d(npm-publish)
+                  dependencies:
+                    e(npm-build-production)
+                      dependents:
+                        d(npm-build-production)
+                        e(npm-test)
+                        e(npm-publish)
+                      dependencies:
+            c(npm-build-production)
+              dependents:
+                b(npm-build-production)
+                a(npm-build-production)
+                c(npm-test)
+                c(npm-publish)
+              dependencies:
+                d(npm-build-production)
+                  dependents:
+                    c(npm-build-production)
+                    b(npm-build-production)
+                    d(npm-test)
+                    d(npm-publish)
+                  dependencies:
+                    e(npm-build-production)
+                      dependents:
+                        d(npm-build-production)
+                        e(npm-test)
+                        e(npm-publish)
+                      dependencies:
+        a(npm-build-production)
+          dependents:
+            a(npm-test)
+            a(npm-publish)
+          dependencies:
+            b(npm-build-production)
+              dependents:
+                a(npm-build-production)
+                b(npm-test)
+                b(npm-publish)
+              dependencies:
+                c(npm-build-production)
+                  dependents:
+                    b(npm-build-production)
+                    a(npm-build-production)
+                    c(npm-test)
+                    c(npm-publish)
+                  dependencies:
+                    d(npm-build-production)
+                      dependents:
+                        c(npm-build-production)
+                        b(npm-build-production)
+                        d(npm-test)
+                        d(npm-publish)
+                      dependencies:
+                        e(npm-build-production)
+                          dependents:
+                            d(npm-build-production)
+                            e(npm-test)
+                            e(npm-publish)
+                          dependencies:
+                d(npm-build-production)
+                  dependents:
+                    c(npm-build-production)
+                    b(npm-build-production)
+                    d(npm-test)
+                    d(npm-publish)
+                  dependencies:
+                    e(npm-build-production)
+                      dependents:
+                        d(npm-build-production)
+                        e(npm-test)
+                        e(npm-publish)
+                      dependencies:
+            c(npm-build-production)
+              dependents:
+                b(npm-build-production)
+                a(npm-build-production)
+                c(npm-test)
+                c(npm-publish)
+              dependencies:
+                d(npm-build-production)
+                  dependents:
+                    c(npm-build-production)
+                    b(npm-build-production)
+                    d(npm-test)
+                    d(npm-publish)
+                  dependencies:
+                    e(npm-build-production)
+                      dependents:
+                        d(npm-build-production)
+                        e(npm-test)
+                        e(npm-publish)
+                      dependencies:
+    a(npm-lint)
+      dependents:
+        a(npm-publish)
+      dependencies:
+    a(npm-measure)
+      dependents:
+        a(npm-publish)
+      dependencies:"
 `;
 
 exports[`Khayyam domain CI x package: log 1`] = `
 Array [
   "creating job [x(npm-build-production)]",
   "creating job [x(npm-test)]",
-  "creating job [x(npm-lint)]",
   "creating job [x(npm-publish)]",
+  "creating job [x(npm-lint)]",
+  "creating job [x(npm-measure)]",
 ]
 `;
 
@@ -556,104 +727,118 @@ Array [
   "creating job [x(npm-build-production)]",
   "creating job [y(npm-test)]",
   "creating job [x(npm-test)]",
-  "creating job [y(npm-lint)]",
-  "creating job [x(npm-lint)]",
   "creating job [y(npm-publish)]",
   "creating job [x(npm-publish)]",
+  "creating job [y(npm-lint)]",
+  "creating job [x(npm-lint)]",
+  "creating job [y(npm-measure)]",
+  "creating job [x(npm-measure)]",
 ]
 `;
 
 exports[`Khayyam domain CI x package: tree 1`] = `
-Array [
-  Array [
-    "x(npm-publish)=>[]",
-    Array [
-      Array [
-        "x(npm-build-production)=>[x(npm-test),x(npm-publish)]",
-        Array [],
-      ],
-      Array [
-        "x(npm-test)=>[x(npm-publish)]",
-        Array [
-          Array [
-            "x(npm-build-production)=>[x(npm-test),x(npm-publish)]",
-            Array [],
-          ],
-        ],
-      ],
-      Array [
-        "x(npm-lint)=>[x(npm-publish)]",
-        Array [],
-      ],
-    ],
-  ],
-]
+"x(npm-publish)
+  dependents:
+  dependencies:
+    x(npm-build-production)
+      dependents:
+        x(npm-test)
+        x(npm-publish)
+      dependencies:
+    x(npm-test)
+      dependents:
+        x(npm-publish)
+      dependencies:
+        x(npm-build-production)
+          dependents:
+            x(npm-test)
+            x(npm-publish)
+          dependencies:
+    x(npm-lint)
+      dependents:
+        x(npm-publish)
+      dependencies:
+    x(npm-measure)
+      dependents:
+        x(npm-publish)
+      dependencies:"
 `;
 
 exports[`Khayyam domain CI x package: tree 2`] = `
-Array [
-  Array [
-    "y(npm-publish)=>[]",
-    Array [
-      Array [
-        "y(npm-build-production)=>[x(npm-build-production),y(npm-test),y(npm-publish)]",
-        Array [],
-      ],
-      Array [
-        "y(npm-test)=>[x(npm-test),y(npm-publish)]",
-        Array [
-          Array [
-            "y(npm-build-production)=>[x(npm-build-production),y(npm-test),y(npm-publish)]",
-            Array [],
-          ],
-        ],
-      ],
-      Array [
-        "y(npm-lint)=>[y(npm-publish)]",
-        Array [],
-      ],
-    ],
-  ],
-  Array [
-    "x(npm-publish)=>[]",
-    Array [
-      Array [
-        "x(npm-build-production)=>[x(npm-test),x(npm-publish)]",
-        Array [
-          Array [
-            "y(npm-build-production)=>[x(npm-build-production),y(npm-test),y(npm-publish)]",
-            Array [],
-          ],
-        ],
-      ],
-      Array [
-        "x(npm-test)=>[x(npm-publish)]",
-        Array [
-          Array [
-            "y(npm-test)=>[x(npm-test),y(npm-publish)]",
-            Array [
-              Array [
-                "y(npm-build-production)=>[x(npm-build-production),y(npm-test),y(npm-publish)]",
-                Array [],
-              ],
-            ],
-          ],
-          Array [
-            "x(npm-build-production)=>[x(npm-test),x(npm-publish)]",
-            Array [
-              Array [
-                "y(npm-build-production)=>[x(npm-build-production),y(npm-test),y(npm-publish)]",
-                Array [],
-              ],
-            ],
-          ],
-        ],
-      ],
-      Array [
-        "x(npm-lint)=>[x(npm-publish)]",
-        Array [],
-      ],
-    ],
-  ],
-]
+"y(npm-publish)
+  dependents:
+  dependencies:
+    y(npm-build-production)
+      dependents:
+        x(npm-build-production)
+        y(npm-test)
+        y(npm-publish)
+      dependencies:
+    y(npm-test)
+      dependents:
+        x(npm-test)
+        y(npm-publish)
+      dependencies:
+        y(npm-build-production)
+          dependents:
+            x(npm-build-production)
+            y(npm-test)
+            y(npm-publish)
+          dependencies:
+    y(npm-lint)
+      dependents:
+        y(npm-publish)
+      dependencies:
+    y(npm-measure)
+      dependents:
+        y(npm-publish)
+      dependencies:
+x(npm-publish)
+  dependents:
+  dependencies:
+    x(npm-build-production)
+      dependents:
+        x(npm-test)
+        x(npm-publish)
+      dependencies:
+        y(npm-build-production)
+          dependents:
+            x(npm-build-production)
+            y(npm-test)
+            y(npm-publish)
+          dependencies:
+    x(npm-test)
+      dependents:
+        x(npm-publish)
+      dependencies:
+        y(npm-test)
+          dependents:
+            x(npm-test)
+            y(npm-publish)
+          dependencies:
+            y(npm-build-production)
+              dependents:
+                x(npm-build-production)
+                y(npm-test)
+                y(npm-publish)
+              dependencies:
+        x(npm-build-production)
+          dependents:
+            x(npm-test)
+            x(npm-publish)
+          dependencies:
+            y(npm-build-production)
+              dependents:
+                x(npm-build-production)
+                y(npm-test)
+                y(npm-publish)
+              dependencies:
+    x(npm-lint)
+      dependents:
+        x(npm-publish)
+      dependencies:
+    x(npm-measure)
+      dependents:
+        x(npm-publish)
+      dependencies:"
 `;
