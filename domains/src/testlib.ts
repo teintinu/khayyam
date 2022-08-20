@@ -1,18 +1,26 @@
 import { createJobManager, JobCallbackArgs, JobManager, Job, Node } from './job'
 import { asap, defer, sleep } from 'pjobs'
 import { Bundler } from './bundler'
-import { ByPackage, createWorkspace, Package, WalkedJobs } from './workspace'
+import { ByPackage, createWorkspace, Package, PackageState, WalkedJobs } from './workspace'
 import { createProgress } from './progress'
-import { ProcessParams, RunningProcess, System, Unscribe } from './sys'
+import { ProcessParams, RunningProcess, System } from './sys'
 import { spawn, ChildProcessWithoutNullStreams } from 'child_process'
 import { Readable, Writable } from 'stream'
-import { cpus } from 'os'
 
 export const cwd = process.cwd()
 const fakeProcess = './scripts/fake-process.js'
 const shell = true
 
 export type Logger=ReturnType<typeof createFakeLog>
+export interface FakeWatcher {
+  paths: string[]
+  fn(args:{id: string, path: string}):void
+  kill: Array<()=>void>
+}
+export interface FakeSchedule {
+  fn(args:{id: string}):void
+  kill: Array<()=>void>
+}
 
 export function createFakeLog (verbose?: 'verbose') {
   const logged: string[] = []
@@ -32,15 +40,44 @@ export function createFakeLog (verbose?: 'verbose') {
         })
       })
     })
-  const fsListeners: Record<string, Set<Unscribe>> = {}
+  const fsWatchers: Record<string, FakeWatcher> = {}
+  const fsListeners: Record<string, Set<()=>void>> = {}
+  const fsSchedules: Record<string, FakeSchedule> = {}
+  const packageStates: Record<string, PackageState> = {}
   const fakeSys: System & { simulateChange(path: string):void} = {
-    concurrency: cpus().length,
+    concurrency: 1,
+    schedule (id, fn, ms) {
+      const s:FakeSchedule = {
+        fn,
+        kill: []
+      }
+      killSchedule(id)
+      log('schedule.create: ' + id + ' ms=' + ms + '->' + (ms / 10))
+      fsSchedules[id] = s
+      const tm = setTimeout(() => {
+        log('schedule.run: ' + id)
+        fn({ id })
+      }, ms / 10)
+      s.kill.push(() => {
+        log('unschedule: ' + id)
+        clearTimeout(tm)
+      })
+    },
+    killSchedule,
     getRepository: fsGetRepository,
     simulateChange: fsChanged,
     loadWorkspace,
     notify: fsNotify,
     createProcess: fsCreateProcess,
-    watch: fsWatch
+    watch: fsWatch,
+    killWatch,
+    packageState (pkg) {
+      return Promise.resolve(packageStates[pkg])
+    },
+    updatePackageState (pkg, prop, value) {
+      packageStates[pkg][prop] = value
+      return Promise.resolve()
+    }
   }
   const jobManager = createJobManager(fakeSys)
   const fakeLogger = {
@@ -51,11 +88,11 @@ export function createFakeLog (verbose?: 'verbose') {
     cOk,
     fakeSys,
     verbose,
-    log (...args: string[]) {
-      logged.push(args.join(' '))
-      if (verbose) { console.info(args.join(' ')) }
-    },
+    log,
     logged,
+    // clearLog () {
+    //   logged = []
+    // },
     tree () {
       const done: {[id: number]:boolean} = {}
       const tree = jobManager.getTree()
@@ -79,23 +116,61 @@ export function createFakeLog (verbose?: 'verbose') {
           done[id] = false
         })
       }
+    },
+    sysHandlersState () {
+      const watchers = Object.keys(fsWatchers).join()
+      const schedules = Object.keys(fsSchedules).join()
+      if (watchers || schedules) {
+        return JSON.stringify({ watchers, schedules }).replaceAll('"', "'")
+      } else {
+        return 'clean'
+      }
     }
   }
   return fakeLogger
+  function log (...args: string[]) {
+    logged.push(args.join(' '))
+    if (verbose) { console.info(args.join(' ')) }
+  }
   function fsChanged (path: string): void {
     const list = fsListeners[path]
-    if (list) list.forEach(fn => asap(fn))
+    if (list) {
+      log('watch.handled changed=' + path)
+      list.forEach(fn => asap(fn))
+    } else log('watch.not handled changed=' + path + '. listening: ' + Object.keys(fsListeners))
   }
-  function fsWatch (paths: string[], callback: ()=>void): Unscribe {
-    const removers:Unscribe[] = []
+  function fsWatch (id: string, paths: string[], fn: (args:{id: string, path: string})=>void): void {
+    const w: FakeWatcher = {
+      paths,
+      fn,
+      kill: []
+    }
+    killWatch(id)
+    fsWatchers[id] = w
     paths.forEach(path => {
+      log('watch.start=' + id + ' for ' + path)
       let list = fsListeners[path]
-      if (list) list = fsListeners[path] = new Set<Unscribe>()
-      list.add(callback)
-      removers.push(() => list.delete(callback))
+      if (!list) list = fsListeners[path] = new Set<()=>void>()
+      const cb = () => fn({ id, path })
+      list.add(cb)
+      w.kill.push(() => {
+        log('watch.kill=' + id + ' for ' + path)
+        list.delete(cb)
+      })
     })
-    return () => {
-      removers.forEach((r) => r())
+  }
+  function killWatch (id: string) {
+    const w = fsWatchers[id]
+    if (w) {
+      delete fsWatchers[id]
+      w.kill.forEach((wKill) => wKill())
+    }
+  }
+  function killSchedule (id: string) {
+    const s = fsSchedules[id]
+    if (s) {
+      delete fsSchedules[id]
+      s.kill.forEach((sKill) => sKill())
     }
   }
   function fsGetRepository (folder: string): string|undefined {
@@ -106,17 +181,21 @@ export function createFakeLog (verbose?: 'verbose') {
     let bundler:Bundler
     if (sBundler === 'npm') bundler = createFakeBundlerNPM(fakeLogger)
     else throw new Error('fake-fs-invalid-bundle')
-    return createFakeWorkspace({
+    return Promise.resolve(createFakeWorkspace({
       logger: fakeLogger,
       bundler,
       packages: sPkg as FakePackages,
       deps: sDeps === 'deps',
       layers: sLayer === 'layers',
       invalid: sInvalid === 'invalid'
-    })
+    }))
   }
-  function fsNotify (msg: string, pkgName: string) {
-    fakeLogger.log('fsNotify:' + msg + ' on package: ' + pkgName)
+  function fsNotify (msg: string, pkgName?: string) {
+    if (pkgName) {
+      fakeLogger.log('fsNotify:' + msg + ' on package: ' + pkgName)
+    } else {
+      fakeLogger.log('fsNotify:' + msg)
+    }
   }
   function fsCreateProcess ({ title, cmd, args, handleOutput }: ProcessParams): RunningProcess {
     let childProcess: ChildProcessWithoutNullStreams|undefined
@@ -286,6 +365,8 @@ type FakePackages='x'|'xy'|'abcde'
 function createFakeWorkspace (
   { logger, bundler, packages, deps, layers, invalid }:
   { logger: Logger, bundler: Bundler, packages:FakePackages, deps: boolean; layers: boolean; invalid: boolean }) {
+  const folder = [bundler.name, packages, deps ? 'deps' : '', layers ? 'layers' : '', invalid ? 'invalid' : '']
+    .filter(s => !!s).join('/')
   const pkgs:{
       [n:string]:Package
     } = {}
@@ -324,7 +405,10 @@ function createFakeWorkspace (
       }
     }
   }
+  const resolvedFolder = ':FAKE:'
   const ws = createWorkspace({
+    resolvedFolder,
+    khayyamFile: folder + '/khayyam.yaml',
     sys: logger.fakeSys,
     layers: [],
     packages: Object.keys(pkgs).map((n) => pkgs[n]),

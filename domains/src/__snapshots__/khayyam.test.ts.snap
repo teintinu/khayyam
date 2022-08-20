@@ -1,22 +1,52 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Khayyam domain CD a,b,c,d,e packages: log 1`] = `
+exports[`Khayyam domain CD a,b,c,d,e packages: log 1`] = `Array []`;
+
+exports[`Khayyam domain CD a,b,c,d,e packages: tree 1`] = `""`;
+
+exports[`Khayyam domain CD x package: log 1`] = `Array []`;
+
+exports[`Khayyam domain CD x package: tree 1`] = `""`;
+
+exports[`Khayyam domain CD xy package: log 1`] = `Array []`;
+
+exports[`Khayyam domain CD xy package: tree 1`] = `""`;
+
+exports[`Khayyam domain dev a,b,c,d,e packages: 01-log-before build 1`] = `
 Array [
-  "creating job [e(npm-build-production)]",
-  "creating job [d(npm-build-production)]",
-  "creating job [c(npm-build-production)]",
-  "creating job [b(npm-build-production)]",
-  "creating job [a(npm-build-production)]",
+  "schedule.create: loadAndBuildWorkspace ms=3000->300",
+]
+`;
+
+exports[`Khayyam domain dev a,b,c,d,e packages: 01-tree-before build 1`] = `""`;
+
+exports[`Khayyam domain dev a,b,c,d,e packages: 02-log-after build 1`] = `
+Array [
+  "schedule.create: loadAndBuildWorkspace ms=3000->300",
+  "schedule.run: loadAndBuildWorkspace",
+  "watch.start=loadAndBuildWorkspace for fakeBundlerNPM/abcde/deps/khayyam.yaml",
+  "watch.start=a for fakeBundlerNPM/a",
+  "watch.start=b for fakeBundlerNPM/b",
+  "watch.start=c for fakeBundlerNPM/c",
+  "watch.start=d for fakeBundlerNPM/d",
+  "watch.start=e for fakeBundlerNPM/e",
+  "schedule.create: rebuildPackages ms=3000->300",
+  "schedule.run: rebuildPackages",
+  "creating job [e(npm-build-debug)]",
+  "creating job [d(npm-build-debug)]",
+  "creating job [c(npm-build-debug)]",
+  "creating job [b(npm-build-debug)]",
+  "creating job [a(npm-build-debug)]",
   "creating job [e(npm-test)]",
   "creating job [d(npm-test)]",
   "creating job [c(npm-test)]",
   "creating job [b(npm-test)]",
   "creating job [a(npm-test)]",
-  "creating job [e(npm-publish-production)]",
-  "creating job [d(npm-publish-production)]",
-  "creating job [c(npm-publish-production)]",
-  "creating job [b(npm-publish-production)]",
-  "creating job [a(npm-publish-production)]",
+  "creating job [e(npm-publish-debug)]",
+  "creating job [d(npm-publish-debug)]",
+  "creating job [c(npm-publish-debug)]",
+  "creating job [b(npm-publish-debug)]",
+  "creating job [a(npm-publish-debug)]",
   "creating job [e(npm-lint)]",
   "creating job [d(npm-lint)]",
   "creating job [c(npm-lint)]",
@@ -27,818 +57,2755 @@ Array [
   "creating job [c(npm-measure)]",
   "creating job [b(npm-measure)]",
   "creating job [a(npm-measure)]",
+  "pg e(npm-build-debug): waiting undefined",
+  "pg d(npm-build-debug): waiting undefined",
+  "pg c(npm-build-debug): waiting undefined",
+  "pg b(npm-build-debug): waiting undefined",
+  "pg a(npm-build-debug): waiting undefined",
+  "pg e(npm-test): waiting undefined",
+  "pg d(npm-test): waiting undefined",
+  "pg c(npm-test): waiting undefined",
+  "pg b(npm-test): waiting undefined",
+  "pg a(npm-test): waiting undefined",
+  "pg e(npm-publish-debug): waiting undefined",
+  "pg d(npm-publish-debug): waiting undefined",
+  "pg c(npm-publish-debug): waiting undefined",
+  "pg b(npm-publish-debug): waiting undefined",
+  "pg a(npm-publish-debug): waiting undefined",
+  "pg e(npm-lint): waiting undefined",
+  "pg d(npm-lint): waiting undefined",
+  "pg c(npm-lint): waiting undefined",
+  "pg b(npm-lint): waiting undefined",
+  "pg a(npm-lint): waiting undefined",
+  "pg e(npm-measure): waiting undefined",
+  "pg d(npm-measure): waiting undefined",
+  "pg c(npm-measure): waiting undefined",
+  "pg b(npm-measure): waiting undefined",
+  "pg a(npm-measure): waiting undefined",
+  "pg e(npm-build-debug): working undefined",
+  "pg e(npm-lint): working undefined",
+  "pg d(npm-lint): working undefined",
+  "pg c(npm-lint): working undefined",
+  "pg b(npm-lint): working undefined",
+  "pg a(npm-lint): working undefined",
+  "pg e(npm-measure): working undefined",
+  "pg d(npm-measure): working undefined",
+  "pg c(npm-measure): working undefined",
+  "pg b(npm-measure): working undefined",
+  "pg a(npm-measure): working undefined",
+  "pg e(npm-build-debug): working started",
+  "pg e(npm-build-debug): working npm-build-debug",
+  "pg e(npm-build-debug): working finished",
+  "killing e(npm-build-debug)",
+  "pg e(npm-build-debug): finished undefined",
+  "pg d(npm-build-debug): working undefined",
+  "pg e(npm-test): working undefined",
+  "pg e(npm-lint): working started",
+  "pg e(npm-lint): working npm-lint",
+  "pg e(npm-lint): working finished",
+  "killing e(npm-lint)",
+  "pg e(npm-lint): finished undefined",
+  "pg d(npm-lint): working started",
+  "pg d(npm-lint): working npm-lint",
+  "pg d(npm-lint): working finished",
+  "killing d(npm-lint)",
+  "pg d(npm-lint): finished undefined",
+  "pg c(npm-lint): working started",
+  "pg c(npm-lint): working npm-lint",
+  "pg c(npm-lint): working finished",
+  "killing c(npm-lint)",
+  "pg c(npm-lint): finished undefined",
+  "pg b(npm-lint): working started",
+  "pg b(npm-lint): working npm-lint",
+  "pg b(npm-lint): working finished",
+  "killing b(npm-lint)",
+  "pg b(npm-lint): finished undefined",
+  "pg a(npm-lint): working started",
+  "pg a(npm-lint): working npm-lint",
+  "pg a(npm-lint): working finished",
+  "killing a(npm-lint)",
+  "pg a(npm-lint): finished undefined",
+  "pg e(npm-measure): working started",
+  "pg e(npm-measure): working npm-measure",
+  "pg e(npm-measure): working finished",
+  "killing e(npm-measure)",
+  "pg e(npm-measure): finished undefined",
+  "pg d(npm-measure): working started",
+  "pg d(npm-measure): working npm-measure",
+  "pg d(npm-measure): working finished",
+  "killing d(npm-measure)",
+  "pg d(npm-measure): finished undefined",
+  "pg c(npm-measure): working started",
+  "pg c(npm-measure): working npm-measure",
+  "pg c(npm-measure): working finished",
+  "killing c(npm-measure)",
+  "pg c(npm-measure): finished undefined",
+  "pg b(npm-measure): working started",
+  "pg b(npm-measure): working npm-measure",
+  "pg b(npm-measure): working finished",
+  "killing b(npm-measure)",
+  "pg b(npm-measure): finished undefined",
+  "pg a(npm-measure): working started",
+  "pg a(npm-measure): working npm-measure",
+  "pg a(npm-measure): working finished",
+  "killing a(npm-measure)",
+  "pg a(npm-measure): finished undefined",
+  "pg d(npm-build-debug): working started",
+  "pg d(npm-build-debug): working npm-build-debug",
+  "pg d(npm-build-debug): working finished",
+  "killing d(npm-build-debug)",
+  "pg d(npm-build-debug): finished undefined",
+  "pg c(npm-build-debug): working undefined",
+  "pg e(npm-test): working started",
+  "pg e(npm-test): working npm-test",
+  "pg e(npm-test): working finished",
+  "killing e(npm-test)",
+  "pg e(npm-test): finished undefined",
+  "pg d(npm-test): working undefined",
+  "pg e(npm-publish-debug): working undefined",
+  "pg c(npm-build-debug): working started",
+  "pg c(npm-build-debug): working npm-build-debug",
+  "pg c(npm-build-debug): working finished",
+  "killing c(npm-build-debug)",
+  "pg c(npm-build-debug): finished undefined",
+  "pg b(npm-build-debug): working undefined",
+  "pg d(npm-test): working started",
+  "pg d(npm-test): working npm-test",
+  "pg d(npm-test): working finished",
+  "killing d(npm-test)",
+  "pg d(npm-test): finished undefined",
+  "pg c(npm-test): working undefined",
+  "pg d(npm-publish-debug): working undefined",
+  "pg e(npm-publish-debug): working started",
+  "pg e(npm-publish-debug): working npm-publish-debug",
+  "pg e(npm-publish-debug): working finished",
+  "killing e(npm-publish-debug)",
+  "pg e(npm-publish-debug): finished undefined",
+  "pg b(npm-build-debug): working started",
+  "pg b(npm-build-debug): working npm-build-debug",
+  "pg b(npm-build-debug): working finished",
+  "killing b(npm-build-debug)",
+  "pg b(npm-build-debug): finished undefined",
+  "pg a(npm-build-debug): working undefined",
+  "pg c(npm-test): working started",
+  "pg c(npm-test): working npm-test",
+  "pg c(npm-test): working finished",
+  "killing c(npm-test)",
+  "pg c(npm-test): finished undefined",
+  "pg b(npm-test): working undefined",
+  "pg c(npm-publish-debug): working undefined",
+  "pg d(npm-publish-debug): working started",
+  "pg d(npm-publish-debug): working npm-publish-debug",
+  "pg d(npm-publish-debug): working finished",
+  "killing d(npm-publish-debug)",
+  "pg d(npm-publish-debug): finished undefined",
+  "pg a(npm-build-debug): working started",
+  "pg a(npm-build-debug): working npm-build-debug",
+  "pg a(npm-build-debug): working finished",
+  "killing a(npm-build-debug)",
+  "pg a(npm-build-debug): finished undefined",
+  "pg b(npm-test): working started",
+  "pg b(npm-test): working npm-test",
+  "pg b(npm-test): working finished",
+  "killing b(npm-test)",
+  "pg b(npm-test): finished undefined",
+  "pg a(npm-test): working undefined",
+  "pg b(npm-publish-debug): working undefined",
+  "pg c(npm-publish-debug): working started",
+  "pg c(npm-publish-debug): working npm-publish-debug",
+  "pg c(npm-publish-debug): working finished",
+  "killing c(npm-publish-debug)",
+  "pg c(npm-publish-debug): finished undefined",
+  "pg a(npm-test): working started",
+  "pg a(npm-test): working npm-test",
+  "pg a(npm-test): working finished",
+  "killing a(npm-test)",
+  "pg a(npm-test): finished undefined",
+  "pg a(npm-publish-debug): working undefined",
+  "pg b(npm-publish-debug): working started",
+  "pg b(npm-publish-debug): working npm-publish-debug",
+  "pg b(npm-publish-debug): working finished",
+  "killing b(npm-publish-debug)",
+  "pg b(npm-publish-debug): finished undefined",
+  "pg a(npm-publish-debug): working started",
+  "pg a(npm-publish-debug): working npm-publish-debug",
+  "pg a(npm-publish-debug): working finished",
+  "killing a(npm-publish-debug)",
+  "pg a(npm-publish-debug): finished undefined",
+  "fsNotify:Workspace built",
 ]
 `;
 
-exports[`Khayyam domain CD a,b,c,d,e packages: tree 1`] = `
-"e(npm-publish-production)
+exports[`Khayyam domain dev a,b,c,d,e packages: 02-tree-after build 1`] = `
+"e(npm-publish-debug)
   dependents:
   dependencies:
-    e(npm-build-production)
+    e(npm-build-debug)
       dependents:
-        d(npm-build-production)
+        d(npm-build-debug)
         e(npm-test)
-        e(npm-publish-production)
+        e(npm-publish-debug)
       dependencies:
     e(npm-test)
       dependents:
         d(npm-test)
-        e(npm-publish-production)
+        e(npm-publish-debug)
       dependencies:
-        e(npm-build-production)
+        e(npm-build-debug)
           dependents:
-            d(npm-build-production)
+            d(npm-build-debug)
             e(npm-test)
-            e(npm-publish-production)
+            e(npm-publish-debug)
           dependencies:
     e(npm-lint)
       dependents:
-        e(npm-publish-production)
+        e(npm-publish-debug)
       dependencies:
     e(npm-measure)
       dependents:
-        e(npm-publish-production)
+        e(npm-publish-debug)
       dependencies:
-d(npm-publish-production)
+d(npm-publish-debug)
   dependents:
   dependencies:
-    d(npm-build-production)
+    d(npm-build-debug)
       dependents:
-        c(npm-build-production)
-        b(npm-build-production)
+        c(npm-build-debug)
+        b(npm-build-debug)
         d(npm-test)
-        d(npm-publish-production)
+        d(npm-publish-debug)
       dependencies:
-        e(npm-build-production)
+        e(npm-build-debug)
           dependents:
-            d(npm-build-production)
+            d(npm-build-debug)
             e(npm-test)
-            e(npm-publish-production)
+            e(npm-publish-debug)
           dependencies:
     d(npm-test)
       dependents:
         c(npm-test)
         b(npm-test)
-        d(npm-publish-production)
+        d(npm-publish-debug)
       dependencies:
         e(npm-test)
           dependents:
             d(npm-test)
-            e(npm-publish-production)
+            e(npm-publish-debug)
           dependencies:
-            e(npm-build-production)
+            e(npm-build-debug)
               dependents:
-                d(npm-build-production)
+                d(npm-build-debug)
                 e(npm-test)
-                e(npm-publish-production)
+                e(npm-publish-debug)
               dependencies:
-        d(npm-build-production)
+        d(npm-build-debug)
           dependents:
-            c(npm-build-production)
-            b(npm-build-production)
+            c(npm-build-debug)
+            b(npm-build-debug)
             d(npm-test)
-            d(npm-publish-production)
+            d(npm-publish-debug)
           dependencies:
-            e(npm-build-production)
+            e(npm-build-debug)
               dependents:
-                d(npm-build-production)
+                d(npm-build-debug)
                 e(npm-test)
-                e(npm-publish-production)
+                e(npm-publish-debug)
               dependencies:
     d(npm-lint)
       dependents:
-        d(npm-publish-production)
+        d(npm-publish-debug)
       dependencies:
     d(npm-measure)
       dependents:
-        d(npm-publish-production)
+        d(npm-publish-debug)
       dependencies:
-c(npm-publish-production)
+c(npm-publish-debug)
   dependents:
   dependencies:
-    c(npm-build-production)
+    c(npm-build-debug)
       dependents:
-        b(npm-build-production)
-        a(npm-build-production)
+        b(npm-build-debug)
+        a(npm-build-debug)
         c(npm-test)
-        c(npm-publish-production)
+        c(npm-publish-debug)
       dependencies:
-        d(npm-build-production)
+        d(npm-build-debug)
           dependents:
-            c(npm-build-production)
-            b(npm-build-production)
+            c(npm-build-debug)
+            b(npm-build-debug)
             d(npm-test)
-            d(npm-publish-production)
+            d(npm-publish-debug)
           dependencies:
-            e(npm-build-production)
+            e(npm-build-debug)
               dependents:
-                d(npm-build-production)
+                d(npm-build-debug)
                 e(npm-test)
-                e(npm-publish-production)
+                e(npm-publish-debug)
               dependencies:
     c(npm-test)
       dependents:
         b(npm-test)
         a(npm-test)
-        c(npm-publish-production)
+        c(npm-publish-debug)
       dependencies:
         d(npm-test)
           dependents:
             c(npm-test)
             b(npm-test)
-            d(npm-publish-production)
+            d(npm-publish-debug)
           dependencies:
             e(npm-test)
               dependents:
                 d(npm-test)
-                e(npm-publish-production)
+                e(npm-publish-debug)
               dependencies:
-                e(npm-build-production)
+                e(npm-build-debug)
                   dependents:
-                    d(npm-build-production)
+                    d(npm-build-debug)
                     e(npm-test)
-                    e(npm-publish-production)
+                    e(npm-publish-debug)
                   dependencies:
-            d(npm-build-production)
+            d(npm-build-debug)
               dependents:
-                c(npm-build-production)
-                b(npm-build-production)
+                c(npm-build-debug)
+                b(npm-build-debug)
                 d(npm-test)
-                d(npm-publish-production)
+                d(npm-publish-debug)
               dependencies:
-                e(npm-build-production)
+                e(npm-build-debug)
                   dependents:
-                    d(npm-build-production)
+                    d(npm-build-debug)
                     e(npm-test)
-                    e(npm-publish-production)
+                    e(npm-publish-debug)
                   dependencies:
-        c(npm-build-production)
+        c(npm-build-debug)
           dependents:
-            b(npm-build-production)
-            a(npm-build-production)
+            b(npm-build-debug)
+            a(npm-build-debug)
             c(npm-test)
-            c(npm-publish-production)
+            c(npm-publish-debug)
           dependencies:
-            d(npm-build-production)
+            d(npm-build-debug)
               dependents:
-                c(npm-build-production)
-                b(npm-build-production)
+                c(npm-build-debug)
+                b(npm-build-debug)
                 d(npm-test)
-                d(npm-publish-production)
+                d(npm-publish-debug)
               dependencies:
-                e(npm-build-production)
+                e(npm-build-debug)
                   dependents:
-                    d(npm-build-production)
+                    d(npm-build-debug)
                     e(npm-test)
-                    e(npm-publish-production)
+                    e(npm-publish-debug)
                   dependencies:
     c(npm-lint)
       dependents:
-        c(npm-publish-production)
+        c(npm-publish-debug)
       dependencies:
     c(npm-measure)
       dependents:
-        c(npm-publish-production)
+        c(npm-publish-debug)
       dependencies:
-b(npm-publish-production)
+b(npm-publish-debug)
   dependents:
   dependencies:
-    b(npm-build-production)
+    b(npm-build-debug)
       dependents:
-        a(npm-build-production)
+        a(npm-build-debug)
         b(npm-test)
-        b(npm-publish-production)
+        b(npm-publish-debug)
       dependencies:
-        c(npm-build-production)
+        c(npm-build-debug)
           dependents:
-            b(npm-build-production)
-            a(npm-build-production)
+            b(npm-build-debug)
+            a(npm-build-debug)
             c(npm-test)
-            c(npm-publish-production)
+            c(npm-publish-debug)
           dependencies:
-            d(npm-build-production)
+            d(npm-build-debug)
               dependents:
-                c(npm-build-production)
-                b(npm-build-production)
+                c(npm-build-debug)
+                b(npm-build-debug)
                 d(npm-test)
-                d(npm-publish-production)
+                d(npm-publish-debug)
               dependencies:
-                e(npm-build-production)
+                e(npm-build-debug)
                   dependents:
-                    d(npm-build-production)
+                    d(npm-build-debug)
                     e(npm-test)
-                    e(npm-publish-production)
+                    e(npm-publish-debug)
                   dependencies:
-        d(npm-build-production)
+        d(npm-build-debug)
           dependents:
-            c(npm-build-production)
-            b(npm-build-production)
+            c(npm-build-debug)
+            b(npm-build-debug)
             d(npm-test)
-            d(npm-publish-production)
+            d(npm-publish-debug)
           dependencies:
-            e(npm-build-production)
+            e(npm-build-debug)
               dependents:
-                d(npm-build-production)
+                d(npm-build-debug)
                 e(npm-test)
-                e(npm-publish-production)
+                e(npm-publish-debug)
               dependencies:
     b(npm-test)
       dependents:
         a(npm-test)
-        b(npm-publish-production)
+        b(npm-publish-debug)
       dependencies:
         c(npm-test)
           dependents:
             b(npm-test)
             a(npm-test)
-            c(npm-publish-production)
+            c(npm-publish-debug)
           dependencies:
             d(npm-test)
               dependents:
                 c(npm-test)
                 b(npm-test)
-                d(npm-publish-production)
+                d(npm-publish-debug)
               dependencies:
                 e(npm-test)
                   dependents:
                     d(npm-test)
-                    e(npm-publish-production)
+                    e(npm-publish-debug)
                   dependencies:
-                    e(npm-build-production)
+                    e(npm-build-debug)
                       dependents:
-                        d(npm-build-production)
+                        d(npm-build-debug)
                         e(npm-test)
-                        e(npm-publish-production)
+                        e(npm-publish-debug)
                       dependencies:
-                d(npm-build-production)
+                d(npm-build-debug)
                   dependents:
-                    c(npm-build-production)
-                    b(npm-build-production)
+                    c(npm-build-debug)
+                    b(npm-build-debug)
                     d(npm-test)
-                    d(npm-publish-production)
+                    d(npm-publish-debug)
                   dependencies:
-                    e(npm-build-production)
+                    e(npm-build-debug)
                       dependents:
-                        d(npm-build-production)
+                        d(npm-build-debug)
                         e(npm-test)
-                        e(npm-publish-production)
+                        e(npm-publish-debug)
                       dependencies:
-            c(npm-build-production)
+            c(npm-build-debug)
               dependents:
-                b(npm-build-production)
-                a(npm-build-production)
+                b(npm-build-debug)
+                a(npm-build-debug)
                 c(npm-test)
-                c(npm-publish-production)
+                c(npm-publish-debug)
               dependencies:
-                d(npm-build-production)
+                d(npm-build-debug)
                   dependents:
-                    c(npm-build-production)
-                    b(npm-build-production)
+                    c(npm-build-debug)
+                    b(npm-build-debug)
                     d(npm-test)
-                    d(npm-publish-production)
+                    d(npm-publish-debug)
                   dependencies:
-                    e(npm-build-production)
+                    e(npm-build-debug)
                       dependents:
-                        d(npm-build-production)
+                        d(npm-build-debug)
                         e(npm-test)
-                        e(npm-publish-production)
+                        e(npm-publish-debug)
                       dependencies:
         d(npm-test)
           dependents:
             c(npm-test)
             b(npm-test)
-            d(npm-publish-production)
+            d(npm-publish-debug)
           dependencies:
             e(npm-test)
               dependents:
                 d(npm-test)
-                e(npm-publish-production)
+                e(npm-publish-debug)
               dependencies:
-                e(npm-build-production)
+                e(npm-build-debug)
                   dependents:
-                    d(npm-build-production)
+                    d(npm-build-debug)
                     e(npm-test)
-                    e(npm-publish-production)
+                    e(npm-publish-debug)
                   dependencies:
-            d(npm-build-production)
+            d(npm-build-debug)
               dependents:
-                c(npm-build-production)
-                b(npm-build-production)
+                c(npm-build-debug)
+                b(npm-build-debug)
                 d(npm-test)
-                d(npm-publish-production)
+                d(npm-publish-debug)
               dependencies:
-                e(npm-build-production)
+                e(npm-build-debug)
                   dependents:
-                    d(npm-build-production)
+                    d(npm-build-debug)
                     e(npm-test)
-                    e(npm-publish-production)
+                    e(npm-publish-debug)
                   dependencies:
-        b(npm-build-production)
+        b(npm-build-debug)
           dependents:
-            a(npm-build-production)
+            a(npm-build-debug)
             b(npm-test)
-            b(npm-publish-production)
+            b(npm-publish-debug)
           dependencies:
-            c(npm-build-production)
+            c(npm-build-debug)
               dependents:
-                b(npm-build-production)
-                a(npm-build-production)
+                b(npm-build-debug)
+                a(npm-build-debug)
                 c(npm-test)
-                c(npm-publish-production)
+                c(npm-publish-debug)
               dependencies:
-                d(npm-build-production)
+                d(npm-build-debug)
                   dependents:
-                    c(npm-build-production)
-                    b(npm-build-production)
+                    c(npm-build-debug)
+                    b(npm-build-debug)
                     d(npm-test)
-                    d(npm-publish-production)
+                    d(npm-publish-debug)
                   dependencies:
-                    e(npm-build-production)
+                    e(npm-build-debug)
                       dependents:
-                        d(npm-build-production)
+                        d(npm-build-debug)
                         e(npm-test)
-                        e(npm-publish-production)
+                        e(npm-publish-debug)
                       dependencies:
-            d(npm-build-production)
+            d(npm-build-debug)
               dependents:
-                c(npm-build-production)
-                b(npm-build-production)
+                c(npm-build-debug)
+                b(npm-build-debug)
                 d(npm-test)
-                d(npm-publish-production)
+                d(npm-publish-debug)
               dependencies:
-                e(npm-build-production)
+                e(npm-build-debug)
                   dependents:
-                    d(npm-build-production)
+                    d(npm-build-debug)
                     e(npm-test)
-                    e(npm-publish-production)
+                    e(npm-publish-debug)
                   dependencies:
     b(npm-lint)
       dependents:
-        b(npm-publish-production)
+        b(npm-publish-debug)
       dependencies:
     b(npm-measure)
       dependents:
-        b(npm-publish-production)
+        b(npm-publish-debug)
       dependencies:
-a(npm-publish-production)
+a(npm-publish-debug)
   dependents:
   dependencies:
-    a(npm-build-production)
+    a(npm-build-debug)
       dependents:
         a(npm-test)
-        a(npm-publish-production)
+        a(npm-publish-debug)
       dependencies:
-        b(npm-build-production)
+        b(npm-build-debug)
           dependents:
-            a(npm-build-production)
+            a(npm-build-debug)
             b(npm-test)
-            b(npm-publish-production)
+            b(npm-publish-debug)
           dependencies:
-            c(npm-build-production)
+            c(npm-build-debug)
               dependents:
-                b(npm-build-production)
-                a(npm-build-production)
+                b(npm-build-debug)
+                a(npm-build-debug)
                 c(npm-test)
-                c(npm-publish-production)
+                c(npm-publish-debug)
               dependencies:
-                d(npm-build-production)
+                d(npm-build-debug)
                   dependents:
-                    c(npm-build-production)
-                    b(npm-build-production)
+                    c(npm-build-debug)
+                    b(npm-build-debug)
                     d(npm-test)
-                    d(npm-publish-production)
+                    d(npm-publish-debug)
                   dependencies:
-                    e(npm-build-production)
+                    e(npm-build-debug)
                       dependents:
-                        d(npm-build-production)
+                        d(npm-build-debug)
                         e(npm-test)
-                        e(npm-publish-production)
+                        e(npm-publish-debug)
                       dependencies:
-            d(npm-build-production)
+            d(npm-build-debug)
               dependents:
-                c(npm-build-production)
-                b(npm-build-production)
+                c(npm-build-debug)
+                b(npm-build-debug)
                 d(npm-test)
-                d(npm-publish-production)
+                d(npm-publish-debug)
               dependencies:
-                e(npm-build-production)
+                e(npm-build-debug)
                   dependents:
-                    d(npm-build-production)
+                    d(npm-build-debug)
                     e(npm-test)
-                    e(npm-publish-production)
+                    e(npm-publish-debug)
                   dependencies:
-        c(npm-build-production)
+        c(npm-build-debug)
           dependents:
-            b(npm-build-production)
-            a(npm-build-production)
+            b(npm-build-debug)
+            a(npm-build-debug)
             c(npm-test)
-            c(npm-publish-production)
+            c(npm-publish-debug)
           dependencies:
-            d(npm-build-production)
+            d(npm-build-debug)
               dependents:
-                c(npm-build-production)
-                b(npm-build-production)
+                c(npm-build-debug)
+                b(npm-build-debug)
                 d(npm-test)
-                d(npm-publish-production)
+                d(npm-publish-debug)
               dependencies:
-                e(npm-build-production)
+                e(npm-build-debug)
                   dependents:
-                    d(npm-build-production)
+                    d(npm-build-debug)
                     e(npm-test)
-                    e(npm-publish-production)
+                    e(npm-publish-debug)
                   dependencies:
     a(npm-test)
       dependents:
-        a(npm-publish-production)
+        a(npm-publish-debug)
       dependencies:
         b(npm-test)
           dependents:
             a(npm-test)
-            b(npm-publish-production)
+            b(npm-publish-debug)
           dependencies:
             c(npm-test)
               dependents:
                 b(npm-test)
                 a(npm-test)
-                c(npm-publish-production)
+                c(npm-publish-debug)
               dependencies:
                 d(npm-test)
                   dependents:
                     c(npm-test)
                     b(npm-test)
-                    d(npm-publish-production)
+                    d(npm-publish-debug)
                   dependencies:
                     e(npm-test)
                       dependents:
                         d(npm-test)
-                        e(npm-publish-production)
+                        e(npm-publish-debug)
                       dependencies:
-                        e(npm-build-production)
+                        e(npm-build-debug)
                           dependents:
-                            d(npm-build-production)
+                            d(npm-build-debug)
                             e(npm-test)
-                            e(npm-publish-production)
+                            e(npm-publish-debug)
                           dependencies:
-                    d(npm-build-production)
+                    d(npm-build-debug)
                       dependents:
-                        c(npm-build-production)
-                        b(npm-build-production)
+                        c(npm-build-debug)
+                        b(npm-build-debug)
                         d(npm-test)
-                        d(npm-publish-production)
+                        d(npm-publish-debug)
                       dependencies:
-                        e(npm-build-production)
+                        e(npm-build-debug)
                           dependents:
-                            d(npm-build-production)
+                            d(npm-build-debug)
                             e(npm-test)
-                            e(npm-publish-production)
+                            e(npm-publish-debug)
                           dependencies:
-                c(npm-build-production)
+                c(npm-build-debug)
                   dependents:
-                    b(npm-build-production)
-                    a(npm-build-production)
+                    b(npm-build-debug)
+                    a(npm-build-debug)
                     c(npm-test)
-                    c(npm-publish-production)
+                    c(npm-publish-debug)
                   dependencies:
-                    d(npm-build-production)
+                    d(npm-build-debug)
                       dependents:
-                        c(npm-build-production)
-                        b(npm-build-production)
+                        c(npm-build-debug)
+                        b(npm-build-debug)
                         d(npm-test)
-                        d(npm-publish-production)
+                        d(npm-publish-debug)
                       dependencies:
-                        e(npm-build-production)
+                        e(npm-build-debug)
                           dependents:
-                            d(npm-build-production)
+                            d(npm-build-debug)
                             e(npm-test)
-                            e(npm-publish-production)
+                            e(npm-publish-debug)
                           dependencies:
             d(npm-test)
               dependents:
                 c(npm-test)
                 b(npm-test)
-                d(npm-publish-production)
+                d(npm-publish-debug)
               dependencies:
                 e(npm-test)
                   dependents:
                     d(npm-test)
-                    e(npm-publish-production)
+                    e(npm-publish-debug)
                   dependencies:
-                    e(npm-build-production)
+                    e(npm-build-debug)
                       dependents:
-                        d(npm-build-production)
+                        d(npm-build-debug)
                         e(npm-test)
-                        e(npm-publish-production)
+                        e(npm-publish-debug)
                       dependencies:
-                d(npm-build-production)
+                d(npm-build-debug)
                   dependents:
-                    c(npm-build-production)
-                    b(npm-build-production)
+                    c(npm-build-debug)
+                    b(npm-build-debug)
                     d(npm-test)
-                    d(npm-publish-production)
+                    d(npm-publish-debug)
                   dependencies:
-                    e(npm-build-production)
+                    e(npm-build-debug)
                       dependents:
-                        d(npm-build-production)
+                        d(npm-build-debug)
                         e(npm-test)
-                        e(npm-publish-production)
+                        e(npm-publish-debug)
                       dependencies:
-            b(npm-build-production)
+            b(npm-build-debug)
               dependents:
-                a(npm-build-production)
+                a(npm-build-debug)
                 b(npm-test)
-                b(npm-publish-production)
+                b(npm-publish-debug)
               dependencies:
-                c(npm-build-production)
+                c(npm-build-debug)
                   dependents:
-                    b(npm-build-production)
-                    a(npm-build-production)
+                    b(npm-build-debug)
+                    a(npm-build-debug)
                     c(npm-test)
-                    c(npm-publish-production)
+                    c(npm-publish-debug)
                   dependencies:
-                    d(npm-build-production)
+                    d(npm-build-debug)
                       dependents:
-                        c(npm-build-production)
-                        b(npm-build-production)
+                        c(npm-build-debug)
+                        b(npm-build-debug)
                         d(npm-test)
-                        d(npm-publish-production)
+                        d(npm-publish-debug)
                       dependencies:
-                        e(npm-build-production)
+                        e(npm-build-debug)
                           dependents:
-                            d(npm-build-production)
+                            d(npm-build-debug)
                             e(npm-test)
-                            e(npm-publish-production)
+                            e(npm-publish-debug)
                           dependencies:
-                d(npm-build-production)
+                d(npm-build-debug)
                   dependents:
-                    c(npm-build-production)
-                    b(npm-build-production)
+                    c(npm-build-debug)
+                    b(npm-build-debug)
                     d(npm-test)
-                    d(npm-publish-production)
+                    d(npm-publish-debug)
                   dependencies:
-                    e(npm-build-production)
+                    e(npm-build-debug)
                       dependents:
-                        d(npm-build-production)
+                        d(npm-build-debug)
                         e(npm-test)
-                        e(npm-publish-production)
+                        e(npm-publish-debug)
                       dependencies:
         c(npm-test)
           dependents:
             b(npm-test)
             a(npm-test)
-            c(npm-publish-production)
+            c(npm-publish-debug)
           dependencies:
             d(npm-test)
               dependents:
                 c(npm-test)
                 b(npm-test)
-                d(npm-publish-production)
+                d(npm-publish-debug)
               dependencies:
                 e(npm-test)
                   dependents:
                     d(npm-test)
-                    e(npm-publish-production)
+                    e(npm-publish-debug)
                   dependencies:
-                    e(npm-build-production)
+                    e(npm-build-debug)
                       dependents:
-                        d(npm-build-production)
+                        d(npm-build-debug)
                         e(npm-test)
-                        e(npm-publish-production)
+                        e(npm-publish-debug)
                       dependencies:
-                d(npm-build-production)
+                d(npm-build-debug)
                   dependents:
-                    c(npm-build-production)
-                    b(npm-build-production)
+                    c(npm-build-debug)
+                    b(npm-build-debug)
                     d(npm-test)
-                    d(npm-publish-production)
+                    d(npm-publish-debug)
                   dependencies:
-                    e(npm-build-production)
+                    e(npm-build-debug)
                       dependents:
-                        d(npm-build-production)
+                        d(npm-build-debug)
                         e(npm-test)
-                        e(npm-publish-production)
+                        e(npm-publish-debug)
                       dependencies:
-            c(npm-build-production)
+            c(npm-build-debug)
               dependents:
-                b(npm-build-production)
-                a(npm-build-production)
+                b(npm-build-debug)
+                a(npm-build-debug)
                 c(npm-test)
-                c(npm-publish-production)
+                c(npm-publish-debug)
               dependencies:
-                d(npm-build-production)
+                d(npm-build-debug)
                   dependents:
-                    c(npm-build-production)
-                    b(npm-build-production)
+                    c(npm-build-debug)
+                    b(npm-build-debug)
                     d(npm-test)
-                    d(npm-publish-production)
+                    d(npm-publish-debug)
                   dependencies:
-                    e(npm-build-production)
+                    e(npm-build-debug)
                       dependents:
-                        d(npm-build-production)
+                        d(npm-build-debug)
                         e(npm-test)
-                        e(npm-publish-production)
+                        e(npm-publish-debug)
                       dependencies:
-        a(npm-build-production)
+        a(npm-build-debug)
           dependents:
             a(npm-test)
-            a(npm-publish-production)
+            a(npm-publish-debug)
           dependencies:
-            b(npm-build-production)
+            b(npm-build-debug)
               dependents:
-                a(npm-build-production)
+                a(npm-build-debug)
                 b(npm-test)
-                b(npm-publish-production)
+                b(npm-publish-debug)
               dependencies:
-                c(npm-build-production)
+                c(npm-build-debug)
                   dependents:
-                    b(npm-build-production)
-                    a(npm-build-production)
+                    b(npm-build-debug)
+                    a(npm-build-debug)
                     c(npm-test)
-                    c(npm-publish-production)
+                    c(npm-publish-debug)
                   dependencies:
-                    d(npm-build-production)
+                    d(npm-build-debug)
                       dependents:
-                        c(npm-build-production)
-                        b(npm-build-production)
+                        c(npm-build-debug)
+                        b(npm-build-debug)
                         d(npm-test)
-                        d(npm-publish-production)
+                        d(npm-publish-debug)
                       dependencies:
-                        e(npm-build-production)
+                        e(npm-build-debug)
                           dependents:
-                            d(npm-build-production)
+                            d(npm-build-debug)
                             e(npm-test)
-                            e(npm-publish-production)
+                            e(npm-publish-debug)
                           dependencies:
-                d(npm-build-production)
+                d(npm-build-debug)
                   dependents:
-                    c(npm-build-production)
-                    b(npm-build-production)
+                    c(npm-build-debug)
+                    b(npm-build-debug)
                     d(npm-test)
-                    d(npm-publish-production)
+                    d(npm-publish-debug)
                   dependencies:
-                    e(npm-build-production)
+                    e(npm-build-debug)
                       dependents:
-                        d(npm-build-production)
+                        d(npm-build-debug)
                         e(npm-test)
-                        e(npm-publish-production)
+                        e(npm-publish-debug)
                       dependencies:
-            c(npm-build-production)
+            c(npm-build-debug)
               dependents:
-                b(npm-build-production)
-                a(npm-build-production)
+                b(npm-build-debug)
+                a(npm-build-debug)
                 c(npm-test)
-                c(npm-publish-production)
+                c(npm-publish-debug)
               dependencies:
-                d(npm-build-production)
+                d(npm-build-debug)
                   dependents:
-                    c(npm-build-production)
-                    b(npm-build-production)
+                    c(npm-build-debug)
+                    b(npm-build-debug)
                     d(npm-test)
-                    d(npm-publish-production)
+                    d(npm-publish-debug)
                   dependencies:
-                    e(npm-build-production)
+                    e(npm-build-debug)
                       dependents:
-                        d(npm-build-production)
+                        d(npm-build-debug)
                         e(npm-test)
-                        e(npm-publish-production)
+                        e(npm-publish-debug)
                       dependencies:
     a(npm-lint)
       dependents:
-        a(npm-publish-production)
+        a(npm-publish-debug)
       dependencies:
     a(npm-measure)
       dependents:
-        a(npm-publish-production)
+        a(npm-publish-debug)
       dependencies:"
 `;
 
-exports[`Khayyam domain CD x package: log 1`] = `
+exports[`Khayyam domain dev a,b,c,d,e packages: 03-log-after rebuild 1`] = `
 Array [
-  "creating job [x(npm-build-production)]",
-  "creating job [x(npm-test)]",
-  "creating job [x(npm-publish-production)]",
-  "creating job [x(npm-lint)]",
-  "creating job [x(npm-measure)]",
+  "schedule.create: loadAndBuildWorkspace ms=3000->300",
+  "schedule.run: loadAndBuildWorkspace",
+  "watch.start=loadAndBuildWorkspace for fakeBundlerNPM/abcde/deps/khayyam.yaml",
+  "watch.start=a for fakeBundlerNPM/a",
+  "watch.start=b for fakeBundlerNPM/b",
+  "watch.start=c for fakeBundlerNPM/c",
+  "watch.start=d for fakeBundlerNPM/d",
+  "watch.start=e for fakeBundlerNPM/e",
+  "schedule.create: rebuildPackages ms=3000->300",
+  "schedule.run: rebuildPackages",
+  "creating job [e(npm-build-debug)]",
+  "creating job [d(npm-build-debug)]",
+  "creating job [c(npm-build-debug)]",
+  "creating job [b(npm-build-debug)]",
+  "creating job [a(npm-build-debug)]",
+  "creating job [e(npm-test)]",
+  "creating job [d(npm-test)]",
+  "creating job [c(npm-test)]",
+  "creating job [b(npm-test)]",
+  "creating job [a(npm-test)]",
+  "creating job [e(npm-publish-debug)]",
+  "creating job [d(npm-publish-debug)]",
+  "creating job [c(npm-publish-debug)]",
+  "creating job [b(npm-publish-debug)]",
+  "creating job [a(npm-publish-debug)]",
+  "creating job [e(npm-lint)]",
+  "creating job [d(npm-lint)]",
+  "creating job [c(npm-lint)]",
+  "creating job [b(npm-lint)]",
+  "creating job [a(npm-lint)]",
+  "creating job [e(npm-measure)]",
+  "creating job [d(npm-measure)]",
+  "creating job [c(npm-measure)]",
+  "creating job [b(npm-measure)]",
+  "creating job [a(npm-measure)]",
+  "pg e(npm-build-debug): waiting undefined",
+  "pg d(npm-build-debug): waiting undefined",
+  "pg c(npm-build-debug): waiting undefined",
+  "pg b(npm-build-debug): waiting undefined",
+  "pg a(npm-build-debug): waiting undefined",
+  "pg e(npm-test): waiting undefined",
+  "pg d(npm-test): waiting undefined",
+  "pg c(npm-test): waiting undefined",
+  "pg b(npm-test): waiting undefined",
+  "pg a(npm-test): waiting undefined",
+  "pg e(npm-publish-debug): waiting undefined",
+  "pg d(npm-publish-debug): waiting undefined",
+  "pg c(npm-publish-debug): waiting undefined",
+  "pg b(npm-publish-debug): waiting undefined",
+  "pg a(npm-publish-debug): waiting undefined",
+  "pg e(npm-lint): waiting undefined",
+  "pg d(npm-lint): waiting undefined",
+  "pg c(npm-lint): waiting undefined",
+  "pg b(npm-lint): waiting undefined",
+  "pg a(npm-lint): waiting undefined",
+  "pg e(npm-measure): waiting undefined",
+  "pg d(npm-measure): waiting undefined",
+  "pg c(npm-measure): waiting undefined",
+  "pg b(npm-measure): waiting undefined",
+  "pg a(npm-measure): waiting undefined",
+  "pg e(npm-build-debug): working undefined",
+  "pg e(npm-lint): working undefined",
+  "pg d(npm-lint): working undefined",
+  "pg c(npm-lint): working undefined",
+  "pg b(npm-lint): working undefined",
+  "pg a(npm-lint): working undefined",
+  "pg e(npm-measure): working undefined",
+  "pg d(npm-measure): working undefined",
+  "pg c(npm-measure): working undefined",
+  "pg b(npm-measure): working undefined",
+  "pg a(npm-measure): working undefined",
+  "pg e(npm-build-debug): working started",
+  "pg e(npm-build-debug): working npm-build-debug",
+  "pg e(npm-build-debug): working finished",
+  "killing e(npm-build-debug)",
+  "pg e(npm-build-debug): finished undefined",
+  "pg d(npm-build-debug): working undefined",
+  "pg e(npm-test): working undefined",
+  "pg e(npm-lint): working started",
+  "pg e(npm-lint): working npm-lint",
+  "pg e(npm-lint): working finished",
+  "killing e(npm-lint)",
+  "pg e(npm-lint): finished undefined",
+  "pg d(npm-lint): working started",
+  "pg d(npm-lint): working npm-lint",
+  "pg d(npm-lint): working finished",
+  "killing d(npm-lint)",
+  "pg d(npm-lint): finished undefined",
+  "pg c(npm-lint): working started",
+  "pg c(npm-lint): working npm-lint",
+  "pg c(npm-lint): working finished",
+  "killing c(npm-lint)",
+  "pg c(npm-lint): finished undefined",
+  "pg b(npm-lint): working started",
+  "pg b(npm-lint): working npm-lint",
+  "pg b(npm-lint): working finished",
+  "killing b(npm-lint)",
+  "pg b(npm-lint): finished undefined",
+  "pg a(npm-lint): working started",
+  "pg a(npm-lint): working npm-lint",
+  "pg a(npm-lint): working finished",
+  "killing a(npm-lint)",
+  "pg a(npm-lint): finished undefined",
+  "pg e(npm-measure): working started",
+  "pg e(npm-measure): working npm-measure",
+  "pg e(npm-measure): working finished",
+  "killing e(npm-measure)",
+  "pg e(npm-measure): finished undefined",
+  "pg d(npm-measure): working started",
+  "pg d(npm-measure): working npm-measure",
+  "pg d(npm-measure): working finished",
+  "killing d(npm-measure)",
+  "pg d(npm-measure): finished undefined",
+  "pg c(npm-measure): working started",
+  "pg c(npm-measure): working npm-measure",
+  "pg c(npm-measure): working finished",
+  "killing c(npm-measure)",
+  "pg c(npm-measure): finished undefined",
+  "pg b(npm-measure): working started",
+  "pg b(npm-measure): working npm-measure",
+  "pg b(npm-measure): working finished",
+  "killing b(npm-measure)",
+  "pg b(npm-measure): finished undefined",
+  "pg a(npm-measure): working started",
+  "pg a(npm-measure): working npm-measure",
+  "pg a(npm-measure): working finished",
+  "killing a(npm-measure)",
+  "pg a(npm-measure): finished undefined",
+  "pg d(npm-build-debug): working started",
+  "pg d(npm-build-debug): working npm-build-debug",
+  "pg d(npm-build-debug): working finished",
+  "killing d(npm-build-debug)",
+  "pg d(npm-build-debug): finished undefined",
+  "pg c(npm-build-debug): working undefined",
+  "pg e(npm-test): working started",
+  "pg e(npm-test): working npm-test",
+  "pg e(npm-test): working finished",
+  "killing e(npm-test)",
+  "pg e(npm-test): finished undefined",
+  "pg d(npm-test): working undefined",
+  "pg e(npm-publish-debug): working undefined",
+  "pg c(npm-build-debug): working started",
+  "pg c(npm-build-debug): working npm-build-debug",
+  "pg c(npm-build-debug): working finished",
+  "killing c(npm-build-debug)",
+  "pg c(npm-build-debug): finished undefined",
+  "pg b(npm-build-debug): working undefined",
+  "pg d(npm-test): working started",
+  "pg d(npm-test): working npm-test",
+  "pg d(npm-test): working finished",
+  "killing d(npm-test)",
+  "pg d(npm-test): finished undefined",
+  "pg c(npm-test): working undefined",
+  "pg d(npm-publish-debug): working undefined",
+  "pg e(npm-publish-debug): working started",
+  "pg e(npm-publish-debug): working npm-publish-debug",
+  "pg e(npm-publish-debug): working finished",
+  "killing e(npm-publish-debug)",
+  "pg e(npm-publish-debug): finished undefined",
+  "pg b(npm-build-debug): working started",
+  "pg b(npm-build-debug): working npm-build-debug",
+  "pg b(npm-build-debug): working finished",
+  "killing b(npm-build-debug)",
+  "pg b(npm-build-debug): finished undefined",
+  "pg a(npm-build-debug): working undefined",
+  "pg c(npm-test): working started",
+  "pg c(npm-test): working npm-test",
+  "pg c(npm-test): working finished",
+  "killing c(npm-test)",
+  "pg c(npm-test): finished undefined",
+  "pg b(npm-test): working undefined",
+  "pg c(npm-publish-debug): working undefined",
+  "pg d(npm-publish-debug): working started",
+  "pg d(npm-publish-debug): working npm-publish-debug",
+  "pg d(npm-publish-debug): working finished",
+  "killing d(npm-publish-debug)",
+  "pg d(npm-publish-debug): finished undefined",
+  "pg a(npm-build-debug): working started",
+  "pg a(npm-build-debug): working npm-build-debug",
+  "pg a(npm-build-debug): working finished",
+  "killing a(npm-build-debug)",
+  "pg a(npm-build-debug): finished undefined",
+  "pg b(npm-test): working started",
+  "pg b(npm-test): working npm-test",
+  "pg b(npm-test): working finished",
+  "killing b(npm-test)",
+  "pg b(npm-test): finished undefined",
+  "pg a(npm-test): working undefined",
+  "pg b(npm-publish-debug): working undefined",
+  "pg c(npm-publish-debug): working started",
+  "pg c(npm-publish-debug): working npm-publish-debug",
+  "pg c(npm-publish-debug): working finished",
+  "killing c(npm-publish-debug)",
+  "pg c(npm-publish-debug): finished undefined",
+  "pg a(npm-test): working started",
+  "pg a(npm-test): working npm-test",
+  "pg a(npm-test): working finished",
+  "killing a(npm-test)",
+  "pg a(npm-test): finished undefined",
+  "pg a(npm-publish-debug): working undefined",
+  "pg b(npm-publish-debug): working started",
+  "pg b(npm-publish-debug): working npm-publish-debug",
+  "pg b(npm-publish-debug): working finished",
+  "killing b(npm-publish-debug)",
+  "pg b(npm-publish-debug): finished undefined",
+  "pg a(npm-publish-debug): working started",
+  "pg a(npm-publish-debug): working npm-publish-debug",
+  "pg a(npm-publish-debug): working finished",
+  "killing a(npm-publish-debug)",
+  "pg a(npm-publish-debug): finished undefined",
+  "fsNotify:Workspace built",
+  "watch.handled changed=fakeBundlerNPM/abcde/deps/khayyam.yaml",
+  "watch.kill=loadAndBuildWorkspace for fakeBundlerNPM/abcde/deps/khayyam.yaml",
+  "unschedule: loadAndBuildWorkspace",
+  "unschedule: rebuildPackages",
+  "schedule.create: loadAndBuildWorkspace ms=3000->300",
+  "watch.kill=a for fakeBundlerNPM/a",
+  "watch.kill=b for fakeBundlerNPM/b",
+  "watch.kill=c for fakeBundlerNPM/c",
+  "watch.kill=d for fakeBundlerNPM/d",
+  "watch.kill=e for fakeBundlerNPM/e",
+  "schedule.run: loadAndBuildWorkspace",
+  "watch.start=loadAndBuildWorkspace for fakeBundlerNPM/abcde/deps/khayyam.yaml",
+  "watch.start=a for fakeBundlerNPM/a",
+  "watch.start=b for fakeBundlerNPM/b",
+  "watch.start=c for fakeBundlerNPM/c",
+  "watch.start=d for fakeBundlerNPM/d",
+  "watch.start=e for fakeBundlerNPM/e",
+  "schedule.create: rebuildPackages ms=3000->300",
+  "schedule.run: rebuildPackages",
+  "creating job [e(npm-build-debug)]",
+  "creating job [d(npm-build-debug)]",
+  "creating job [c(npm-build-debug)]",
+  "creating job [b(npm-build-debug)]",
+  "creating job [a(npm-build-debug)]",
+  "creating job [e(npm-test)]",
+  "creating job [d(npm-test)]",
+  "creating job [c(npm-test)]",
+  "creating job [b(npm-test)]",
+  "creating job [a(npm-test)]",
+  "creating job [e(npm-publish-debug)]",
+  "creating job [d(npm-publish-debug)]",
+  "creating job [c(npm-publish-debug)]",
+  "creating job [b(npm-publish-debug)]",
+  "creating job [a(npm-publish-debug)]",
+  "creating job [e(npm-lint)]",
+  "creating job [d(npm-lint)]",
+  "creating job [c(npm-lint)]",
+  "creating job [b(npm-lint)]",
+  "creating job [a(npm-lint)]",
+  "creating job [e(npm-measure)]",
+  "creating job [d(npm-measure)]",
+  "creating job [c(npm-measure)]",
+  "creating job [b(npm-measure)]",
+  "creating job [a(npm-measure)]",
+  "pg e(npm-build-debug): waiting undefined",
+  "pg d(npm-build-debug): waiting undefined",
+  "pg c(npm-build-debug): waiting undefined",
+  "pg b(npm-build-debug): waiting undefined",
+  "pg a(npm-build-debug): waiting undefined",
+  "pg e(npm-test): waiting undefined",
+  "pg d(npm-test): waiting undefined",
+  "pg c(npm-test): waiting undefined",
+  "pg b(npm-test): waiting undefined",
+  "pg a(npm-test): waiting undefined",
+  "pg e(npm-publish-debug): waiting undefined",
+  "pg d(npm-publish-debug): waiting undefined",
+  "pg c(npm-publish-debug): waiting undefined",
+  "pg b(npm-publish-debug): waiting undefined",
+  "pg a(npm-publish-debug): waiting undefined",
+  "pg e(npm-lint): waiting undefined",
+  "pg d(npm-lint): waiting undefined",
+  "pg c(npm-lint): waiting undefined",
+  "pg b(npm-lint): waiting undefined",
+  "pg a(npm-lint): waiting undefined",
+  "pg e(npm-measure): waiting undefined",
+  "pg d(npm-measure): waiting undefined",
+  "pg c(npm-measure): waiting undefined",
+  "pg b(npm-measure): waiting undefined",
+  "pg a(npm-measure): waiting undefined",
+  "pg e(npm-build-debug): working undefined",
+  "pg e(npm-lint): working undefined",
+  "pg d(npm-lint): working undefined",
+  "pg c(npm-lint): working undefined",
+  "pg b(npm-lint): working undefined",
+  "pg a(npm-lint): working undefined",
+  "pg e(npm-measure): working undefined",
+  "pg d(npm-measure): working undefined",
+  "pg c(npm-measure): working undefined",
+  "pg b(npm-measure): working undefined",
+  "pg a(npm-measure): working undefined",
+  "pg e(npm-build-debug): working started",
+  "pg e(npm-build-debug): working npm-build-debug",
+  "pg e(npm-build-debug): working finished",
+  "killing e(npm-build-debug)",
+  "pg e(npm-build-debug): finished undefined",
+  "pg d(npm-build-debug): working undefined",
+  "pg e(npm-test): working undefined",
+  "pg e(npm-lint): working started",
+  "pg e(npm-lint): working npm-lint",
+  "pg e(npm-lint): working finished",
+  "killing e(npm-lint)",
+  "pg e(npm-lint): finished undefined",
+  "pg d(npm-lint): working started",
+  "pg d(npm-lint): working npm-lint",
+  "pg d(npm-lint): working finished",
+  "killing d(npm-lint)",
+  "pg d(npm-lint): finished undefined",
+  "pg c(npm-lint): working started",
+  "pg c(npm-lint): working npm-lint",
+  "pg c(npm-lint): working finished",
+  "killing c(npm-lint)",
+  "pg c(npm-lint): finished undefined",
+  "pg b(npm-lint): working started",
+  "pg b(npm-lint): working npm-lint",
+  "pg b(npm-lint): working finished",
+  "killing b(npm-lint)",
+  "pg b(npm-lint): finished undefined",
+  "pg a(npm-lint): working started",
+  "pg a(npm-lint): working npm-lint",
+  "pg a(npm-lint): working finished",
+  "killing a(npm-lint)",
+  "pg a(npm-lint): finished undefined",
+  "pg e(npm-measure): working started",
+  "pg e(npm-measure): working npm-measure",
+  "pg e(npm-measure): working finished",
+  "killing e(npm-measure)",
+  "pg e(npm-measure): finished undefined",
+  "pg d(npm-measure): working started",
+  "pg d(npm-measure): working npm-measure",
+  "pg d(npm-measure): working finished",
+  "killing d(npm-measure)",
+  "pg d(npm-measure): finished undefined",
+  "pg c(npm-measure): working started",
+  "pg c(npm-measure): working npm-measure",
+  "pg c(npm-measure): working finished",
+  "killing c(npm-measure)",
+  "pg c(npm-measure): finished undefined",
+  "pg b(npm-measure): working started",
+  "pg b(npm-measure): working npm-measure",
+  "pg b(npm-measure): working finished",
+  "killing b(npm-measure)",
+  "pg b(npm-measure): finished undefined",
+  "pg a(npm-measure): working started",
+  "pg a(npm-measure): working npm-measure",
+  "pg a(npm-measure): working finished",
+  "killing a(npm-measure)",
+  "pg a(npm-measure): finished undefined",
+  "pg d(npm-build-debug): working started",
+  "pg d(npm-build-debug): working npm-build-debug",
+  "pg d(npm-build-debug): working finished",
+  "killing d(npm-build-debug)",
+  "pg d(npm-build-debug): finished undefined",
+  "pg c(npm-build-debug): working undefined",
+  "pg e(npm-test): working started",
+  "pg e(npm-test): working npm-test",
+  "pg e(npm-test): working finished",
+  "killing e(npm-test)",
+  "pg e(npm-test): finished undefined",
+  "pg d(npm-test): working undefined",
+  "pg e(npm-publish-debug): working undefined",
+  "pg c(npm-build-debug): working started",
+  "pg c(npm-build-debug): working npm-build-debug",
+  "pg c(npm-build-debug): working finished",
+  "killing c(npm-build-debug)",
+  "pg c(npm-build-debug): finished undefined",
+  "pg b(npm-build-debug): working undefined",
+  "pg d(npm-test): working started",
+  "pg d(npm-test): working npm-test",
+  "pg d(npm-test): working finished",
+  "killing d(npm-test)",
+  "pg d(npm-test): finished undefined",
+  "pg c(npm-test): working undefined",
+  "pg d(npm-publish-debug): working undefined",
+  "pg e(npm-publish-debug): working started",
+  "pg e(npm-publish-debug): working npm-publish-debug",
+  "pg e(npm-publish-debug): working finished",
+  "killing e(npm-publish-debug)",
+  "pg e(npm-publish-debug): finished undefined",
+  "pg b(npm-build-debug): working started",
+  "pg b(npm-build-debug): working npm-build-debug",
+  "pg b(npm-build-debug): working finished",
+  "killing b(npm-build-debug)",
+  "pg b(npm-build-debug): finished undefined",
+  "pg a(npm-build-debug): working undefined",
+  "pg c(npm-test): working started",
+  "pg c(npm-test): working npm-test",
+  "pg c(npm-test): working finished",
+  "killing c(npm-test)",
+  "pg c(npm-test): finished undefined",
+  "pg b(npm-test): working undefined",
+  "pg c(npm-publish-debug): working undefined",
+  "pg d(npm-publish-debug): working started",
+  "pg d(npm-publish-debug): working npm-publish-debug",
+  "pg d(npm-publish-debug): working finished",
+  "killing d(npm-publish-debug)",
+  "pg d(npm-publish-debug): finished undefined",
+  "pg a(npm-build-debug): working started",
+  "pg a(npm-build-debug): working npm-build-debug",
+  "pg a(npm-build-debug): working finished",
+  "killing a(npm-build-debug)",
+  "pg a(npm-build-debug): finished undefined",
+  "pg b(npm-test): working started",
+  "pg b(npm-test): working npm-test",
+  "pg b(npm-test): working finished",
+  "killing b(npm-test)",
+  "pg b(npm-test): finished undefined",
+  "pg a(npm-test): working undefined",
+  "pg b(npm-publish-debug): working undefined",
+  "pg c(npm-publish-debug): working started",
+  "pg c(npm-publish-debug): working npm-publish-debug",
+  "pg c(npm-publish-debug): working finished",
+  "killing c(npm-publish-debug)",
+  "pg c(npm-publish-debug): finished undefined",
+  "pg a(npm-test): working started",
+  "pg a(npm-test): working npm-test",
+  "pg a(npm-test): working finished",
+  "killing a(npm-test)",
+  "pg a(npm-test): finished undefined",
+  "pg a(npm-publish-debug): working undefined",
+  "pg b(npm-publish-debug): working started",
+  "pg b(npm-publish-debug): working npm-publish-debug",
+  "pg b(npm-publish-debug): working finished",
+  "killing b(npm-publish-debug)",
+  "pg b(npm-publish-debug): finished undefined",
+  "pg a(npm-publish-debug): working started",
+  "pg a(npm-publish-debug): working npm-publish-debug",
+  "pg a(npm-publish-debug): working finished",
+  "killing a(npm-publish-debug)",
+  "pg a(npm-publish-debug): finished undefined",
+  "fsNotify:Workspace built",
 ]
 `;
 
-exports[`Khayyam domain CD x package: tree 1`] = `
-"x(npm-publish-production)
+exports[`Khayyam domain dev a,b,c,d,e packages: 03-tree-after rebuild 1`] = `
+"e(npm-publish-debug)
   dependents:
   dependencies:
-    x(npm-build-production)
+    e(npm-build-debug)
       dependents:
-        x(npm-test)
-        x(npm-publish-production)
+        d(npm-build-debug)
+        e(npm-test)
+        e(npm-publish-debug)
       dependencies:
-    x(npm-test)
+    e(npm-test)
       dependents:
-        x(npm-publish-production)
+        d(npm-test)
+        e(npm-publish-debug)
       dependencies:
-        x(npm-build-production)
+        e(npm-build-debug)
           dependents:
-            x(npm-test)
-            x(npm-publish-production)
+            d(npm-build-debug)
+            e(npm-test)
+            e(npm-publish-debug)
           dependencies:
-    x(npm-lint)
+    e(npm-lint)
       dependents:
-        x(npm-publish-production)
+        e(npm-publish-debug)
       dependencies:
-    x(npm-measure)
+    e(npm-measure)
       dependents:
-        x(npm-publish-production)
+        e(npm-publish-debug)
+      dependencies:
+d(npm-publish-debug)
+  dependents:
+  dependencies:
+    d(npm-build-debug)
+      dependents:
+        c(npm-build-debug)
+        b(npm-build-debug)
+        d(npm-test)
+        d(npm-publish-debug)
+      dependencies:
+        e(npm-build-debug)
+          dependents:
+            d(npm-build-debug)
+            e(npm-test)
+            e(npm-publish-debug)
+          dependencies:
+    d(npm-test)
+      dependents:
+        c(npm-test)
+        b(npm-test)
+        d(npm-publish-debug)
+      dependencies:
+        e(npm-test)
+          dependents:
+            d(npm-test)
+            e(npm-publish-debug)
+          dependencies:
+            e(npm-build-debug)
+              dependents:
+                d(npm-build-debug)
+                e(npm-test)
+                e(npm-publish-debug)
+              dependencies:
+        d(npm-build-debug)
+          dependents:
+            c(npm-build-debug)
+            b(npm-build-debug)
+            d(npm-test)
+            d(npm-publish-debug)
+          dependencies:
+            e(npm-build-debug)
+              dependents:
+                d(npm-build-debug)
+                e(npm-test)
+                e(npm-publish-debug)
+              dependencies:
+    d(npm-lint)
+      dependents:
+        d(npm-publish-debug)
+      dependencies:
+    d(npm-measure)
+      dependents:
+        d(npm-publish-debug)
+      dependencies:
+c(npm-publish-debug)
+  dependents:
+  dependencies:
+    c(npm-build-debug)
+      dependents:
+        b(npm-build-debug)
+        a(npm-build-debug)
+        c(npm-test)
+        c(npm-publish-debug)
+      dependencies:
+        d(npm-build-debug)
+          dependents:
+            c(npm-build-debug)
+            b(npm-build-debug)
+            d(npm-test)
+            d(npm-publish-debug)
+          dependencies:
+            e(npm-build-debug)
+              dependents:
+                d(npm-build-debug)
+                e(npm-test)
+                e(npm-publish-debug)
+              dependencies:
+    c(npm-test)
+      dependents:
+        b(npm-test)
+        a(npm-test)
+        c(npm-publish-debug)
+      dependencies:
+        d(npm-test)
+          dependents:
+            c(npm-test)
+            b(npm-test)
+            d(npm-publish-debug)
+          dependencies:
+            e(npm-test)
+              dependents:
+                d(npm-test)
+                e(npm-publish-debug)
+              dependencies:
+                e(npm-build-debug)
+                  dependents:
+                    d(npm-build-debug)
+                    e(npm-test)
+                    e(npm-publish-debug)
+                  dependencies:
+            d(npm-build-debug)
+              dependents:
+                c(npm-build-debug)
+                b(npm-build-debug)
+                d(npm-test)
+                d(npm-publish-debug)
+              dependencies:
+                e(npm-build-debug)
+                  dependents:
+                    d(npm-build-debug)
+                    e(npm-test)
+                    e(npm-publish-debug)
+                  dependencies:
+        c(npm-build-debug)
+          dependents:
+            b(npm-build-debug)
+            a(npm-build-debug)
+            c(npm-test)
+            c(npm-publish-debug)
+          dependencies:
+            d(npm-build-debug)
+              dependents:
+                c(npm-build-debug)
+                b(npm-build-debug)
+                d(npm-test)
+                d(npm-publish-debug)
+              dependencies:
+                e(npm-build-debug)
+                  dependents:
+                    d(npm-build-debug)
+                    e(npm-test)
+                    e(npm-publish-debug)
+                  dependencies:
+    c(npm-lint)
+      dependents:
+        c(npm-publish-debug)
+      dependencies:
+    c(npm-measure)
+      dependents:
+        c(npm-publish-debug)
+      dependencies:
+b(npm-publish-debug)
+  dependents:
+  dependencies:
+    b(npm-build-debug)
+      dependents:
+        a(npm-build-debug)
+        b(npm-test)
+        b(npm-publish-debug)
+      dependencies:
+        c(npm-build-debug)
+          dependents:
+            b(npm-build-debug)
+            a(npm-build-debug)
+            c(npm-test)
+            c(npm-publish-debug)
+          dependencies:
+            d(npm-build-debug)
+              dependents:
+                c(npm-build-debug)
+                b(npm-build-debug)
+                d(npm-test)
+                d(npm-publish-debug)
+              dependencies:
+                e(npm-build-debug)
+                  dependents:
+                    d(npm-build-debug)
+                    e(npm-test)
+                    e(npm-publish-debug)
+                  dependencies:
+        d(npm-build-debug)
+          dependents:
+            c(npm-build-debug)
+            b(npm-build-debug)
+            d(npm-test)
+            d(npm-publish-debug)
+          dependencies:
+            e(npm-build-debug)
+              dependents:
+                d(npm-build-debug)
+                e(npm-test)
+                e(npm-publish-debug)
+              dependencies:
+    b(npm-test)
+      dependents:
+        a(npm-test)
+        b(npm-publish-debug)
+      dependencies:
+        c(npm-test)
+          dependents:
+            b(npm-test)
+            a(npm-test)
+            c(npm-publish-debug)
+          dependencies:
+            d(npm-test)
+              dependents:
+                c(npm-test)
+                b(npm-test)
+                d(npm-publish-debug)
+              dependencies:
+                e(npm-test)
+                  dependents:
+                    d(npm-test)
+                    e(npm-publish-debug)
+                  dependencies:
+                    e(npm-build-debug)
+                      dependents:
+                        d(npm-build-debug)
+                        e(npm-test)
+                        e(npm-publish-debug)
+                      dependencies:
+                d(npm-build-debug)
+                  dependents:
+                    c(npm-build-debug)
+                    b(npm-build-debug)
+                    d(npm-test)
+                    d(npm-publish-debug)
+                  dependencies:
+                    e(npm-build-debug)
+                      dependents:
+                        d(npm-build-debug)
+                        e(npm-test)
+                        e(npm-publish-debug)
+                      dependencies:
+            c(npm-build-debug)
+              dependents:
+                b(npm-build-debug)
+                a(npm-build-debug)
+                c(npm-test)
+                c(npm-publish-debug)
+              dependencies:
+                d(npm-build-debug)
+                  dependents:
+                    c(npm-build-debug)
+                    b(npm-build-debug)
+                    d(npm-test)
+                    d(npm-publish-debug)
+                  dependencies:
+                    e(npm-build-debug)
+                      dependents:
+                        d(npm-build-debug)
+                        e(npm-test)
+                        e(npm-publish-debug)
+                      dependencies:
+        d(npm-test)
+          dependents:
+            c(npm-test)
+            b(npm-test)
+            d(npm-publish-debug)
+          dependencies:
+            e(npm-test)
+              dependents:
+                d(npm-test)
+                e(npm-publish-debug)
+              dependencies:
+                e(npm-build-debug)
+                  dependents:
+                    d(npm-build-debug)
+                    e(npm-test)
+                    e(npm-publish-debug)
+                  dependencies:
+            d(npm-build-debug)
+              dependents:
+                c(npm-build-debug)
+                b(npm-build-debug)
+                d(npm-test)
+                d(npm-publish-debug)
+              dependencies:
+                e(npm-build-debug)
+                  dependents:
+                    d(npm-build-debug)
+                    e(npm-test)
+                    e(npm-publish-debug)
+                  dependencies:
+        b(npm-build-debug)
+          dependents:
+            a(npm-build-debug)
+            b(npm-test)
+            b(npm-publish-debug)
+          dependencies:
+            c(npm-build-debug)
+              dependents:
+                b(npm-build-debug)
+                a(npm-build-debug)
+                c(npm-test)
+                c(npm-publish-debug)
+              dependencies:
+                d(npm-build-debug)
+                  dependents:
+                    c(npm-build-debug)
+                    b(npm-build-debug)
+                    d(npm-test)
+                    d(npm-publish-debug)
+                  dependencies:
+                    e(npm-build-debug)
+                      dependents:
+                        d(npm-build-debug)
+                        e(npm-test)
+                        e(npm-publish-debug)
+                      dependencies:
+            d(npm-build-debug)
+              dependents:
+                c(npm-build-debug)
+                b(npm-build-debug)
+                d(npm-test)
+                d(npm-publish-debug)
+              dependencies:
+                e(npm-build-debug)
+                  dependents:
+                    d(npm-build-debug)
+                    e(npm-test)
+                    e(npm-publish-debug)
+                  dependencies:
+    b(npm-lint)
+      dependents:
+        b(npm-publish-debug)
+      dependencies:
+    b(npm-measure)
+      dependents:
+        b(npm-publish-debug)
+      dependencies:
+a(npm-publish-debug)
+  dependents:
+  dependencies:
+    a(npm-build-debug)
+      dependents:
+        a(npm-test)
+        a(npm-publish-debug)
+      dependencies:
+        b(npm-build-debug)
+          dependents:
+            a(npm-build-debug)
+            b(npm-test)
+            b(npm-publish-debug)
+          dependencies:
+            c(npm-build-debug)
+              dependents:
+                b(npm-build-debug)
+                a(npm-build-debug)
+                c(npm-test)
+                c(npm-publish-debug)
+              dependencies:
+                d(npm-build-debug)
+                  dependents:
+                    c(npm-build-debug)
+                    b(npm-build-debug)
+                    d(npm-test)
+                    d(npm-publish-debug)
+                  dependencies:
+                    e(npm-build-debug)
+                      dependents:
+                        d(npm-build-debug)
+                        e(npm-test)
+                        e(npm-publish-debug)
+                      dependencies:
+            d(npm-build-debug)
+              dependents:
+                c(npm-build-debug)
+                b(npm-build-debug)
+                d(npm-test)
+                d(npm-publish-debug)
+              dependencies:
+                e(npm-build-debug)
+                  dependents:
+                    d(npm-build-debug)
+                    e(npm-test)
+                    e(npm-publish-debug)
+                  dependencies:
+        c(npm-build-debug)
+          dependents:
+            b(npm-build-debug)
+            a(npm-build-debug)
+            c(npm-test)
+            c(npm-publish-debug)
+          dependencies:
+            d(npm-build-debug)
+              dependents:
+                c(npm-build-debug)
+                b(npm-build-debug)
+                d(npm-test)
+                d(npm-publish-debug)
+              dependencies:
+                e(npm-build-debug)
+                  dependents:
+                    d(npm-build-debug)
+                    e(npm-test)
+                    e(npm-publish-debug)
+                  dependencies:
+    a(npm-test)
+      dependents:
+        a(npm-publish-debug)
+      dependencies:
+        b(npm-test)
+          dependents:
+            a(npm-test)
+            b(npm-publish-debug)
+          dependencies:
+            c(npm-test)
+              dependents:
+                b(npm-test)
+                a(npm-test)
+                c(npm-publish-debug)
+              dependencies:
+                d(npm-test)
+                  dependents:
+                    c(npm-test)
+                    b(npm-test)
+                    d(npm-publish-debug)
+                  dependencies:
+                    e(npm-test)
+                      dependents:
+                        d(npm-test)
+                        e(npm-publish-debug)
+                      dependencies:
+                        e(npm-build-debug)
+                          dependents:
+                            d(npm-build-debug)
+                            e(npm-test)
+                            e(npm-publish-debug)
+                          dependencies:
+                    d(npm-build-debug)
+                      dependents:
+                        c(npm-build-debug)
+                        b(npm-build-debug)
+                        d(npm-test)
+                        d(npm-publish-debug)
+                      dependencies:
+                        e(npm-build-debug)
+                          dependents:
+                            d(npm-build-debug)
+                            e(npm-test)
+                            e(npm-publish-debug)
+                          dependencies:
+                c(npm-build-debug)
+                  dependents:
+                    b(npm-build-debug)
+                    a(npm-build-debug)
+                    c(npm-test)
+                    c(npm-publish-debug)
+                  dependencies:
+                    d(npm-build-debug)
+                      dependents:
+                        c(npm-build-debug)
+                        b(npm-build-debug)
+                        d(npm-test)
+                        d(npm-publish-debug)
+                      dependencies:
+                        e(npm-build-debug)
+                          dependents:
+                            d(npm-build-debug)
+                            e(npm-test)
+                            e(npm-publish-debug)
+                          dependencies:
+            d(npm-test)
+              dependents:
+                c(npm-test)
+                b(npm-test)
+                d(npm-publish-debug)
+              dependencies:
+                e(npm-test)
+                  dependents:
+                    d(npm-test)
+                    e(npm-publish-debug)
+                  dependencies:
+                    e(npm-build-debug)
+                      dependents:
+                        d(npm-build-debug)
+                        e(npm-test)
+                        e(npm-publish-debug)
+                      dependencies:
+                d(npm-build-debug)
+                  dependents:
+                    c(npm-build-debug)
+                    b(npm-build-debug)
+                    d(npm-test)
+                    d(npm-publish-debug)
+                  dependencies:
+                    e(npm-build-debug)
+                      dependents:
+                        d(npm-build-debug)
+                        e(npm-test)
+                        e(npm-publish-debug)
+                      dependencies:
+            b(npm-build-debug)
+              dependents:
+                a(npm-build-debug)
+                b(npm-test)
+                b(npm-publish-debug)
+              dependencies:
+                c(npm-build-debug)
+                  dependents:
+                    b(npm-build-debug)
+                    a(npm-build-debug)
+                    c(npm-test)
+                    c(npm-publish-debug)
+                  dependencies:
+                    d(npm-build-debug)
+                      dependents:
+                        c(npm-build-debug)
+                        b(npm-build-debug)
+                        d(npm-test)
+                        d(npm-publish-debug)
+                      dependencies:
+                        e(npm-build-debug)
+                          dependents:
+                            d(npm-build-debug)
+                            e(npm-test)
+                            e(npm-publish-debug)
+                          dependencies:
+                d(npm-build-debug)
+                  dependents:
+                    c(npm-build-debug)
+                    b(npm-build-debug)
+                    d(npm-test)
+                    d(npm-publish-debug)
+                  dependencies:
+                    e(npm-build-debug)
+                      dependents:
+                        d(npm-build-debug)
+                        e(npm-test)
+                        e(npm-publish-debug)
+                      dependencies:
+        c(npm-test)
+          dependents:
+            b(npm-test)
+            a(npm-test)
+            c(npm-publish-debug)
+          dependencies:
+            d(npm-test)
+              dependents:
+                c(npm-test)
+                b(npm-test)
+                d(npm-publish-debug)
+              dependencies:
+                e(npm-test)
+                  dependents:
+                    d(npm-test)
+                    e(npm-publish-debug)
+                  dependencies:
+                    e(npm-build-debug)
+                      dependents:
+                        d(npm-build-debug)
+                        e(npm-test)
+                        e(npm-publish-debug)
+                      dependencies:
+                d(npm-build-debug)
+                  dependents:
+                    c(npm-build-debug)
+                    b(npm-build-debug)
+                    d(npm-test)
+                    d(npm-publish-debug)
+                  dependencies:
+                    e(npm-build-debug)
+                      dependents:
+                        d(npm-build-debug)
+                        e(npm-test)
+                        e(npm-publish-debug)
+                      dependencies:
+            c(npm-build-debug)
+              dependents:
+                b(npm-build-debug)
+                a(npm-build-debug)
+                c(npm-test)
+                c(npm-publish-debug)
+              dependencies:
+                d(npm-build-debug)
+                  dependents:
+                    c(npm-build-debug)
+                    b(npm-build-debug)
+                    d(npm-test)
+                    d(npm-publish-debug)
+                  dependencies:
+                    e(npm-build-debug)
+                      dependents:
+                        d(npm-build-debug)
+                        e(npm-test)
+                        e(npm-publish-debug)
+                      dependencies:
+        a(npm-build-debug)
+          dependents:
+            a(npm-test)
+            a(npm-publish-debug)
+          dependencies:
+            b(npm-build-debug)
+              dependents:
+                a(npm-build-debug)
+                b(npm-test)
+                b(npm-publish-debug)
+              dependencies:
+                c(npm-build-debug)
+                  dependents:
+                    b(npm-build-debug)
+                    a(npm-build-debug)
+                    c(npm-test)
+                    c(npm-publish-debug)
+                  dependencies:
+                    d(npm-build-debug)
+                      dependents:
+                        c(npm-build-debug)
+                        b(npm-build-debug)
+                        d(npm-test)
+                        d(npm-publish-debug)
+                      dependencies:
+                        e(npm-build-debug)
+                          dependents:
+                            d(npm-build-debug)
+                            e(npm-test)
+                            e(npm-publish-debug)
+                          dependencies:
+                d(npm-build-debug)
+                  dependents:
+                    c(npm-build-debug)
+                    b(npm-build-debug)
+                    d(npm-test)
+                    d(npm-publish-debug)
+                  dependencies:
+                    e(npm-build-debug)
+                      dependents:
+                        d(npm-build-debug)
+                        e(npm-test)
+                        e(npm-publish-debug)
+                      dependencies:
+            c(npm-build-debug)
+              dependents:
+                b(npm-build-debug)
+                a(npm-build-debug)
+                c(npm-test)
+                c(npm-publish-debug)
+              dependencies:
+                d(npm-build-debug)
+                  dependents:
+                    c(npm-build-debug)
+                    b(npm-build-debug)
+                    d(npm-test)
+                    d(npm-publish-debug)
+                  dependencies:
+                    e(npm-build-debug)
+                      dependents:
+                        d(npm-build-debug)
+                        e(npm-test)
+                        e(npm-publish-debug)
+                      dependencies:
+    a(npm-lint)
+      dependents:
+        a(npm-publish-debug)
+      dependencies:
+    a(npm-measure)
+      dependents:
+        a(npm-publish-debug)
       dependencies:"
 `;
 
-exports[`Khayyam domain CD xy package: log 1`] = `
+exports[`Khayyam domain dev a,b,c,d,e packages: 04-log-after stop 1`] = `
 Array [
-  "creating job [y(npm-build-production)]",
-  "creating job [x(npm-build-production)]",
-  "creating job [y(npm-test)]",
-  "creating job [x(npm-test)]",
-  "creating job [y(npm-publish-production)]",
-  "creating job [x(npm-publish-production)]",
-  "creating job [y(npm-lint)]",
-  "creating job [x(npm-lint)]",
-  "creating job [y(npm-measure)]",
-  "creating job [x(npm-measure)]",
+  "schedule.create: loadAndBuildWorkspace ms=3000->300",
+  "schedule.run: loadAndBuildWorkspace",
+  "watch.start=loadAndBuildWorkspace for fakeBundlerNPM/abcde/deps/khayyam.yaml",
+  "watch.start=a for fakeBundlerNPM/a",
+  "watch.start=b for fakeBundlerNPM/b",
+  "watch.start=c for fakeBundlerNPM/c",
+  "watch.start=d for fakeBundlerNPM/d",
+  "watch.start=e for fakeBundlerNPM/e",
+  "schedule.create: rebuildPackages ms=3000->300",
+  "schedule.run: rebuildPackages",
+  "creating job [e(npm-build-debug)]",
+  "creating job [d(npm-build-debug)]",
+  "creating job [c(npm-build-debug)]",
+  "creating job [b(npm-build-debug)]",
+  "creating job [a(npm-build-debug)]",
+  "creating job [e(npm-test)]",
+  "creating job [d(npm-test)]",
+  "creating job [c(npm-test)]",
+  "creating job [b(npm-test)]",
+  "creating job [a(npm-test)]",
+  "creating job [e(npm-publish-debug)]",
+  "creating job [d(npm-publish-debug)]",
+  "creating job [c(npm-publish-debug)]",
+  "creating job [b(npm-publish-debug)]",
+  "creating job [a(npm-publish-debug)]",
+  "creating job [e(npm-lint)]",
+  "creating job [d(npm-lint)]",
+  "creating job [c(npm-lint)]",
+  "creating job [b(npm-lint)]",
+  "creating job [a(npm-lint)]",
+  "creating job [e(npm-measure)]",
+  "creating job [d(npm-measure)]",
+  "creating job [c(npm-measure)]",
+  "creating job [b(npm-measure)]",
+  "creating job [a(npm-measure)]",
+  "pg e(npm-build-debug): waiting undefined",
+  "pg d(npm-build-debug): waiting undefined",
+  "pg c(npm-build-debug): waiting undefined",
+  "pg b(npm-build-debug): waiting undefined",
+  "pg a(npm-build-debug): waiting undefined",
+  "pg e(npm-test): waiting undefined",
+  "pg d(npm-test): waiting undefined",
+  "pg c(npm-test): waiting undefined",
+  "pg b(npm-test): waiting undefined",
+  "pg a(npm-test): waiting undefined",
+  "pg e(npm-publish-debug): waiting undefined",
+  "pg d(npm-publish-debug): waiting undefined",
+  "pg c(npm-publish-debug): waiting undefined",
+  "pg b(npm-publish-debug): waiting undefined",
+  "pg a(npm-publish-debug): waiting undefined",
+  "pg e(npm-lint): waiting undefined",
+  "pg d(npm-lint): waiting undefined",
+  "pg c(npm-lint): waiting undefined",
+  "pg b(npm-lint): waiting undefined",
+  "pg a(npm-lint): waiting undefined",
+  "pg e(npm-measure): waiting undefined",
+  "pg d(npm-measure): waiting undefined",
+  "pg c(npm-measure): waiting undefined",
+  "pg b(npm-measure): waiting undefined",
+  "pg a(npm-measure): waiting undefined",
+  "pg e(npm-build-debug): working undefined",
+  "pg e(npm-lint): working undefined",
+  "pg d(npm-lint): working undefined",
+  "pg c(npm-lint): working undefined",
+  "pg b(npm-lint): working undefined",
+  "pg a(npm-lint): working undefined",
+  "pg e(npm-measure): working undefined",
+  "pg d(npm-measure): working undefined",
+  "pg c(npm-measure): working undefined",
+  "pg b(npm-measure): working undefined",
+  "pg a(npm-measure): working undefined",
+  "pg e(npm-build-debug): working started",
+  "pg e(npm-build-debug): working npm-build-debug",
+  "pg e(npm-build-debug): working finished",
+  "killing e(npm-build-debug)",
+  "pg e(npm-build-debug): finished undefined",
+  "pg d(npm-build-debug): working undefined",
+  "pg e(npm-test): working undefined",
+  "pg e(npm-lint): working started",
+  "pg e(npm-lint): working npm-lint",
+  "pg e(npm-lint): working finished",
+  "killing e(npm-lint)",
+  "pg e(npm-lint): finished undefined",
+  "pg d(npm-lint): working started",
+  "pg d(npm-lint): working npm-lint",
+  "pg d(npm-lint): working finished",
+  "killing d(npm-lint)",
+  "pg d(npm-lint): finished undefined",
+  "pg c(npm-lint): working started",
+  "pg c(npm-lint): working npm-lint",
+  "pg c(npm-lint): working finished",
+  "killing c(npm-lint)",
+  "pg c(npm-lint): finished undefined",
+  "pg b(npm-lint): working started",
+  "pg b(npm-lint): working npm-lint",
+  "pg b(npm-lint): working finished",
+  "killing b(npm-lint)",
+  "pg b(npm-lint): finished undefined",
+  "pg a(npm-lint): working started",
+  "pg a(npm-lint): working npm-lint",
+  "pg a(npm-lint): working finished",
+  "killing a(npm-lint)",
+  "pg a(npm-lint): finished undefined",
+  "pg e(npm-measure): working started",
+  "pg e(npm-measure): working npm-measure",
+  "pg e(npm-measure): working finished",
+  "killing e(npm-measure)",
+  "pg e(npm-measure): finished undefined",
+  "pg d(npm-measure): working started",
+  "pg d(npm-measure): working npm-measure",
+  "pg d(npm-measure): working finished",
+  "killing d(npm-measure)",
+  "pg d(npm-measure): finished undefined",
+  "pg c(npm-measure): working started",
+  "pg c(npm-measure): working npm-measure",
+  "pg c(npm-measure): working finished",
+  "killing c(npm-measure)",
+  "pg c(npm-measure): finished undefined",
+  "pg b(npm-measure): working started",
+  "pg b(npm-measure): working npm-measure",
+  "pg b(npm-measure): working finished",
+  "killing b(npm-measure)",
+  "pg b(npm-measure): finished undefined",
+  "pg a(npm-measure): working started",
+  "pg a(npm-measure): working npm-measure",
+  "pg a(npm-measure): working finished",
+  "killing a(npm-measure)",
+  "pg a(npm-measure): finished undefined",
+  "pg d(npm-build-debug): working started",
+  "pg d(npm-build-debug): working npm-build-debug",
+  "pg d(npm-build-debug): working finished",
+  "killing d(npm-build-debug)",
+  "pg d(npm-build-debug): finished undefined",
+  "pg c(npm-build-debug): working undefined",
+  "pg e(npm-test): working started",
+  "pg e(npm-test): working npm-test",
+  "pg e(npm-test): working finished",
+  "killing e(npm-test)",
+  "pg e(npm-test): finished undefined",
+  "pg d(npm-test): working undefined",
+  "pg e(npm-publish-debug): working undefined",
+  "pg c(npm-build-debug): working started",
+  "pg c(npm-build-debug): working npm-build-debug",
+  "pg c(npm-build-debug): working finished",
+  "killing c(npm-build-debug)",
+  "pg c(npm-build-debug): finished undefined",
+  "pg b(npm-build-debug): working undefined",
+  "pg d(npm-test): working started",
+  "pg d(npm-test): working npm-test",
+  "pg d(npm-test): working finished",
+  "killing d(npm-test)",
+  "pg d(npm-test): finished undefined",
+  "pg c(npm-test): working undefined",
+  "pg d(npm-publish-debug): working undefined",
+  "pg e(npm-publish-debug): working started",
+  "pg e(npm-publish-debug): working npm-publish-debug",
+  "pg e(npm-publish-debug): working finished",
+  "killing e(npm-publish-debug)",
+  "pg e(npm-publish-debug): finished undefined",
+  "pg b(npm-build-debug): working started",
+  "pg b(npm-build-debug): working npm-build-debug",
+  "pg b(npm-build-debug): working finished",
+  "killing b(npm-build-debug)",
+  "pg b(npm-build-debug): finished undefined",
+  "pg a(npm-build-debug): working undefined",
+  "pg c(npm-test): working started",
+  "pg c(npm-test): working npm-test",
+  "pg c(npm-test): working finished",
+  "killing c(npm-test)",
+  "pg c(npm-test): finished undefined",
+  "pg b(npm-test): working undefined",
+  "pg c(npm-publish-debug): working undefined",
+  "pg d(npm-publish-debug): working started",
+  "pg d(npm-publish-debug): working npm-publish-debug",
+  "pg d(npm-publish-debug): working finished",
+  "killing d(npm-publish-debug)",
+  "pg d(npm-publish-debug): finished undefined",
+  "pg a(npm-build-debug): working started",
+  "pg a(npm-build-debug): working npm-build-debug",
+  "pg a(npm-build-debug): working finished",
+  "killing a(npm-build-debug)",
+  "pg a(npm-build-debug): finished undefined",
+  "pg b(npm-test): working started",
+  "pg b(npm-test): working npm-test",
+  "pg b(npm-test): working finished",
+  "killing b(npm-test)",
+  "pg b(npm-test): finished undefined",
+  "pg a(npm-test): working undefined",
+  "pg b(npm-publish-debug): working undefined",
+  "pg c(npm-publish-debug): working started",
+  "pg c(npm-publish-debug): working npm-publish-debug",
+  "pg c(npm-publish-debug): working finished",
+  "killing c(npm-publish-debug)",
+  "pg c(npm-publish-debug): finished undefined",
+  "pg a(npm-test): working started",
+  "pg a(npm-test): working npm-test",
+  "pg a(npm-test): working finished",
+  "killing a(npm-test)",
+  "pg a(npm-test): finished undefined",
+  "pg a(npm-publish-debug): working undefined",
+  "pg b(npm-publish-debug): working started",
+  "pg b(npm-publish-debug): working npm-publish-debug",
+  "pg b(npm-publish-debug): working finished",
+  "killing b(npm-publish-debug)",
+  "pg b(npm-publish-debug): finished undefined",
+  "pg a(npm-publish-debug): working started",
+  "pg a(npm-publish-debug): working npm-publish-debug",
+  "pg a(npm-publish-debug): working finished",
+  "killing a(npm-publish-debug)",
+  "pg a(npm-publish-debug): finished undefined",
+  "fsNotify:Workspace built",
+  "watch.handled changed=fakeBundlerNPM/abcde/deps/khayyam.yaml",
+  "watch.kill=loadAndBuildWorkspace for fakeBundlerNPM/abcde/deps/khayyam.yaml",
+  "unschedule: loadAndBuildWorkspace",
+  "unschedule: rebuildPackages",
+  "schedule.create: loadAndBuildWorkspace ms=3000->300",
+  "watch.kill=a for fakeBundlerNPM/a",
+  "watch.kill=b for fakeBundlerNPM/b",
+  "watch.kill=c for fakeBundlerNPM/c",
+  "watch.kill=d for fakeBundlerNPM/d",
+  "watch.kill=e for fakeBundlerNPM/e",
+  "schedule.run: loadAndBuildWorkspace",
+  "watch.start=loadAndBuildWorkspace for fakeBundlerNPM/abcde/deps/khayyam.yaml",
+  "watch.start=a for fakeBundlerNPM/a",
+  "watch.start=b for fakeBundlerNPM/b",
+  "watch.start=c for fakeBundlerNPM/c",
+  "watch.start=d for fakeBundlerNPM/d",
+  "watch.start=e for fakeBundlerNPM/e",
+  "schedule.create: rebuildPackages ms=3000->300",
+  "schedule.run: rebuildPackages",
+  "creating job [e(npm-build-debug)]",
+  "creating job [d(npm-build-debug)]",
+  "creating job [c(npm-build-debug)]",
+  "creating job [b(npm-build-debug)]",
+  "creating job [a(npm-build-debug)]",
+  "creating job [e(npm-test)]",
+  "creating job [d(npm-test)]",
+  "creating job [c(npm-test)]",
+  "creating job [b(npm-test)]",
+  "creating job [a(npm-test)]",
+  "creating job [e(npm-publish-debug)]",
+  "creating job [d(npm-publish-debug)]",
+  "creating job [c(npm-publish-debug)]",
+  "creating job [b(npm-publish-debug)]",
+  "creating job [a(npm-publish-debug)]",
+  "creating job [e(npm-lint)]",
+  "creating job [d(npm-lint)]",
+  "creating job [c(npm-lint)]",
+  "creating job [b(npm-lint)]",
+  "creating job [a(npm-lint)]",
+  "creating job [e(npm-measure)]",
+  "creating job [d(npm-measure)]",
+  "creating job [c(npm-measure)]",
+  "creating job [b(npm-measure)]",
+  "creating job [a(npm-measure)]",
+  "pg e(npm-build-debug): waiting undefined",
+  "pg d(npm-build-debug): waiting undefined",
+  "pg c(npm-build-debug): waiting undefined",
+  "pg b(npm-build-debug): waiting undefined",
+  "pg a(npm-build-debug): waiting undefined",
+  "pg e(npm-test): waiting undefined",
+  "pg d(npm-test): waiting undefined",
+  "pg c(npm-test): waiting undefined",
+  "pg b(npm-test): waiting undefined",
+  "pg a(npm-test): waiting undefined",
+  "pg e(npm-publish-debug): waiting undefined",
+  "pg d(npm-publish-debug): waiting undefined",
+  "pg c(npm-publish-debug): waiting undefined",
+  "pg b(npm-publish-debug): waiting undefined",
+  "pg a(npm-publish-debug): waiting undefined",
+  "pg e(npm-lint): waiting undefined",
+  "pg d(npm-lint): waiting undefined",
+  "pg c(npm-lint): waiting undefined",
+  "pg b(npm-lint): waiting undefined",
+  "pg a(npm-lint): waiting undefined",
+  "pg e(npm-measure): waiting undefined",
+  "pg d(npm-measure): waiting undefined",
+  "pg c(npm-measure): waiting undefined",
+  "pg b(npm-measure): waiting undefined",
+  "pg a(npm-measure): waiting undefined",
+  "pg e(npm-build-debug): working undefined",
+  "pg e(npm-lint): working undefined",
+  "pg d(npm-lint): working undefined",
+  "pg c(npm-lint): working undefined",
+  "pg b(npm-lint): working undefined",
+  "pg a(npm-lint): working undefined",
+  "pg e(npm-measure): working undefined",
+  "pg d(npm-measure): working undefined",
+  "pg c(npm-measure): working undefined",
+  "pg b(npm-measure): working undefined",
+  "pg a(npm-measure): working undefined",
+  "pg e(npm-build-debug): working started",
+  "pg e(npm-build-debug): working npm-build-debug",
+  "pg e(npm-build-debug): working finished",
+  "killing e(npm-build-debug)",
+  "pg e(npm-build-debug): finished undefined",
+  "pg d(npm-build-debug): working undefined",
+  "pg e(npm-test): working undefined",
+  "pg e(npm-lint): working started",
+  "pg e(npm-lint): working npm-lint",
+  "pg e(npm-lint): working finished",
+  "killing e(npm-lint)",
+  "pg e(npm-lint): finished undefined",
+  "pg d(npm-lint): working started",
+  "pg d(npm-lint): working npm-lint",
+  "pg d(npm-lint): working finished",
+  "killing d(npm-lint)",
+  "pg d(npm-lint): finished undefined",
+  "pg c(npm-lint): working started",
+  "pg c(npm-lint): working npm-lint",
+  "pg c(npm-lint): working finished",
+  "killing c(npm-lint)",
+  "pg c(npm-lint): finished undefined",
+  "pg b(npm-lint): working started",
+  "pg b(npm-lint): working npm-lint",
+  "pg b(npm-lint): working finished",
+  "killing b(npm-lint)",
+  "pg b(npm-lint): finished undefined",
+  "pg a(npm-lint): working started",
+  "pg a(npm-lint): working npm-lint",
+  "pg a(npm-lint): working finished",
+  "killing a(npm-lint)",
+  "pg a(npm-lint): finished undefined",
+  "pg e(npm-measure): working started",
+  "pg e(npm-measure): working npm-measure",
+  "pg e(npm-measure): working finished",
+  "killing e(npm-measure)",
+  "pg e(npm-measure): finished undefined",
+  "pg d(npm-measure): working started",
+  "pg d(npm-measure): working npm-measure",
+  "pg d(npm-measure): working finished",
+  "killing d(npm-measure)",
+  "pg d(npm-measure): finished undefined",
+  "pg c(npm-measure): working started",
+  "pg c(npm-measure): working npm-measure",
+  "pg c(npm-measure): working finished",
+  "killing c(npm-measure)",
+  "pg c(npm-measure): finished undefined",
+  "pg b(npm-measure): working started",
+  "pg b(npm-measure): working npm-measure",
+  "pg b(npm-measure): working finished",
+  "killing b(npm-measure)",
+  "pg b(npm-measure): finished undefined",
+  "pg a(npm-measure): working started",
+  "pg a(npm-measure): working npm-measure",
+  "pg a(npm-measure): working finished",
+  "killing a(npm-measure)",
+  "pg a(npm-measure): finished undefined",
+  "pg d(npm-build-debug): working started",
+  "pg d(npm-build-debug): working npm-build-debug",
+  "pg d(npm-build-debug): working finished",
+  "killing d(npm-build-debug)",
+  "pg d(npm-build-debug): finished undefined",
+  "pg c(npm-build-debug): working undefined",
+  "pg e(npm-test): working started",
+  "pg e(npm-test): working npm-test",
+  "pg e(npm-test): working finished",
+  "killing e(npm-test)",
+  "pg e(npm-test): finished undefined",
+  "pg d(npm-test): working undefined",
+  "pg e(npm-publish-debug): working undefined",
+  "pg c(npm-build-debug): working started",
+  "pg c(npm-build-debug): working npm-build-debug",
+  "pg c(npm-build-debug): working finished",
+  "killing c(npm-build-debug)",
+  "pg c(npm-build-debug): finished undefined",
+  "pg b(npm-build-debug): working undefined",
+  "pg d(npm-test): working started",
+  "pg d(npm-test): working npm-test",
+  "pg d(npm-test): working finished",
+  "killing d(npm-test)",
+  "pg d(npm-test): finished undefined",
+  "pg c(npm-test): working undefined",
+  "pg d(npm-publish-debug): working undefined",
+  "pg e(npm-publish-debug): working started",
+  "pg e(npm-publish-debug): working npm-publish-debug",
+  "pg e(npm-publish-debug): working finished",
+  "killing e(npm-publish-debug)",
+  "pg e(npm-publish-debug): finished undefined",
+  "pg b(npm-build-debug): working started",
+  "pg b(npm-build-debug): working npm-build-debug",
+  "pg b(npm-build-debug): working finished",
+  "killing b(npm-build-debug)",
+  "pg b(npm-build-debug): finished undefined",
+  "pg a(npm-build-debug): working undefined",
+  "pg c(npm-test): working started",
+  "pg c(npm-test): working npm-test",
+  "pg c(npm-test): working finished",
+  "killing c(npm-test)",
+  "pg c(npm-test): finished undefined",
+  "pg b(npm-test): working undefined",
+  "pg c(npm-publish-debug): working undefined",
+  "pg d(npm-publish-debug): working started",
+  "pg d(npm-publish-debug): working npm-publish-debug",
+  "pg d(npm-publish-debug): working finished",
+  "killing d(npm-publish-debug)",
+  "pg d(npm-publish-debug): finished undefined",
+  "pg a(npm-build-debug): working started",
+  "pg a(npm-build-debug): working npm-build-debug",
+  "pg a(npm-build-debug): working finished",
+  "killing a(npm-build-debug)",
+  "pg a(npm-build-debug): finished undefined",
+  "pg b(npm-test): working started",
+  "pg b(npm-test): working npm-test",
+  "pg b(npm-test): working finished",
+  "killing b(npm-test)",
+  "pg b(npm-test): finished undefined",
+  "pg a(npm-test): working undefined",
+  "pg b(npm-publish-debug): working undefined",
+  "pg c(npm-publish-debug): working started",
+  "pg c(npm-publish-debug): working npm-publish-debug",
+  "pg c(npm-publish-debug): working finished",
+  "killing c(npm-publish-debug)",
+  "pg c(npm-publish-debug): finished undefined",
+  "pg a(npm-test): working started",
+  "pg a(npm-test): working npm-test",
+  "pg a(npm-test): working finished",
+  "killing a(npm-test)",
+  "pg a(npm-test): finished undefined",
+  "pg a(npm-publish-debug): working undefined",
+  "pg b(npm-publish-debug): working started",
+  "pg b(npm-publish-debug): working npm-publish-debug",
+  "pg b(npm-publish-debug): working finished",
+  "killing b(npm-publish-debug)",
+  "pg b(npm-publish-debug): finished undefined",
+  "pg a(npm-publish-debug): working started",
+  "pg a(npm-publish-debug): working npm-publish-debug",
+  "pg a(npm-publish-debug): working finished",
+  "killing a(npm-publish-debug)",
+  "pg a(npm-publish-debug): finished undefined",
+  "fsNotify:Workspace built",
+  "watch.kill=loadAndBuildWorkspace for fakeBundlerNPM/abcde/deps/khayyam.yaml",
+  "unschedule: loadAndBuildWorkspace",
+  "unschedule: rebuildPackages",
+  "watch.kill=a for fakeBundlerNPM/a",
+  "watch.kill=b for fakeBundlerNPM/b",
+  "watch.kill=c for fakeBundlerNPM/c",
+  "watch.kill=d for fakeBundlerNPM/d",
+  "watch.kill=e for fakeBundlerNPM/e",
 ]
 `;
 
-exports[`Khayyam domain CD xy package: tree 1`] = `
-"y(npm-publish-production)
+exports[`Khayyam domain dev a,b,c,d,e packages: 04-tree-after stop 1`] = `""`;
+
+exports[`Khayyam domain dev x package: 01-log-before build 1`] = `
+Array [
+  "schedule.create: loadAndBuildWorkspace ms=3000->300",
+]
+`;
+
+exports[`Khayyam domain dev x package: 01-tree-before build 1`] = `""`;
+
+exports[`Khayyam domain dev x package: 02-log-after build 1`] = `
+Array [
+  "schedule.create: loadAndBuildWorkspace ms=3000->300",
+  "schedule.run: loadAndBuildWorkspace",
+  "watch.start=loadAndBuildWorkspace for fakeBundlerNPM/x/deps/khayyam.yaml",
+  "watch.start=x for fakeBundlerNPM/x",
+  "schedule.create: rebuildPackages ms=3000->300",
+  "schedule.run: rebuildPackages",
+  "creating job [x(npm-build-debug)]",
+  "creating job [x(npm-test)]",
+  "creating job [x(npm-publish-debug)]",
+  "creating job [x(npm-lint)]",
+  "creating job [x(npm-measure)]",
+  "pg x(npm-build-debug): waiting undefined",
+  "pg x(npm-test): waiting undefined",
+  "pg x(npm-publish-debug): waiting undefined",
+  "pg x(npm-lint): waiting undefined",
+  "pg x(npm-measure): waiting undefined",
+  "pg x(npm-build-debug): working undefined",
+  "pg x(npm-lint): working undefined",
+  "pg x(npm-measure): working undefined",
+  "pg x(npm-build-debug): working started",
+  "pg x(npm-build-debug): working npm-build-debug",
+  "pg x(npm-build-debug): working finished",
+  "killing x(npm-build-debug)",
+  "pg x(npm-build-debug): finished undefined",
+  "pg x(npm-test): working undefined",
+  "pg x(npm-lint): working started",
+  "pg x(npm-lint): working npm-lint",
+  "pg x(npm-lint): working finished",
+  "killing x(npm-lint)",
+  "pg x(npm-lint): finished undefined",
+  "pg x(npm-measure): working started",
+  "pg x(npm-measure): working npm-measure",
+  "pg x(npm-measure): working finished",
+  "killing x(npm-measure)",
+  "pg x(npm-measure): finished undefined",
+  "pg x(npm-test): working started",
+  "pg x(npm-test): working npm-test",
+  "pg x(npm-test): working finished",
+  "killing x(npm-test)",
+  "pg x(npm-test): finished undefined",
+  "pg x(npm-publish-debug): working undefined",
+  "pg x(npm-publish-debug): working started",
+  "pg x(npm-publish-debug): working npm-publish-debug",
+  "pg x(npm-publish-debug): working finished",
+  "killing x(npm-publish-debug)",
+  "pg x(npm-publish-debug): finished undefined",
+  "fsNotify:Workspace built",
+]
+`;
+
+exports[`Khayyam domain dev x package: 02-tree-after build 1`] = `
+"x(npm-publish-debug)
   dependents:
   dependencies:
-    y(npm-build-production)
-      dependents:
-        x(npm-build-production)
-        y(npm-test)
-        y(npm-publish-production)
-      dependencies:
-    y(npm-test)
+    x(npm-build-debug)
       dependents:
         x(npm-test)
-        y(npm-publish-production)
+        x(npm-publish-debug)
       dependencies:
-        y(npm-build-production)
-          dependents:
-            x(npm-build-production)
-            y(npm-test)
-            y(npm-publish-production)
-          dependencies:
-    y(npm-lint)
-      dependents:
-        y(npm-publish-production)
-      dependencies:
-    y(npm-measure)
-      dependents:
-        y(npm-publish-production)
-      dependencies:
-x(npm-publish-production)
-  dependents:
-  dependencies:
-    x(npm-build-production)
-      dependents:
-        x(npm-test)
-        x(npm-publish-production)
-      dependencies:
-        y(npm-build-production)
-          dependents:
-            x(npm-build-production)
-            y(npm-test)
-            y(npm-publish-production)
-          dependencies:
     x(npm-test)
       dependents:
-        x(npm-publish-production)
+        x(npm-publish-debug)
       dependencies:
-        y(npm-test)
+        x(npm-build-debug)
           dependents:
             x(npm-test)
-            y(npm-publish-production)
+            x(npm-publish-debug)
           dependencies:
-            y(npm-build-production)
-              dependents:
-                x(npm-build-production)
-                y(npm-test)
-                y(npm-publish-production)
-              dependencies:
-        x(npm-build-production)
-          dependents:
-            x(npm-test)
-            x(npm-publish-production)
-          dependencies:
-            y(npm-build-production)
-              dependents:
-                x(npm-build-production)
-                y(npm-test)
-                y(npm-publish-production)
-              dependencies:
     x(npm-lint)
       dependents:
-        x(npm-publish-production)
+        x(npm-publish-debug)
       dependencies:
     x(npm-measure)
       dependents:
-        x(npm-publish-production)
+        x(npm-publish-debug)
       dependencies:"
 `;
+
+exports[`Khayyam domain dev x package: 03-log-after rebuild 1`] = `
+Array [
+  "schedule.create: loadAndBuildWorkspace ms=3000->300",
+  "schedule.run: loadAndBuildWorkspace",
+  "watch.start=loadAndBuildWorkspace for fakeBundlerNPM/x/deps/khayyam.yaml",
+  "watch.start=x for fakeBundlerNPM/x",
+  "schedule.create: rebuildPackages ms=3000->300",
+  "schedule.run: rebuildPackages",
+  "creating job [x(npm-build-debug)]",
+  "creating job [x(npm-test)]",
+  "creating job [x(npm-publish-debug)]",
+  "creating job [x(npm-lint)]",
+  "creating job [x(npm-measure)]",
+  "pg x(npm-build-debug): waiting undefined",
+  "pg x(npm-test): waiting undefined",
+  "pg x(npm-publish-debug): waiting undefined",
+  "pg x(npm-lint): waiting undefined",
+  "pg x(npm-measure): waiting undefined",
+  "pg x(npm-build-debug): working undefined",
+  "pg x(npm-lint): working undefined",
+  "pg x(npm-measure): working undefined",
+  "pg x(npm-build-debug): working started",
+  "pg x(npm-build-debug): working npm-build-debug",
+  "pg x(npm-build-debug): working finished",
+  "killing x(npm-build-debug)",
+  "pg x(npm-build-debug): finished undefined",
+  "pg x(npm-test): working undefined",
+  "pg x(npm-lint): working started",
+  "pg x(npm-lint): working npm-lint",
+  "pg x(npm-lint): working finished",
+  "killing x(npm-lint)",
+  "pg x(npm-lint): finished undefined",
+  "pg x(npm-measure): working started",
+  "pg x(npm-measure): working npm-measure",
+  "pg x(npm-measure): working finished",
+  "killing x(npm-measure)",
+  "pg x(npm-measure): finished undefined",
+  "pg x(npm-test): working started",
+  "pg x(npm-test): working npm-test",
+  "pg x(npm-test): working finished",
+  "killing x(npm-test)",
+  "pg x(npm-test): finished undefined",
+  "pg x(npm-publish-debug): working undefined",
+  "pg x(npm-publish-debug): working started",
+  "pg x(npm-publish-debug): working npm-publish-debug",
+  "pg x(npm-publish-debug): working finished",
+  "killing x(npm-publish-debug)",
+  "pg x(npm-publish-debug): finished undefined",
+  "fsNotify:Workspace built",
+  "watch.handled changed=fakeBundlerNPM/x/deps/khayyam.yaml",
+  "watch.kill=loadAndBuildWorkspace for fakeBundlerNPM/x/deps/khayyam.yaml",
+  "unschedule: loadAndBuildWorkspace",
+  "unschedule: rebuildPackages",
+  "schedule.create: loadAndBuildWorkspace ms=3000->300",
+  "watch.kill=x for fakeBundlerNPM/x",
+  "schedule.run: loadAndBuildWorkspace",
+  "watch.start=loadAndBuildWorkspace for fakeBundlerNPM/x/deps/khayyam.yaml",
+  "watch.start=x for fakeBundlerNPM/x",
+  "schedule.create: rebuildPackages ms=3000->300",
+  "schedule.run: rebuildPackages",
+  "creating job [x(npm-build-debug)]",
+  "creating job [x(npm-test)]",
+  "creating job [x(npm-publish-debug)]",
+  "creating job [x(npm-lint)]",
+  "creating job [x(npm-measure)]",
+  "pg x(npm-build-debug): waiting undefined",
+  "pg x(npm-test): waiting undefined",
+  "pg x(npm-publish-debug): waiting undefined",
+  "pg x(npm-lint): waiting undefined",
+  "pg x(npm-measure): waiting undefined",
+  "pg x(npm-build-debug): working undefined",
+  "pg x(npm-lint): working undefined",
+  "pg x(npm-measure): working undefined",
+  "pg x(npm-build-debug): working started",
+  "pg x(npm-build-debug): working npm-build-debug",
+  "pg x(npm-build-debug): working finished",
+  "killing x(npm-build-debug)",
+  "pg x(npm-build-debug): finished undefined",
+  "pg x(npm-test): working undefined",
+  "pg x(npm-lint): working started",
+  "pg x(npm-lint): working npm-lint",
+  "pg x(npm-lint): working finished",
+  "killing x(npm-lint)",
+  "pg x(npm-lint): finished undefined",
+  "pg x(npm-measure): working started",
+  "pg x(npm-measure): working npm-measure",
+  "pg x(npm-measure): working finished",
+  "killing x(npm-measure)",
+  "pg x(npm-measure): finished undefined",
+  "pg x(npm-test): working started",
+  "pg x(npm-test): working npm-test",
+  "pg x(npm-test): working finished",
+  "killing x(npm-test)",
+  "pg x(npm-test): finished undefined",
+  "pg x(npm-publish-debug): working undefined",
+  "pg x(npm-publish-debug): working started",
+  "pg x(npm-publish-debug): working npm-publish-debug",
+  "pg x(npm-publish-debug): working finished",
+  "killing x(npm-publish-debug)",
+  "pg x(npm-publish-debug): finished undefined",
+  "fsNotify:Workspace built",
+]
+`;
+
+exports[`Khayyam domain dev x package: 03-tree-after rebuild 1`] = `
+"x(npm-publish-debug)
+  dependents:
+  dependencies:
+    x(npm-build-debug)
+      dependents:
+        x(npm-test)
+        x(npm-publish-debug)
+      dependencies:
+    x(npm-test)
+      dependents:
+        x(npm-publish-debug)
+      dependencies:
+        x(npm-build-debug)
+          dependents:
+            x(npm-test)
+            x(npm-publish-debug)
+          dependencies:
+    x(npm-lint)
+      dependents:
+        x(npm-publish-debug)
+      dependencies:
+    x(npm-measure)
+      dependents:
+        x(npm-publish-debug)
+      dependencies:"
+`;
+
+exports[`Khayyam domain dev x package: 04-log-after stop 1`] = `
+Array [
+  "schedule.create: loadAndBuildWorkspace ms=3000->300",
+  "schedule.run: loadAndBuildWorkspace",
+  "watch.start=loadAndBuildWorkspace for fakeBundlerNPM/x/deps/khayyam.yaml",
+  "watch.start=x for fakeBundlerNPM/x",
+  "schedule.create: rebuildPackages ms=3000->300",
+  "schedule.run: rebuildPackages",
+  "creating job [x(npm-build-debug)]",
+  "creating job [x(npm-test)]",
+  "creating job [x(npm-publish-debug)]",
+  "creating job [x(npm-lint)]",
+  "creating job [x(npm-measure)]",
+  "pg x(npm-build-debug): waiting undefined",
+  "pg x(npm-test): waiting undefined",
+  "pg x(npm-publish-debug): waiting undefined",
+  "pg x(npm-lint): waiting undefined",
+  "pg x(npm-measure): waiting undefined",
+  "pg x(npm-build-debug): working undefined",
+  "pg x(npm-lint): working undefined",
+  "pg x(npm-measure): working undefined",
+  "pg x(npm-build-debug): working started",
+  "pg x(npm-build-debug): working npm-build-debug",
+  "pg x(npm-build-debug): working finished",
+  "killing x(npm-build-debug)",
+  "pg x(npm-build-debug): finished undefined",
+  "pg x(npm-test): working undefined",
+  "pg x(npm-lint): working started",
+  "pg x(npm-lint): working npm-lint",
+  "pg x(npm-lint): working finished",
+  "killing x(npm-lint)",
+  "pg x(npm-lint): finished undefined",
+  "pg x(npm-measure): working started",
+  "pg x(npm-measure): working npm-measure",
+  "pg x(npm-measure): working finished",
+  "killing x(npm-measure)",
+  "pg x(npm-measure): finished undefined",
+  "pg x(npm-test): working started",
+  "pg x(npm-test): working npm-test",
+  "pg x(npm-test): working finished",
+  "killing x(npm-test)",
+  "pg x(npm-test): finished undefined",
+  "pg x(npm-publish-debug): working undefined",
+  "pg x(npm-publish-debug): working started",
+  "pg x(npm-publish-debug): working npm-publish-debug",
+  "pg x(npm-publish-debug): working finished",
+  "killing x(npm-publish-debug)",
+  "pg x(npm-publish-debug): finished undefined",
+  "fsNotify:Workspace built",
+  "watch.handled changed=fakeBundlerNPM/x/deps/khayyam.yaml",
+  "watch.kill=loadAndBuildWorkspace for fakeBundlerNPM/x/deps/khayyam.yaml",
+  "unschedule: loadAndBuildWorkspace",
+  "unschedule: rebuildPackages",
+  "schedule.create: loadAndBuildWorkspace ms=3000->300",
+  "watch.kill=x for fakeBundlerNPM/x",
+  "schedule.run: loadAndBuildWorkspace",
+  "watch.start=loadAndBuildWorkspace for fakeBundlerNPM/x/deps/khayyam.yaml",
+  "watch.start=x for fakeBundlerNPM/x",
+  "schedule.create: rebuildPackages ms=3000->300",
+  "schedule.run: rebuildPackages",
+  "creating job [x(npm-build-debug)]",
+  "creating job [x(npm-test)]",
+  "creating job [x(npm-publish-debug)]",
+  "creating job [x(npm-lint)]",
+  "creating job [x(npm-measure)]",
+  "pg x(npm-build-debug): waiting undefined",
+  "pg x(npm-test): waiting undefined",
+  "pg x(npm-publish-debug): waiting undefined",
+  "pg x(npm-lint): waiting undefined",
+  "pg x(npm-measure): waiting undefined",
+  "pg x(npm-build-debug): working undefined",
+  "pg x(npm-lint): working undefined",
+  "pg x(npm-measure): working undefined",
+  "pg x(npm-build-debug): working started",
+  "pg x(npm-build-debug): working npm-build-debug",
+  "pg x(npm-build-debug): working finished",
+  "killing x(npm-build-debug)",
+  "pg x(npm-build-debug): finished undefined",
+  "pg x(npm-test): working undefined",
+  "pg x(npm-lint): working started",
+  "pg x(npm-lint): working npm-lint",
+  "pg x(npm-lint): working finished",
+  "killing x(npm-lint)",
+  "pg x(npm-lint): finished undefined",
+  "pg x(npm-measure): working started",
+  "pg x(npm-measure): working npm-measure",
+  "pg x(npm-measure): working finished",
+  "killing x(npm-measure)",
+  "pg x(npm-measure): finished undefined",
+  "pg x(npm-test): working started",
+  "pg x(npm-test): working npm-test",
+  "pg x(npm-test): working finished",
+  "killing x(npm-test)",
+  "pg x(npm-test): finished undefined",
+  "pg x(npm-publish-debug): working undefined",
+  "pg x(npm-publish-debug): working started",
+  "pg x(npm-publish-debug): working npm-publish-debug",
+  "pg x(npm-publish-debug): working finished",
+  "killing x(npm-publish-debug)",
+  "pg x(npm-publish-debug): finished undefined",
+  "fsNotify:Workspace built",
+  "watch.kill=loadAndBuildWorkspace for fakeBundlerNPM/x/deps/khayyam.yaml",
+  "unschedule: loadAndBuildWorkspace",
+  "unschedule: rebuildPackages",
+  "watch.kill=x for fakeBundlerNPM/x",
+]
+`;
+
+exports[`Khayyam domain dev x package: 04-tree-after stop 1`] = `""`;

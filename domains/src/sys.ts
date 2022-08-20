@@ -1,13 +1,21 @@
-import { Workspace } from './workspace'
+import { PackageState, Workspace } from './workspace'
 
-export type Unscribe=()=>void
 export interface System {
     readonly concurrency: number
     getRepository(folder: string): string|undefined
-    loadWorkspace(folder: string): Workspace
-    notify(msg: string, packageName: string):void
+    loadWorkspace(folder: string): Promise<Workspace>
+    notify(msg: string, packageName?: string):void
     createProcess(process: ProcessParams): RunningProcess
-    watch(globs: string[], callback:()=>void): Unscribe
+    watch(id:string, globs: string[], callback:(args:{id: string, path: string})=>void): void
+    killWatch(id:string):void
+    schedule(id: string, callback:(args:{id: string})=>void, ms: number): void
+    killSchedule(id:string):void
+    packageState(pkgName:string): Promise<PackageState>
+    updatePackageState<P extends keyof PackageState>(
+        pkgName:string,
+        prop: P,
+        value: PackageState[P]
+    ): Promise<void>
 }
 
 export interface ProcessParams {

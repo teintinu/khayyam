@@ -27,7 +27,7 @@ export function systemAdapterFactory (): System {
   // return sys
   // function fsChanged (): void {
   //   clearTimeout(tmChanged)
-  //   tmChanged = setTimeout(() => {
+  //   tmChanged = sys.schedule(() => {
   //     fsListeners.forEach((fn) => asap(fn))
   //   }, 1000)
   // }

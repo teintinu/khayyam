@@ -1,8 +1,8 @@
 import { Bundler, Goal } from './bundler'
 import { JobManager } from './job'
-import { asap } from 'pjobs'
-import { System, Unscribe } from './sys'
-import { ByPackage, WalkFilter, Workspace } from './workspace'
+import { asap, defer, Defer, sleep } from 'pjobs'
+import { System } from './sys'
+import { ByPackage, Package, WalkFilter, Workspace } from './workspace'
 
 export interface KhayyamDev {
   readonly workspace: Workspace;
@@ -12,141 +12,101 @@ export interface KhayyamDev {
 }
 
 export async function khayyamCD (
-  workspace: Workspace,
+  sys: System,
+  folder: string,
   jobManager:JobManager
 ) {
   await internalWorkspaceBuild(
-    workspace,
+    await sys.loadWorkspace(folder),
     jobManager,
     'all',
     'production'
   )
 }
 
-export function khayyamDev ({
-  sys, folder, jobManager
-}:{
+export async function khayyamDev (
   sys: System,
   folder: string,
   jobManager:JobManager
-}) {
-  let watchers: Unscribe[] = []
-  let workspace: Workspace
-  let debounceBuild: any
-  const changedPackages: ByPackage<boolean> = {}
-  const khayyamFile = folder + '/khayyam.yaml'
-  const stopMainWatch = sys.watch([khayyamFile], reloadWorkspace)
+) {
+  const MAIN_DEBOUNCE = 'loadAndBuildWorkspace'
+  const PKGS_DEBOUNCE = 'rebuildPackages'
+  const REBUILD_SCHEDULE = 3000
+  const pkgWatchers = new Set<string>()
+  let changedPackages: 'all' |ByPackage<boolean> = 'all'
+  let buildDefer:Defer<void> = defer<void>()
+  loadAndBuildWorkspace()
   return {
-    stop () {
-      stopPackagesWatchers()
-      stopMainWatch()
+    async waitBuild () {
+      await buildDefer.promise
+    },
+    stop
+  }
+  function loadAndBuildWorkspace () {
+    stopListeners()
+    sys.schedule(MAIN_DEBOUNCE, loadAndBuildWorkspaceDebounced, REBUILD_SCHEDULE)
+    function loadAndBuildWorkspaceDebounced () {
+      sys.loadWorkspace(folder)
+        .then(watchWsAndPackages)
+      function watchWsAndPackages (workspace: Workspace) {
+        sys.watch(MAIN_DEBOUNCE, [workspace.khayyamFile], () => {
+          loadAndBuildWorkspace()
+        })
+        pkgWatchers.clear()
+        workspace.packages.forEach(watchPkg)
+        changedPackages = 'all'
+        rebuildPackages()
+        function watchPkg (pkg:Package) {
+          let paths: string[] = []
+          workspace.bundlers.forEach((bundler) => {
+            paths = paths.concat(bundler.getPathsToWatch(pkg))
+          })
+          pkgWatchers.add(pkg.name)
+          sys.watch(pkg.name, paths, () => {
+            if (changedPackages !== 'all') {
+              changedPackages[pkg.name] = true
+            }
+            rebuildPackages()
+          })
+        }
+        function rebuildPackages () {
+          jobManager.killAll()
+          sys.schedule(PKGS_DEBOUNCE, () => {
+            const changes = changedPackages
+            changedPackages = {}
+            internalWorkspaceBuild(
+              workspace,
+              jobManager,
+              changes,
+              'debug'
+            ).then(() => {
+              sys.notify('Workspace built', '')
+              buildDefer.resolve()
+              buildDefer = defer<void>()
+            }, (reason) => {
+              sys.notify('Workspace build failed', '')
+              buildDefer.reject(reason)
+              buildDefer = defer<void>()
+            })
+          }, REBUILD_SCHEDULE)
+        }
+      }
     }
   }
-  function reloadWorkspace () {
-    workspace = sys.loadWorkspace(folder)
-    workspace.packages.forEach((pkg) => {
-      let paths: string[] = []
-      workspace.bundlers.forEach((bundler) => {
-        paths = paths.concat(bundler.getPathsToWatch(pkg))
-      })
-      sys.watch(paths, () => {
-        changedPackages[pkg.name] = true
-        rebuildWorkspace()
-      })
-    })
+  async function stop () {
+    buildDefer.reject(new Error('stopped'))
+    stopListeners()
+    buildDefer.promise.catch(() => undefined)
+    await sleep(800)
   }
-  function rebuildWorkspace () {
+  function stopListeners () {
     jobManager.killAll()
-    if (debounceBuild) clearTimeout(debounceBuild)
-    debounceBuild = setTimeout(() => {
-      debounceBuild = undefined
-      internalWorkspaceBuild(
-        workspace,
-        jobManager,
-        changedPackages,
-        'debug'
-      )
-    }, 2000)
+    sys.killWatch(MAIN_DEBOUNCE)
+    sys.killSchedule(MAIN_DEBOUNCE)
+    sys.killSchedule(PKGS_DEBOUNCE)
+    pkgWatchers.forEach(w => asap(() => sys.killWatch(w)))
+    pkgWatchers.clear()
   }
-  function stopPackagesWatchers () {
-    watchers.forEach(w => asap(w))
-    watchers = []
-  }
-
-  //   let watching: Array<()=>void> = []
-  //   return {
-  //     stop
-  //   }
-  //   function stop () {
-  //     const close = watching
-  //     watching = []
-  //     close.forEach((w) => w())
-  //   }
-  //   workspace.bundlers.forEach(wsBundler => {
-  //     workspace.walk((pkg, bundler) => {
-  //       const paths = bundler.watch(pkg)
-  //       const w = watch(paths)
-  //       watchers.push(w)
-  //     })
-  //   })
-  // //   const queue = queuePromises({
-  // //     concurrency: cpus().length
-  // //   })
-  // //   const km = bootKhayyam(bundlers, queue)
-  // //   return {
-  // //     km,
-  // //     updateWorkspace (workspace: Workspace) {
-  // //       killWatchers()
-  // //       km.workspace.packages.forEach((pkg) => {
-  // //         pkg.bundlers.forEach((bundlerName) => {
-  // //           const bundler = findBundler(bundlerName)
-  // //           if (bundler) {
-  // //             watchers.push(bundler.watch(pkg, (fn) => fn(), queue.promise))
-  // //           } else {
-  // //             pkg.progress[bundlerName].update({
-  // //               state: 'failed',
-  // //               message: 'Invalid bundle'
-  // //             })
-  // //           }
-  // //         })
-  // //       })
-  // //     }
-  // //   }
-  // }
-
-  // // export function bootKhayyam (
-  // //   bundlers: Bundler[],
-  // //   jobManager: JobManager
-  // // ) : Khayyam {
-  // //   let workspace: Workspace = {
-  // //     packages: [],
-  // //     findBundler,
-  // //     findPackage
-  // //   }
-  // //   let watchers: Job[] = []
-  // //   const km = {
-  // //     get workspace () {
-  // //       return workspace
-  // //     },
-  // //     bundlers,
-  // //     jobs: [],
-  // //     updateWorkspace (ws: Workspace): void {
-  // //       workspace = ws
-  // //     },
-  // //     updateBundlers (b: Bundler[]): void {
-  // //       bundlers = b
-  // //     },
-  // //     stop () {
-  // //       killWatchers()
-  // //     }
-  // //   }
-  // //   return km
-
-  // //   function killWatchers () {
-  // //     const old = watchers
-  // //     watchers = []
-  // //     old.forEach((w) => w.kill())
-  // //   }
 }
 
 async function internalWorkspaceBuild (
@@ -155,19 +115,19 @@ async function internalWorkspaceBuild (
   filter: WalkFilter,
   goal: Goal
 ) {
-  const build = workspace.walk(filter, true, (pkg, bundler) =>
+  const build = workspace.walk(filter, true, true, (pkg, bundler) =>
     bundler.build(pkg, jobManager, goal)
   )
-  const test = workspace.walk(filter, true, (pkg, bundler) =>
+  const test = workspace.walk(filter, true, true, (pkg, bundler) =>
     bundler.test(pkg, jobManager)
   )
-  const publish = workspace.walk(filter, false, (pkg, bundler) =>
+  const publish = workspace.walk(filter, true, false, (pkg, bundler) =>
     bundler.publish(pkg, jobManager, goal)
   )
-  const lint = workspace.walk(filter, false, (pkg, bundler) =>
+  const lint = workspace.walk(filter, true, false, (pkg, bundler) =>
     bundler.lint(pkg, jobManager)
   )
-  const measure = workspace.walk(filter, false, (pkg, bundler) =>
+  const measure = workspace.walk(filter, true, false, (pkg, bundler) =>
     bundler.measure(pkg, jobManager)
   )
   test.depends('each', [build])

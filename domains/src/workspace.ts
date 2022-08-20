@@ -3,6 +3,8 @@ import { Job } from './job'
 import { System } from './sys'
 
 export interface Workspace {
+  readonly folder: string
+  readonly khayyamFile: string
   readonly layers: ReadonlyArray<Layer>
   readonly packages: ReadonlyArray<Package>
   readonly bundlers: ReadonlyArray<Bundler>
@@ -10,7 +12,8 @@ export interface Workspace {
   findPackage (packageName: string): Package|undefined
   findBundler (bundlerName: string): Bundler|undefined
   walk (
-    filter: WalkFilter,
+    filter: 'all'|ByPackage<boolean>,
+    defFiltered: boolean,
     treeDep: boolean,
     fn: (pkg: Package, bundler: Bundler)=>Job): WalkedJobs
 }
@@ -31,11 +34,17 @@ export interface Package {
     readonly repository?: string
     readonly bundlers: ReadonlyArray<string>
     readonly dependencies: ReadonlyArray<string>
-    readonly measures?: Measure
 }
 
-export interface Measure {
-
+export interface PackageState {
+  built: boolean
+  test: boolean
+  coverage: number
+  complexity: number
+  fanIn: number
+  fanOut: number
+  nc: number
+  na: number
 }
 
 export interface ByPackage<T> {
@@ -43,17 +52,23 @@ export interface ByPackage<T> {
 }
 
 export function createWorkspace ({
+  resolvedFolder,
+  khayyamFile,
   sys,
   layers,
   packages,
   bundlers
 }:{
+  resolvedFolder: string,
+  khayyamFile:string,
   sys: System,
   layers: Layer[],
   packages: Package[],
   bundlers: Bundler[]
 }) {
   const ws: Workspace = {
+    folder: resolvedFolder,
+    khayyamFile,
     get layers () {
       return layers
     },
@@ -80,6 +95,7 @@ export function createWorkspace ({
   }
   function walk (
     filter: 'all'|ByPackage<boolean>,
+    defFiltered: boolean,
     treeDep: boolean,
     fn: (pkg: Package, bundler: Bundler)=>Job): WalkedJobs {
     const ret: WalkedJobs = {
@@ -107,7 +123,7 @@ export function createWorkspace ({
     packages.forEach((pkg) => walkOn(pkg))
     return ret
     function walkOn (pkg: Package): boolean {
-      let filtered = filter === 'all' || filter[pkg.name]
+      let filtered = defFiltered && (filter === 'all' || filter[pkg.name])
       if (tree[pkg.name]) {
         sys.notify(
           'Circular dependency on packages' + Object.keys(tree),

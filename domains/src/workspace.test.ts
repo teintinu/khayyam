@@ -4,7 +4,7 @@ describe('workspace', () => {
   describe('just one package', () => {
     it('create', async () => {
       const logger = createFakeLog()
-      const ws = logger.fakeSys.loadWorkspace('npm/x')
+      const ws = await logger.fakeSys.loadWorkspace('npm/x')
       expect(ws.packages.map((p) => p.name).sort().join()).toBe('x')
       expect(ws.bundlers.map((b) => b.name).sort().join()).toBe('fakeBundlerNPM')
       expect({
@@ -15,14 +15,14 @@ describe('workspace', () => {
     })
     it('findPackage', async () => {
       const logger = createFakeLog()
-      const ws = logger.fakeSys.loadWorkspace('npm/x')
+      const ws = await logger.fakeSys.loadWorkspace('npm/x')
       expect(ws.findPackage('x')?.name).toBe('x')
       expect(ws.findPackage('a')).toBeUndefined()
       expect(logger.logged).toMatchSnapshot('logged')
     })
     it('findBundler', async () => {
       const logger = createFakeLog()
-      const ws = logger.fakeSys.loadWorkspace('npm/x')
+      const ws = await logger.fakeSys.loadWorkspace('npm/x')
       expect(ws.findBundler('fakeBundlerNPM')?.name).toBe('fakeBundlerNPM')
       expect(ws.findBundler('invalid')).toBeUndefined()
       expect(logger.logged).toMatchSnapshot('logged')
@@ -31,11 +31,11 @@ describe('workspace', () => {
       [false, true].forEach((treeDep) => {
         describe('treeDep=' + (treeDep ? 'true' : 'false'), () => {
           describe('one walk', () => {
-            it('all', () => {
+            it('all', async () => {
               const logger = createFakeLog()
-              const ws = logger.fakeSys.loadWorkspace('npm/x')
+              const ws = await logger.fakeSys.loadWorkspace('npm/x')
               const pkgs: string[] = []
-              const walked = ws.walk('all', treeDep, (pkg) => {
+              const walked = ws.walk('all', true, treeDep, (pkg) => {
                 pkgs.push(pkg.name)
                 return createFakeJob(
                   logger,
@@ -48,11 +48,11 @@ describe('workspace', () => {
               expect(walkedDebug(walked)).toMatchSnapshot('walkedDebug')
               expect(logger.logged).toMatchSnapshot('logged')
             })
-            it('filter x', () => {
+            it('filter x', async () => {
               const logger = createFakeLog()
-              const ws = logger.fakeSys.loadWorkspace('npm/x')
+              const ws = await logger.fakeSys.loadWorkspace('npm/x')
               const pkgs: string[] = []
-              const walked = ws.walk({ x: true }, treeDep, (pkg) => {
+              const walked = ws.walk({ x: true }, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name)
                 return createFakeJob(
                   logger,
@@ -65,11 +65,11 @@ describe('workspace', () => {
               expect(walkedDebug(walked)).toMatchSnapshot('walkedDebug')
               expect(logger.logged).toMatchSnapshot('logged')
             })
-            it('filter none', () => {
+            it('filter none', async () => {
               const logger = createFakeLog()
-              const ws = logger.fakeSys.loadWorkspace('npm/x')
+              const ws = await logger.fakeSys.loadWorkspace('npm/x')
               const pkgs: string[] = []
-              const walked = ws.walk({}, treeDep, (pkg) => {
+              const walked = ws.walk({}, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name)
                 return createFakeJob(
                   logger,
@@ -84,11 +84,11 @@ describe('workspace', () => {
             })
           })
           describe('two walks', () => {
-            it('all', () => {
+            it('all', async () => {
               const logger = createFakeLog()
-              const ws = logger.fakeSys.loadWorkspace('npm/x')
+              const ws = await logger.fakeSys.loadWorkspace('npm/x')
               const pkgs: string[] = []
-              const walked1 = ws.walk('all', treeDep, (pkg) => {
+              const walked1 = ws.walk('all', true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '1')
                 return createFakeJob(
                   logger,
@@ -97,7 +97,7 @@ describe('workspace', () => {
                   ['walk1']
                 )
               })
-              const walked2 = ws.walk('all', treeDep, (pkg) => {
+              const walked2 = ws.walk('all', true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '2')
                 return createFakeJob(
                   logger,
@@ -111,11 +111,11 @@ describe('workspace', () => {
               expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
               expect(logger.logged).toMatchSnapshot('logged')
             })
-            it('filter x', () => {
+            it('filter x', async () => {
               const logger = createFakeLog()
-              const ws = logger.fakeSys.loadWorkspace('npm/x')
+              const ws = await logger.fakeSys.loadWorkspace('npm/x')
               const pkgs: string[] = []
-              const walked1 = ws.walk({ x: true }, treeDep, (pkg) => {
+              const walked1 = ws.walk({ x: true }, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '1')
                 return createFakeJob(
                   logger,
@@ -124,7 +124,7 @@ describe('workspace', () => {
                   ['walk1']
                 )
               })
-              const walked2 = ws.walk({ x: true }, treeDep, (pkg) => {
+              const walked2 = ws.walk({ x: true }, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '2')
                 return createFakeJob(
                   logger,
@@ -138,11 +138,11 @@ describe('workspace', () => {
               expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
               expect(logger.logged).toMatchSnapshot('logged')
             })
-            it('filter none', () => {
+            it('filter none', async () => {
               const logger = createFakeLog()
-              const ws = logger.fakeSys.loadWorkspace('npm/x')
+              const ws = await logger.fakeSys.loadWorkspace('npm/x')
               const pkgs: string[] = []
-              const walked1 = ws.walk({}, treeDep, (pkg) => {
+              const walked1 = ws.walk({}, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '1')
                 return createFakeJob(
                   logger,
@@ -151,7 +151,7 @@ describe('workspace', () => {
                   ['walk1']
                 )
               })
-              const walked2 = ws.walk({}, treeDep, (pkg) => {
+              const walked2 = ws.walk({}, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '2')
                 return createFakeJob(
                   logger,
@@ -167,11 +167,11 @@ describe('workspace', () => {
             })
           })
           describe('walk all-deps', () => {
-            it('all', () => {
+            it('all', async () => {
               const logger = createFakeLog()
-              const ws = logger.fakeSys.loadWorkspace('npm/x')
+              const ws = await logger.fakeSys.loadWorkspace('npm/x')
               const pkgs: string[] = []
-              const walked1 = ws.walk('all', treeDep, (pkg) => {
+              const walked1 = ws.walk('all', true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '1')
                 return createFakeJob(
                   logger,
@@ -180,7 +180,7 @@ describe('workspace', () => {
                   ['walk1']
                 )
               })
-              const walked2 = ws.walk('all', treeDep, (pkg) => {
+              const walked2 = ws.walk('all', true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '2')
                 return createFakeJob(
                   logger,
@@ -195,11 +195,11 @@ describe('workspace', () => {
               expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
               expect(logger.logged).toMatchSnapshot('logged')
             })
-            it('filter x', () => {
+            it('filter x', async () => {
               const logger = createFakeLog()
-              const ws = logger.fakeSys.loadWorkspace('npm/x')
+              const ws = await logger.fakeSys.loadWorkspace('npm/x')
               const pkgs: string[] = []
-              const walked1 = ws.walk({ x: true }, treeDep, (pkg) => {
+              const walked1 = ws.walk({ x: true }, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '1')
                 return createFakeJob(
                   logger,
@@ -208,7 +208,7 @@ describe('workspace', () => {
                   ['walk1']
                 )
               })
-              const walked2 = ws.walk({ x: true }, treeDep, (pkg) => {
+              const walked2 = ws.walk({ x: true }, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '2')
                 return createFakeJob(
                   logger,
@@ -223,11 +223,11 @@ describe('workspace', () => {
               expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
               expect(logger.logged).toMatchSnapshot('logged')
             })
-            it('filter none', () => {
+            it('filter none', async () => {
               const logger = createFakeLog()
-              const ws = logger.fakeSys.loadWorkspace('npm/x')
+              const ws = await logger.fakeSys.loadWorkspace('npm/x')
               const pkgs: string[] = []
-              const walked1 = ws.walk({}, treeDep, (pkg) => {
+              const walked1 = ws.walk({}, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '1')
                 return createFakeJob(
                   logger,
@@ -236,7 +236,7 @@ describe('workspace', () => {
                   ['walk1']
                 )
               })
-              const walked2 = ws.walk({}, treeDep, (pkg) => {
+              const walked2 = ws.walk({}, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '2')
                 return createFakeJob(
                   logger,
@@ -253,11 +253,11 @@ describe('workspace', () => {
             })
           })
           describe('walk each-deps', () => {
-            it('all', () => {
+            it('all', async () => {
               const logger = createFakeLog()
-              const ws = logger.fakeSys.loadWorkspace('npm/x')
+              const ws = await logger.fakeSys.loadWorkspace('npm/x')
               const pkgs: string[] = []
-              const walked1 = ws.walk('all', treeDep, (pkg) => {
+              const walked1 = ws.walk('all', true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '1')
                 return createFakeJob(
                   logger,
@@ -266,7 +266,7 @@ describe('workspace', () => {
                   ['walk1']
                 )
               })
-              const walked2 = ws.walk('all', treeDep, (pkg) => {
+              const walked2 = ws.walk('all', true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '2')
                 return createFakeJob(
                   logger,
@@ -281,11 +281,11 @@ describe('workspace', () => {
               expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
               expect(logger.logged).toMatchSnapshot('logged')
             })
-            it('filter x', () => {
+            it('filter x', async () => {
               const logger = createFakeLog()
-              const ws = logger.fakeSys.loadWorkspace('npm/x')
+              const ws = await logger.fakeSys.loadWorkspace('npm/x')
               const pkgs: string[] = []
-              const walked1 = ws.walk({ x: true }, treeDep, (pkg) => {
+              const walked1 = ws.walk({ x: true }, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '1')
                 return createFakeJob(
                   logger,
@@ -294,7 +294,7 @@ describe('workspace', () => {
                   ['walk1']
                 )
               })
-              const walked2 = ws.walk({ x: true }, treeDep, (pkg) => {
+              const walked2 = ws.walk({ x: true }, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '2')
                 return createFakeJob(
                   logger,
@@ -309,11 +309,11 @@ describe('workspace', () => {
               expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
               expect(logger.logged).toMatchSnapshot('logged')
             })
-            it('filter none', () => {
+            it('filter none', async () => {
               const logger = createFakeLog()
-              const ws = logger.fakeSys.loadWorkspace('npm/x')
+              const ws = await logger.fakeSys.loadWorkspace('npm/x')
               const pkgs: string[] = []
-              const walked1 = ws.walk({}, treeDep, (pkg) => {
+              const walked1 = ws.walk({}, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '1')
                 return createFakeJob(
                   logger,
@@ -322,7 +322,7 @@ describe('workspace', () => {
                   ['walk1']
                 )
               })
-              const walked2 = ws.walk({}, treeDep, (pkg) => {
+              const walked2 = ws.walk({}, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '2')
                 return createFakeJob(
                   logger,
@@ -345,7 +345,7 @@ describe('workspace', () => {
   describe('just x,y packages', () => {
     it('create', async () => {
       const logger = createFakeLog()
-      const ws = logger.fakeSys.loadWorkspace('npm/xy/deps')
+      const ws = await logger.fakeSys.loadWorkspace('npm/xy/deps')
       expect(ws.packages.map((p) => p.name).sort().join()).toBe('x,y')
       expect(ws.bundlers.map((b) => b.name).sort().join()).toBe('fakeBundlerNPM')
       expect({
@@ -356,7 +356,7 @@ describe('workspace', () => {
     })
     it('findPackage', async () => {
       const logger = createFakeLog()
-      const ws = logger.fakeSys.loadWorkspace('npm/xy/deps')
+      const ws = await logger.fakeSys.loadWorkspace('npm/xy/deps')
       const x = ws.findPackage('x')
       expect(x?.name).toBe('x')
       expect(x?.dependencies.join()).toBe('y')
@@ -365,7 +365,7 @@ describe('workspace', () => {
     })
     it('findBundler', async () => {
       const logger = createFakeLog()
-      const ws = logger.fakeSys.loadWorkspace('npm/xy/deps')
+      const ws = await logger.fakeSys.loadWorkspace('npm/xy/deps')
       expect(ws.findBundler('fakeBundlerNPM')?.name).toBe('fakeBundlerNPM')
       expect(ws.findBundler('invalid')).toBeUndefined()
       expect(logger.logged).toMatchSnapshot('logged')
@@ -374,11 +374,11 @@ describe('workspace', () => {
       [false, true].forEach((treeDep) => {
         describe('treeDep=' + (treeDep ? 'true' : 'false'), () => {
           describe('one walk', () => {
-            it('all', () => {
+            it('all', async () => {
               const logger = createFakeLog()
-              const ws = logger.fakeSys.loadWorkspace('npm/xy/deps')
+              const ws = await logger.fakeSys.loadWorkspace('npm/xy/deps')
               const pkgs: string[] = []
-              const walked = ws.walk('all', treeDep, (pkg) => {
+              const walked = ws.walk('all', true, treeDep, (pkg) => {
                 pkgs.push(pkg.name)
                 return createFakeJob(
                   logger,
@@ -391,11 +391,11 @@ describe('workspace', () => {
               expect(walkedDebug(walked)).toMatchSnapshot('walkedDebug')
               expect(logger.logged).toMatchSnapshot('logged')
             })
-            it('filter x', () => {
+            it('filter x', async () => {
               const logger = createFakeLog()
-              const ws = logger.fakeSys.loadWorkspace('npm/xy/deps')
+              const ws = await logger.fakeSys.loadWorkspace('npm/xy/deps')
               const pkgs: string[] = []
-              const walked = ws.walk({ x: true }, treeDep, (pkg) => {
+              const walked = ws.walk({ x: true }, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name)
                 return createFakeJob(
                   logger,
@@ -408,11 +408,11 @@ describe('workspace', () => {
               expect(walkedDebug(walked)).toMatchSnapshot('walkedDebug')
               expect(logger.logged).toMatchSnapshot('logged')
             })
-            it('filter y', () => {
+            it('filter y', async () => {
               const logger = createFakeLog()
-              const ws = logger.fakeSys.loadWorkspace('npm/xy/deps')
+              const ws = await logger.fakeSys.loadWorkspace('npm/xy/deps')
               const pkgs: string[] = []
-              const walked = ws.walk({ y: true }, treeDep, (pkg) => {
+              const walked = ws.walk({ y: true }, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name)
                 return createFakeJob(
                   logger,
@@ -425,11 +425,11 @@ describe('workspace', () => {
               expect(walkedDebug(walked)).toMatchSnapshot('walkedDebug')
               expect(logger.logged).toMatchSnapshot('logged')
             })
-            it('filter none', () => {
+            it('filter none', async () => {
               const logger = createFakeLog()
-              const ws = logger.fakeSys.loadWorkspace('npm/xy/deps')
+              const ws = await logger.fakeSys.loadWorkspace('npm/xy/deps')
               const pkgs: string[] = []
-              const walked = ws.walk({}, treeDep, (pkg) => {
+              const walked = ws.walk({}, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name)
                 return createFakeJob(
                   logger,
@@ -444,11 +444,11 @@ describe('workspace', () => {
             })
           })
           describe('two walks', () => {
-            it('all', () => {
+            it('all', async () => {
               const logger = createFakeLog()
-              const ws = logger.fakeSys.loadWorkspace('npm/xy/deps')
+              const ws = await logger.fakeSys.loadWorkspace('npm/xy/deps')
               const pkgs: string[] = []
-              const walked1 = ws.walk('all', treeDep, (pkg) => {
+              const walked1 = ws.walk('all', true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '1')
                 return createFakeJob(
                   logger,
@@ -457,7 +457,7 @@ describe('workspace', () => {
                   ['walk1']
                 )
               })
-              const walked2 = ws.walk('all', treeDep, (pkg) => {
+              const walked2 = ws.walk('all', true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '2')
                 return createFakeJob(
                   logger,
@@ -471,11 +471,11 @@ describe('workspace', () => {
               expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
               expect(logger.logged).toMatchSnapshot('logged')
             })
-            it('filter x', () => {
+            it('filter x', async () => {
               const logger = createFakeLog()
-              const ws = logger.fakeSys.loadWorkspace('npm/xy/deps')
+              const ws = await logger.fakeSys.loadWorkspace('npm/xy/deps')
               const pkgs: string[] = []
-              const walked1 = ws.walk({ x: true }, treeDep, (pkg) => {
+              const walked1 = ws.walk({ x: true }, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '1')
                 return createFakeJob(
                   logger,
@@ -484,7 +484,7 @@ describe('workspace', () => {
                   ['walk1']
                 )
               })
-              const walked2 = ws.walk({ x: true }, treeDep, (pkg) => {
+              const walked2 = ws.walk({ x: true }, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '2')
                 return createFakeJob(
                   logger,
@@ -498,11 +498,11 @@ describe('workspace', () => {
               expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
               expect(logger.logged).toMatchSnapshot('logged')
             })
-            it('filter y', () => {
+            it('filter y', async () => {
               const logger = createFakeLog()
-              const ws = logger.fakeSys.loadWorkspace('npm/xy/deps')
+              const ws = await logger.fakeSys.loadWorkspace('npm/xy/deps')
               const pkgs: string[] = []
-              const walked1 = ws.walk({ y: true }, treeDep, (pkg) => {
+              const walked1 = ws.walk({ y: true }, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '1')
                 return createFakeJob(
                   logger,
@@ -511,7 +511,7 @@ describe('workspace', () => {
                   ['walk1']
                 )
               })
-              const walked2 = ws.walk({ y: true }, treeDep, (pkg) => {
+              const walked2 = ws.walk({ y: true }, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '2')
                 return createFakeJob(
                   logger,
@@ -525,11 +525,11 @@ describe('workspace', () => {
               expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
               expect(logger.logged).toMatchSnapshot('logged')
             })
-            it('filter none', () => {
+            it('filter none', async () => {
               const logger = createFakeLog()
-              const ws = logger.fakeSys.loadWorkspace('npm/xy/deps')
+              const ws = await logger.fakeSys.loadWorkspace('npm/xy/deps')
               const pkgs: string[] = []
-              const walked1 = ws.walk({}, treeDep, (pkg) => {
+              const walked1 = ws.walk({}, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '1')
                 return createFakeJob(
                   logger,
@@ -538,7 +538,7 @@ describe('workspace', () => {
                   ['walk1']
                 )
               })
-              const walked2 = ws.walk({}, treeDep, (pkg) => {
+              const walked2 = ws.walk({}, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '2')
                 return createFakeJob(
                   logger,
@@ -554,11 +554,11 @@ describe('workspace', () => {
             })
           })
           describe('walk all-deps', () => {
-            it('all', () => {
+            it('all', async () => {
               const logger = createFakeLog()
-              const ws = logger.fakeSys.loadWorkspace('npm/xy/deps')
+              const ws = await logger.fakeSys.loadWorkspace('npm/xy/deps')
               const pkgs: string[] = []
-              const walked1 = ws.walk('all', treeDep, (pkg) => {
+              const walked1 = ws.walk('all', true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '1')
                 return createFakeJob(
                   logger,
@@ -567,7 +567,7 @@ describe('workspace', () => {
                   ['walk1']
                 )
               })
-              const walked2 = ws.walk('all', treeDep, (pkg) => {
+              const walked2 = ws.walk('all', true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '2')
                 return createFakeJob(
                   logger,
@@ -582,11 +582,11 @@ describe('workspace', () => {
               expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
               expect(logger.logged).toMatchSnapshot('logged')
             })
-            it('filter x', () => {
+            it('filter x', async () => {
               const logger = createFakeLog()
-              const ws = logger.fakeSys.loadWorkspace('npm/xy/deps')
+              const ws = await logger.fakeSys.loadWorkspace('npm/xy/deps')
               const pkgs: string[] = []
-              const walked1 = ws.walk({ x: true }, treeDep, (pkg) => {
+              const walked1 = ws.walk({ x: true }, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '1')
                 return createFakeJob(
                   logger,
@@ -595,7 +595,7 @@ describe('workspace', () => {
                   ['walk1']
                 )
               })
-              const walked2 = ws.walk({ x: true }, treeDep, (pkg) => {
+              const walked2 = ws.walk({ x: true }, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '2')
                 return createFakeJob(
                   logger,
@@ -610,11 +610,11 @@ describe('workspace', () => {
               expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
               expect(logger.logged).toMatchSnapshot('logged')
             })
-            it('filter y', () => {
+            it('filter y', async () => {
               const logger = createFakeLog()
-              const ws = logger.fakeSys.loadWorkspace('npm/xy/deps')
+              const ws = await logger.fakeSys.loadWorkspace('npm/xy/deps')
               const pkgs: string[] = []
-              const walked1 = ws.walk({ y: true }, treeDep, (pkg) => {
+              const walked1 = ws.walk({ y: true }, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '1')
                 return createFakeJob(
                   logger,
@@ -623,7 +623,7 @@ describe('workspace', () => {
                   ['walk1']
                 )
               })
-              const walked2 = ws.walk({ y: true }, treeDep, (pkg) => {
+              const walked2 = ws.walk({ y: true }, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '2')
                 return createFakeJob(
                   logger,
@@ -638,11 +638,11 @@ describe('workspace', () => {
               expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
               expect(logger.logged).toMatchSnapshot('logged')
             })
-            it('filter none', () => {
+            it('filter none', async () => {
               const logger = createFakeLog()
-              const ws = logger.fakeSys.loadWorkspace('npm/xy/deps')
+              const ws = await logger.fakeSys.loadWorkspace('npm/xy/deps')
               const pkgs: string[] = []
-              const walked1 = ws.walk({}, treeDep, (pkg) => {
+              const walked1 = ws.walk({}, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '1')
                 return createFakeJob(
                   logger,
@@ -651,7 +651,7 @@ describe('workspace', () => {
                   ['walk1']
                 )
               })
-              const walked2 = ws.walk({}, treeDep, (pkg) => {
+              const walked2 = ws.walk({}, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '2')
                 return createFakeJob(
                   logger,
@@ -668,11 +668,11 @@ describe('workspace', () => {
             })
           })
           describe('walk each-deps', () => {
-            it('all', () => {
+            it('all', async () => {
               const logger = createFakeLog()
-              const ws = logger.fakeSys.loadWorkspace('npm/xy/deps')
+              const ws = await logger.fakeSys.loadWorkspace('npm/xy/deps')
               const pkgs: string[] = []
-              const walked1 = ws.walk('all', treeDep, (pkg) => {
+              const walked1 = ws.walk('all', true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '1')
                 return createFakeJob(
                   logger,
@@ -681,7 +681,7 @@ describe('workspace', () => {
                   ['walk1']
                 )
               })
-              const walked2 = ws.walk('all', treeDep, (pkg) => {
+              const walked2 = ws.walk('all', true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '2')
                 return createFakeJob(
                   logger,
@@ -696,11 +696,11 @@ describe('workspace', () => {
               expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
               expect(logger.logged).toMatchSnapshot('logged')
             })
-            it('filter x', () => {
+            it('filter x', async () => {
               const logger = createFakeLog()
-              const ws = logger.fakeSys.loadWorkspace('npm/xy/deps')
+              const ws = await logger.fakeSys.loadWorkspace('npm/xy/deps')
               const pkgs: string[] = []
-              const walked1 = ws.walk({ x: true }, treeDep, (pkg) => {
+              const walked1 = ws.walk({ x: true }, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '1')
                 return createFakeJob(
                   logger,
@@ -709,7 +709,7 @@ describe('workspace', () => {
                   ['walk1']
                 )
               })
-              const walked2 = ws.walk({ x: true }, treeDep, (pkg) => {
+              const walked2 = ws.walk({ x: true }, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '2')
                 return createFakeJob(
                   logger,
@@ -724,11 +724,11 @@ describe('workspace', () => {
               expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
               expect(logger.logged).toMatchSnapshot('logged')
             })
-            it('filter y', () => {
+            it('filter y', async () => {
               const logger = createFakeLog()
-              const ws = logger.fakeSys.loadWorkspace('npm/xy/deps')
+              const ws = await logger.fakeSys.loadWorkspace('npm/xy/deps')
               const pkgs: string[] = []
-              const walked1 = ws.walk({ y: true }, treeDep, (pkg) => {
+              const walked1 = ws.walk({ y: true }, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '1')
                 return createFakeJob(
                   logger,
@@ -737,7 +737,7 @@ describe('workspace', () => {
                   ['walk1']
                 )
               })
-              const walked2 = ws.walk({ y: true }, treeDep, (pkg) => {
+              const walked2 = ws.walk({ y: true }, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '2')
                 return createFakeJob(
                   logger,
@@ -752,11 +752,11 @@ describe('workspace', () => {
               expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
               expect(logger.logged).toMatchSnapshot('logged')
             })
-            it('filter none', () => {
+            it('filter none', async () => {
               const logger = createFakeLog()
-              const ws = logger.fakeSys.loadWorkspace('npm/xy/deps')
+              const ws = await logger.fakeSys.loadWorkspace('npm/xy/deps')
               const pkgs: string[] = []
-              const walked1 = ws.walk({}, treeDep, (pkg) => {
+              const walked1 = ws.walk({}, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '1')
                 return createFakeJob(
                   logger,
@@ -765,7 +765,7 @@ describe('workspace', () => {
                   ['walk1']
                 )
               })
-              const walked2 = ws.walk({}, treeDep, (pkg) => {
+              const walked2 = ws.walk({}, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '2')
                 return createFakeJob(
                   logger,
@@ -788,7 +788,7 @@ describe('workspace', () => {
   describe('just a,b,c,d,e packages', () => {
     it('create', async () => {
       const logger = createFakeLog()
-      const ws = logger.fakeSys.loadWorkspace('npm/abcde/deps')
+      const ws = await logger.fakeSys.loadWorkspace('npm/abcde/deps')
       expect(ws.packages.map((p) => p.name).sort().join()).toBe('a,b,c,d,e')
       expect(ws.bundlers.map((b) => b.name).sort().join()).toBe('fakeBundlerNPM')
       expect({
@@ -799,7 +799,7 @@ describe('workspace', () => {
     })
     it('findPackage', async () => {
       const logger = createFakeLog()
-      const ws = logger.fakeSys.loadWorkspace('npm/abcde/deps')
+      const ws = await logger.fakeSys.loadWorkspace('npm/abcde/deps')
       const a = ws.findPackage('a')
       expect(a?.name).toBe('a')
       expect(a?.dependencies.join()).toBe('b,c')
@@ -808,7 +808,7 @@ describe('workspace', () => {
     })
     it('findBundler', async () => {
       const logger = createFakeLog()
-      const ws = logger.fakeSys.loadWorkspace('npm/abcde/deps')
+      const ws = await logger.fakeSys.loadWorkspace('npm/abcde/deps')
       expect(ws.findBundler('fakeBundlerNPM')?.name).toBe('fakeBundlerNPM')
       expect(ws.findBundler('invalid')).toBeUndefined()
       expect(logger.logged).toMatchSnapshot('logged')
@@ -817,11 +817,11 @@ describe('workspace', () => {
       [false, true].forEach((treeDep) => {
         describe('treeDep=' + (treeDep ? 'true' : 'false'), () => {
           describe('one walk', () => {
-            it('all', () => {
+            it('all', async () => {
               const logger = createFakeLog()
-              const ws = logger.fakeSys.loadWorkspace('npm/abcde/deps')
+              const ws = await logger.fakeSys.loadWorkspace('npm/abcde/deps')
               const pkgs: string[] = []
-              const walked = ws.walk('all', treeDep, (pkg) => {
+              const walked = ws.walk('all', true, treeDep, (pkg) => {
                 pkgs.push(pkg.name)
                 return createFakeJob(
                   logger,
@@ -834,11 +834,11 @@ describe('workspace', () => {
               expect(walkedDebug(walked)).toMatchSnapshot('walkedDebug')
               expect(logger.logged).toMatchSnapshot('logged')
             })
-            it('filter a', () => {
+            it('filter a', async () => {
               const logger = createFakeLog()
-              const ws = logger.fakeSys.loadWorkspace('npm/abcde/deps')
+              const ws = await logger.fakeSys.loadWorkspace('npm/abcde/deps')
               const pkgs: string[] = []
-              const walked = ws.walk({ a: true }, treeDep, (pkg) => {
+              const walked = ws.walk({ a: true }, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name)
                 return createFakeJob(
                   logger,
@@ -851,11 +851,11 @@ describe('workspace', () => {
               expect(walkedDebug(walked)).toMatchSnapshot('walkedDebug')
               expect(logger.logged).toMatchSnapshot('logged')
             })
-            it('filter b', () => {
+            it('filter b', async () => {
               const logger = createFakeLog()
-              const ws = logger.fakeSys.loadWorkspace('npm/abcde/deps')
+              const ws = await logger.fakeSys.loadWorkspace('npm/abcde/deps')
               const pkgs: string[] = []
-              const walked = ws.walk({ b: true }, treeDep, (pkg) => {
+              const walked = ws.walk({ b: true }, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name)
                 return createFakeJob(
                   logger,
@@ -868,11 +868,11 @@ describe('workspace', () => {
               expect(walkedDebug(walked)).toMatchSnapshot('walkedDebug')
               expect(logger.logged).toMatchSnapshot('logged')
             })
-            it('filter c', () => {
+            it('filter c', async () => {
               const logger = createFakeLog()
-              const ws = logger.fakeSys.loadWorkspace('npm/abcde/deps')
+              const ws = await logger.fakeSys.loadWorkspace('npm/abcde/deps')
               const pkgs: string[] = []
-              const walked = ws.walk({ c: true }, treeDep, (pkg) => {
+              const walked = ws.walk({ c: true }, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name)
                 return createFakeJob(
                   logger,
@@ -885,11 +885,11 @@ describe('workspace', () => {
               expect(walkedDebug(walked)).toMatchSnapshot('walkedDebug')
               expect(logger.logged).toMatchSnapshot('logged')
             })
-            it('filter d', () => {
+            it('filter d', async () => {
               const logger = createFakeLog()
-              const ws = logger.fakeSys.loadWorkspace('npm/abcde/deps')
+              const ws = await logger.fakeSys.loadWorkspace('npm/abcde/deps')
               const pkgs: string[] = []
-              const walked = ws.walk({ d: true }, treeDep, (pkg) => {
+              const walked = ws.walk({ d: true }, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name)
                 return createFakeJob(
                   logger,
@@ -902,11 +902,11 @@ describe('workspace', () => {
               expect(walkedDebug(walked)).toMatchSnapshot('walkedDebug')
               expect(logger.logged).toMatchSnapshot('logged')
             })
-            it('filter c,d', () => {
+            it('filter c,d', async () => {
               const logger = createFakeLog()
-              const ws = logger.fakeSys.loadWorkspace('npm/abcde/deps')
+              const ws = await logger.fakeSys.loadWorkspace('npm/abcde/deps')
               const pkgs: string[] = []
-              const walked = ws.walk({ c: true, d: true }, treeDep, (pkg) => {
+              const walked = ws.walk({ c: true, d: true }, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name)
                 return createFakeJob(
                   logger,
@@ -919,11 +919,11 @@ describe('workspace', () => {
               expect(walkedDebug(walked)).toMatchSnapshot('walkedDebug')
               expect(logger.logged).toMatchSnapshot('logged')
             })
-            it('filter e', () => {
+            it('filter e', async () => {
               const logger = createFakeLog()
-              const ws = logger.fakeSys.loadWorkspace('npm/abcde/deps')
+              const ws = await logger.fakeSys.loadWorkspace('npm/abcde/deps')
               const pkgs: string[] = []
-              const walked = ws.walk({ e: true }, treeDep, (pkg) => {
+              const walked = ws.walk({ e: true }, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name)
                 return createFakeJob(
                   logger,
@@ -936,11 +936,11 @@ describe('workspace', () => {
               expect(walkedDebug(walked)).toMatchSnapshot('walkedDebug')
               expect(logger.logged).toMatchSnapshot('logged')
             })
-            it('filter none', () => {
+            it('filter none', async () => {
               const logger = createFakeLog()
-              const ws = logger.fakeSys.loadWorkspace('npm/abcde/deps')
+              const ws = await logger.fakeSys.loadWorkspace('npm/abcde/deps')
               const pkgs: string[] = []
-              const walked = ws.walk({}, treeDep, (pkg) => {
+              const walked = ws.walk({}, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name)
                 return createFakeJob(
                   logger,
@@ -955,11 +955,11 @@ describe('workspace', () => {
             })
           })
           describe('two walks', () => {
-            it('all', () => {
+            it('all', async () => {
               const logger = createFakeLog()
-              const ws = logger.fakeSys.loadWorkspace('npm/abcde/deps')
+              const ws = await logger.fakeSys.loadWorkspace('npm/abcde/deps')
               const pkgs: string[] = []
-              const walked1 = ws.walk('all', treeDep, (pkg) => {
+              const walked1 = ws.walk('all', true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '1')
                 return createFakeJob(
                   logger,
@@ -968,7 +968,7 @@ describe('workspace', () => {
                   ['walk1']
                 )
               })
-              const walked2 = ws.walk('all', treeDep, (pkg) => {
+              const walked2 = ws.walk('all', true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '2')
                 return createFakeJob(
                   logger,
@@ -982,11 +982,11 @@ describe('workspace', () => {
               expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
               expect(logger.logged).toMatchSnapshot('logged')
             })
-            it('filter a', () => {
+            it('filter a', async () => {
               const logger = createFakeLog()
-              const ws = logger.fakeSys.loadWorkspace('npm/abcde/deps')
+              const ws = await logger.fakeSys.loadWorkspace('npm/abcde/deps')
               const pkgs: string[] = []
-              const walked1 = ws.walk({ a: true }, treeDep, (pkg) => {
+              const walked1 = ws.walk({ a: true }, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '1')
                 return createFakeJob(
                   logger,
@@ -995,7 +995,7 @@ describe('workspace', () => {
                   ['walk1']
                 )
               })
-              const walked2 = ws.walk({ a: true }, treeDep, (pkg) => {
+              const walked2 = ws.walk({ a: true }, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '2')
                 return createFakeJob(
                   logger,
@@ -1009,11 +1009,11 @@ describe('workspace', () => {
               expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
               expect(logger.logged).toMatchSnapshot('logged')
             })
-            it('filter b', () => {
+            it('filter b', async () => {
               const logger = createFakeLog()
-              const ws = logger.fakeSys.loadWorkspace('npm/abcde/deps')
+              const ws = await logger.fakeSys.loadWorkspace('npm/abcde/deps')
               const pkgs: string[] = []
-              const walked1 = ws.walk({ b: true }, treeDep, (pkg) => {
+              const walked1 = ws.walk({ b: true }, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '1')
                 return createFakeJob(
                   logger,
@@ -1022,7 +1022,7 @@ describe('workspace', () => {
                   ['walk1']
                 )
               })
-              const walked2 = ws.walk({ b: true }, treeDep, (pkg) => {
+              const walked2 = ws.walk({ b: true }, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '2')
                 return createFakeJob(
                   logger,
@@ -1036,11 +1036,11 @@ describe('workspace', () => {
               expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
               expect(logger.logged).toMatchSnapshot('logged')
             })
-            it('filter c', () => {
+            it('filter c', async () => {
               const logger = createFakeLog()
-              const ws = logger.fakeSys.loadWorkspace('npm/abcde/deps')
+              const ws = await logger.fakeSys.loadWorkspace('npm/abcde/deps')
               const pkgs: string[] = []
-              const walked1 = ws.walk({ c: true }, treeDep, (pkg) => {
+              const walked1 = ws.walk({ c: true }, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '1')
                 return createFakeJob(
                   logger,
@@ -1049,7 +1049,7 @@ describe('workspace', () => {
                   ['walk1']
                 )
               })
-              const walked2 = ws.walk({ c: true }, treeDep, (pkg) => {
+              const walked2 = ws.walk({ c: true }, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '2')
                 return createFakeJob(
                   logger,
@@ -1063,11 +1063,11 @@ describe('workspace', () => {
               expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
               expect(logger.logged).toMatchSnapshot('logged')
             })
-            it('filter d', () => {
+            it('filter d', async () => {
               const logger = createFakeLog()
-              const ws = logger.fakeSys.loadWorkspace('npm/abcde/deps')
+              const ws = await logger.fakeSys.loadWorkspace('npm/abcde/deps')
               const pkgs: string[] = []
-              const walked1 = ws.walk({ d: true }, treeDep, (pkg) => {
+              const walked1 = ws.walk({ d: true }, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '1')
                 return createFakeJob(
                   logger,
@@ -1076,7 +1076,7 @@ describe('workspace', () => {
                   ['walk1']
                 )
               })
-              const walked2 = ws.walk({ d: true }, treeDep, (pkg) => {
+              const walked2 = ws.walk({ d: true }, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '2')
                 return createFakeJob(
                   logger,
@@ -1090,11 +1090,11 @@ describe('workspace', () => {
               expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
               expect(logger.logged).toMatchSnapshot('logged')
             })
-            it('filter c,d', () => {
+            it('filter c,d', async () => {
               const logger = createFakeLog()
-              const ws = logger.fakeSys.loadWorkspace('npm/abcde/deps')
+              const ws = await logger.fakeSys.loadWorkspace('npm/abcde/deps')
               const pkgs: string[] = []
-              const walked1 = ws.walk({ c: true, d: true }, treeDep, (pkg) => {
+              const walked1 = ws.walk({ c: true, d: true }, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '1')
                 return createFakeJob(
                   logger,
@@ -1103,7 +1103,7 @@ describe('workspace', () => {
                   ['walk1']
                 )
               })
-              const walked2 = ws.walk({ c: true, d: true }, treeDep, (pkg) => {
+              const walked2 = ws.walk({ c: true, d: true }, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '2')
                 return createFakeJob(
                   logger,
@@ -1117,11 +1117,11 @@ describe('workspace', () => {
               expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
               expect(logger.logged).toMatchSnapshot('logged')
             })
-            it('filter e', () => {
+            it('filter e', async () => {
               const logger = createFakeLog()
-              const ws = logger.fakeSys.loadWorkspace('npm/abcde/deps')
+              const ws = await logger.fakeSys.loadWorkspace('npm/abcde/deps')
               const pkgs: string[] = []
-              const walked1 = ws.walk({ e: true }, treeDep, (pkg) => {
+              const walked1 = ws.walk({ e: true }, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '1')
                 return createFakeJob(
                   logger,
@@ -1130,7 +1130,7 @@ describe('workspace', () => {
                   ['walk1']
                 )
               })
-              const walked2 = ws.walk({ e: true }, treeDep, (pkg) => {
+              const walked2 = ws.walk({ e: true }, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '2')
                 return createFakeJob(
                   logger,
@@ -1144,11 +1144,11 @@ describe('workspace', () => {
               expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
               expect(logger.logged).toMatchSnapshot('logged')
             })
-            it('filter none', () => {
+            it('filter none', async () => {
               const logger = createFakeLog()
-              const ws = logger.fakeSys.loadWorkspace('npm/abcde/deps')
+              const ws = await logger.fakeSys.loadWorkspace('npm/abcde/deps')
               const pkgs: string[] = []
-              const walked1 = ws.walk({}, treeDep, (pkg) => {
+              const walked1 = ws.walk({}, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '1')
                 return createFakeJob(
                   logger,
@@ -1157,7 +1157,7 @@ describe('workspace', () => {
                   ['walk1']
                 )
               })
-              const walked2 = ws.walk({}, treeDep, (pkg) => {
+              const walked2 = ws.walk({}, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '2')
                 return createFakeJob(
                   logger,
@@ -1173,11 +1173,11 @@ describe('workspace', () => {
             })
           })
           describe('walk all-deps', () => {
-            it('all', () => {
+            it('all', async () => {
               const logger = createFakeLog()
-              const ws = logger.fakeSys.loadWorkspace('npm/abcde/deps')
+              const ws = await logger.fakeSys.loadWorkspace('npm/abcde/deps')
               const pkgs: string[] = []
-              const walked1 = ws.walk('all', treeDep, (pkg) => {
+              const walked1 = ws.walk('all', true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '1')
                 return createFakeJob(
                   logger,
@@ -1186,7 +1186,7 @@ describe('workspace', () => {
                   ['walk1']
                 )
               })
-              const walked2 = ws.walk('all', treeDep, (pkg) => {
+              const walked2 = ws.walk('all', true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '2')
                 return createFakeJob(
                   logger,
@@ -1201,11 +1201,11 @@ describe('workspace', () => {
               expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
               expect(logger.logged).toMatchSnapshot('logged')
             })
-            it('filter a', () => {
+            it('filter a', async () => {
               const logger = createFakeLog()
-              const ws = logger.fakeSys.loadWorkspace('npm/abcde/deps')
+              const ws = await logger.fakeSys.loadWorkspace('npm/abcde/deps')
               const pkgs: string[] = []
-              const walked1 = ws.walk({ a: true }, treeDep, (pkg) => {
+              const walked1 = ws.walk({ a: true }, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '1')
                 return createFakeJob(
                   logger,
@@ -1214,7 +1214,7 @@ describe('workspace', () => {
                   ['walk1']
                 )
               })
-              const walked2 = ws.walk({ a: true }, treeDep, (pkg) => {
+              const walked2 = ws.walk({ a: true }, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '2')
                 return createFakeJob(
                   logger,
@@ -1229,11 +1229,11 @@ describe('workspace', () => {
               expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
               expect(logger.logged).toMatchSnapshot('logged')
             })
-            it('filter b', () => {
+            it('filter b', async () => {
               const logger = createFakeLog()
-              const ws = logger.fakeSys.loadWorkspace('npm/abcde/deps')
+              const ws = await logger.fakeSys.loadWorkspace('npm/abcde/deps')
               const pkgs: string[] = []
-              const walked1 = ws.walk({ b: true }, treeDep, (pkg) => {
+              const walked1 = ws.walk({ b: true }, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '1')
                 return createFakeJob(
                   logger,
@@ -1242,7 +1242,7 @@ describe('workspace', () => {
                   ['walk1']
                 )
               })
-              const walked2 = ws.walk({ b: true }, treeDep, (pkg) => {
+              const walked2 = ws.walk({ b: true }, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '2')
                 return createFakeJob(
                   logger,
@@ -1257,11 +1257,11 @@ describe('workspace', () => {
               expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
               expect(logger.logged).toMatchSnapshot('logged')
             })
-            it('filter c', () => {
+            it('filter c', async () => {
               const logger = createFakeLog()
-              const ws = logger.fakeSys.loadWorkspace('npm/abcde/deps')
+              const ws = await logger.fakeSys.loadWorkspace('npm/abcde/deps')
               const pkgs: string[] = []
-              const walked1 = ws.walk({ c: true }, treeDep, (pkg) => {
+              const walked1 = ws.walk({ c: true }, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '1')
                 return createFakeJob(
                   logger,
@@ -1270,7 +1270,7 @@ describe('workspace', () => {
                   ['walk1']
                 )
               })
-              const walked2 = ws.walk({ c: true }, treeDep, (pkg) => {
+              const walked2 = ws.walk({ c: true }, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '2')
                 return createFakeJob(
                   logger,
@@ -1285,11 +1285,11 @@ describe('workspace', () => {
               expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
               expect(logger.logged).toMatchSnapshot('logged')
             })
-            it('filter d', () => {
+            it('filter d', async () => {
               const logger = createFakeLog()
-              const ws = logger.fakeSys.loadWorkspace('npm/abcde/deps')
+              const ws = await logger.fakeSys.loadWorkspace('npm/abcde/deps')
               const pkgs: string[] = []
-              const walked1 = ws.walk({ d: true }, treeDep, (pkg) => {
+              const walked1 = ws.walk({ d: true }, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '1')
                 return createFakeJob(
                   logger,
@@ -1298,7 +1298,7 @@ describe('workspace', () => {
                   ['walk1']
                 )
               })
-              const walked2 = ws.walk({ d: true }, treeDep, (pkg) => {
+              const walked2 = ws.walk({ d: true }, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '2')
                 return createFakeJob(
                   logger,
@@ -1313,11 +1313,11 @@ describe('workspace', () => {
               expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
               expect(logger.logged).toMatchSnapshot('logged')
             })
-            it('filter c,d', () => {
+            it('filter c,d', async () => {
               const logger = createFakeLog()
-              const ws = logger.fakeSys.loadWorkspace('npm/abcde/deps')
+              const ws = await logger.fakeSys.loadWorkspace('npm/abcde/deps')
               const pkgs: string[] = []
-              const walked1 = ws.walk({ c: true, d: true }, treeDep, (pkg) => {
+              const walked1 = ws.walk({ c: true, d: true }, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '1')
                 return createFakeJob(
                   logger,
@@ -1326,7 +1326,7 @@ describe('workspace', () => {
                   ['walk1']
                 )
               })
-              const walked2 = ws.walk({ c: true, d: true }, treeDep, (pkg) => {
+              const walked2 = ws.walk({ c: true, d: true }, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '2')
                 return createFakeJob(
                   logger,
@@ -1341,11 +1341,11 @@ describe('workspace', () => {
               expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
               expect(logger.logged).toMatchSnapshot('logged')
             })
-            it('filter e', () => {
+            it('filter e', async () => {
               const logger = createFakeLog()
-              const ws = logger.fakeSys.loadWorkspace('npm/abcde/deps')
+              const ws = await logger.fakeSys.loadWorkspace('npm/abcde/deps')
               const pkgs: string[] = []
-              const walked1 = ws.walk({ e: true }, treeDep, (pkg) => {
+              const walked1 = ws.walk({ e: true }, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '1')
                 return createFakeJob(
                   logger,
@@ -1354,7 +1354,7 @@ describe('workspace', () => {
                   ['walk1']
                 )
               })
-              const walked2 = ws.walk({ e: true }, treeDep, (pkg) => {
+              const walked2 = ws.walk({ e: true }, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '2')
                 return createFakeJob(
                   logger,
@@ -1369,11 +1369,11 @@ describe('workspace', () => {
               expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
               expect(logger.logged).toMatchSnapshot('logged')
             })
-            it('filter none', () => {
+            it('filter none', async () => {
               const logger = createFakeLog()
-              const ws = logger.fakeSys.loadWorkspace('npm/abcde/deps')
+              const ws = await logger.fakeSys.loadWorkspace('npm/abcde/deps')
               const pkgs: string[] = []
-              const walked1 = ws.walk({}, treeDep, (pkg) => {
+              const walked1 = ws.walk({}, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '1')
                 return createFakeJob(
                   logger,
@@ -1382,7 +1382,7 @@ describe('workspace', () => {
                   ['walk1']
                 )
               })
-              const walked2 = ws.walk({}, treeDep, (pkg) => {
+              const walked2 = ws.walk({}, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '2')
                 return createFakeJob(
                   logger,
@@ -1399,11 +1399,11 @@ describe('workspace', () => {
             })
           })
           describe('walk each-deps', () => {
-            it('all', () => {
+            it('all', async () => {
               const logger = createFakeLog()
-              const ws = logger.fakeSys.loadWorkspace('npm/abcde/deps')
+              const ws = await logger.fakeSys.loadWorkspace('npm/abcde/deps')
               const pkgs: string[] = []
-              const walked1 = ws.walk('all', treeDep, (pkg) => {
+              const walked1 = ws.walk('all', true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '1')
                 return createFakeJob(
                   logger,
@@ -1412,7 +1412,7 @@ describe('workspace', () => {
                   ['walk1']
                 )
               })
-              const walked2 = ws.walk('all', treeDep, (pkg) => {
+              const walked2 = ws.walk('all', true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '2')
                 return createFakeJob(
                   logger,
@@ -1427,11 +1427,11 @@ describe('workspace', () => {
               expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
               expect(logger.logged).toMatchSnapshot('logged')
             })
-            it('filter a', () => {
+            it('filter a', async () => {
               const logger = createFakeLog()
-              const ws = logger.fakeSys.loadWorkspace('npm/abcde/deps')
+              const ws = await logger.fakeSys.loadWorkspace('npm/abcde/deps')
               const pkgs: string[] = []
-              const walked1 = ws.walk({ a: true }, treeDep, (pkg) => {
+              const walked1 = ws.walk({ a: true }, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '1')
                 return createFakeJob(
                   logger,
@@ -1440,7 +1440,7 @@ describe('workspace', () => {
                   ['walk1']
                 )
               })
-              const walked2 = ws.walk({ a: true }, treeDep, (pkg) => {
+              const walked2 = ws.walk({ a: true }, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '2')
                 return createFakeJob(
                   logger,
@@ -1455,11 +1455,11 @@ describe('workspace', () => {
               expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
               expect(logger.logged).toMatchSnapshot('logged')
             })
-            it('filter b', () => {
+            it('filter b', async () => {
               const logger = createFakeLog()
-              const ws = logger.fakeSys.loadWorkspace('npm/abcde/deps')
+              const ws = await logger.fakeSys.loadWorkspace('npm/abcde/deps')
               const pkgs: string[] = []
-              const walked1 = ws.walk({ b: true }, treeDep, (pkg) => {
+              const walked1 = ws.walk({ b: true }, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '1')
                 return createFakeJob(
                   logger,
@@ -1468,7 +1468,7 @@ describe('workspace', () => {
                   ['walk1']
                 )
               })
-              const walked2 = ws.walk({ b: true }, treeDep, (pkg) => {
+              const walked2 = ws.walk({ b: true }, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '2')
                 return createFakeJob(
                   logger,
@@ -1483,11 +1483,11 @@ describe('workspace', () => {
               expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
               expect(logger.logged).toMatchSnapshot('logged')
             })
-            it('filter c', () => {
+            it('filter c', async () => {
               const logger = createFakeLog()
-              const ws = logger.fakeSys.loadWorkspace('npm/abcde/deps')
+              const ws = await logger.fakeSys.loadWorkspace('npm/abcde/deps')
               const pkgs: string[] = []
-              const walked1 = ws.walk({ c: true }, treeDep, (pkg) => {
+              const walked1 = ws.walk({ c: true }, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '1')
                 return createFakeJob(
                   logger,
@@ -1496,7 +1496,7 @@ describe('workspace', () => {
                   ['walk1']
                 )
               })
-              const walked2 = ws.walk({ c: true }, treeDep, (pkg) => {
+              const walked2 = ws.walk({ c: true }, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '2')
                 return createFakeJob(
                   logger,
@@ -1511,11 +1511,11 @@ describe('workspace', () => {
               expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
               expect(logger.logged).toMatchSnapshot('logged')
             })
-            it('filter d', () => {
+            it('filter d', async () => {
               const logger = createFakeLog()
-              const ws = logger.fakeSys.loadWorkspace('npm/abcde/deps')
+              const ws = await logger.fakeSys.loadWorkspace('npm/abcde/deps')
               const pkgs: string[] = []
-              const walked1 = ws.walk({ d: true }, treeDep, (pkg) => {
+              const walked1 = ws.walk({ d: true }, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '1')
                 return createFakeJob(
                   logger,
@@ -1524,7 +1524,7 @@ describe('workspace', () => {
                   ['walk1']
                 )
               })
-              const walked2 = ws.walk({ d: true }, treeDep, (pkg) => {
+              const walked2 = ws.walk({ d: true }, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '2')
                 return createFakeJob(
                   logger,
@@ -1539,11 +1539,11 @@ describe('workspace', () => {
               expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
               expect(logger.logged).toMatchSnapshot('logged')
             })
-            it('filter c,d', () => {
+            it('filter c,d', async () => {
               const logger = createFakeLog()
-              const ws = logger.fakeSys.loadWorkspace('npm/abcde/deps')
+              const ws = await logger.fakeSys.loadWorkspace('npm/abcde/deps')
               const pkgs: string[] = []
-              const walked1 = ws.walk({ c: true, d: true }, treeDep, (pkg) => {
+              const walked1 = ws.walk({ c: true, d: true }, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '1')
                 return createFakeJob(
                   logger,
@@ -1552,7 +1552,7 @@ describe('workspace', () => {
                   ['walk1']
                 )
               })
-              const walked2 = ws.walk({ c: true, d: true }, treeDep, (pkg) => {
+              const walked2 = ws.walk({ c: true, d: true }, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '2')
                 return createFakeJob(
                   logger,
@@ -1567,11 +1567,11 @@ describe('workspace', () => {
               expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
               expect(logger.logged).toMatchSnapshot('logged')
             })
-            it('filter e', () => {
+            it('filter e', async () => {
               const logger = createFakeLog()
-              const ws = logger.fakeSys.loadWorkspace('npm/abcde/deps')
+              const ws = await logger.fakeSys.loadWorkspace('npm/abcde/deps')
               const pkgs: string[] = []
-              const walked1 = ws.walk({ e: true }, treeDep, (pkg) => {
+              const walked1 = ws.walk({ e: true }, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '1')
                 return createFakeJob(
                   logger,
@@ -1580,7 +1580,7 @@ describe('workspace', () => {
                   ['walk1']
                 )
               })
-              const walked2 = ws.walk({ e: true }, treeDep, (pkg) => {
+              const walked2 = ws.walk({ e: true }, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '2')
                 return createFakeJob(
                   logger,
@@ -1595,11 +1595,11 @@ describe('workspace', () => {
               expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
               expect(logger.logged).toMatchSnapshot('logged')
             })
-            it('filter none', () => {
+            it('filter none', async () => {
               const logger = createFakeLog()
-              const ws = logger.fakeSys.loadWorkspace('npm/abcde/deps')
+              const ws = await logger.fakeSys.loadWorkspace('npm/abcde/deps')
               const pkgs: string[] = []
-              const walked1 = ws.walk({}, treeDep, (pkg) => {
+              const walked1 = ws.walk({}, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '1')
                 return createFakeJob(
                   logger,
@@ -1608,7 +1608,7 @@ describe('workspace', () => {
                   ['walk1']
                 )
               })
-              const walked2 = ws.walk({}, treeDep, (pkg) => {
+              const walked2 = ws.walk({}, true, treeDep, (pkg) => {
                 pkgs.push(pkg.name + '2')
                 return createFakeJob(
                   logger,
