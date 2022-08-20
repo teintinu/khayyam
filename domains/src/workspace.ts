@@ -16,7 +16,7 @@ export interface Workspace {
 
 export interface WalkedJobs {
   jobs: ByPackage<Job[]>
-  depends(...deps:WalkedJobs[]): void
+  depends(mode: 'each'|'all', ...deps:WalkedJobs[]): void
 }
 export interface Layer {
     readonly name: string;
@@ -77,7 +77,7 @@ export function createWorkspace ({
     fn: (pkg: Package, bundler: Bundler)=>Job): WalkedJobs {
     const ret: WalkedJobs = {
       jobs: {},
-      depends (...deps:WalkedJobs[]): void {
+      depends (mode: 'each'|'all', ...deps:WalkedJobs[]): void {
         Object.keys(ret.jobs).forEach(nDependant => {
           const tDependants = ret.jobs[nDependant]
           tDependants.forEach(tDependant => {
@@ -85,7 +85,9 @@ export function createWorkspace ({
               Object.keys(dep.jobs).forEach(nDependency => {
                 const tDependencies = dep.jobs[nDependency]
                 tDependencies.forEach(tDependency => {
-                  tDependant.depends(tDependency)
+                  if (mode === 'all' || nDependant === nDependency) {
+                    tDependant.depends(tDependency)
+                  }
                 })
               })
             })

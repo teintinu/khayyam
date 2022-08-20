@@ -164,7 +164,7 @@ describe('workspace', () => {
           expect(logger.logged).toMatchSnapshot('logged')
         })
       })
-      describe('walk deps', () => {
+      describe('walk all-deps', () => {
         it('all', () => {
           const logger = createFakeLog()
           const ws = logger.fakeSys.loadWorkspace('npm/x')
@@ -187,7 +187,7 @@ describe('workspace', () => {
               ['walk2']
             )
           })
-          walked1.depends(walked2)
+          walked1.depends('all', walked2)
           expect(pkgs.join()).toBe('x1,x2')
           expect(walkedDebug(walked1)).toMatchSnapshot('walked1Debug')
           expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
@@ -215,7 +215,7 @@ describe('workspace', () => {
               ['walk2']
             )
           })
-          walked1.depends(walked2)
+          walked1.depends('all', walked2)
           expect(pkgs.join()).toBe('x1,x2')
           expect(walkedDebug(walked1)).toMatchSnapshot('walked1Debug')
           expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
@@ -243,7 +243,93 @@ describe('workspace', () => {
               ['walk2']
             )
           })
-          walked1.depends(walked2)
+          walked1.depends('all', walked2)
+          expect(pkgs.join()).toBe('')
+          expect(walkedDebug(walked1)).toMatchSnapshot('walked1Debug')
+          expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
+          expect(logger.logged).toMatchSnapshot('logged')
+        })
+      })
+      describe('walk each-deps', () => {
+        it('all', () => {
+          const logger = createFakeLog()
+          const ws = logger.fakeSys.loadWorkspace('npm/x')
+          const pkgs: string[] = []
+          const walked1 = ws.walk('all', (pkg) => {
+            pkgs.push(pkg.name + '1')
+            return createFakeJob(
+              logger,
+              10,
+              pkg.name + ' walk1',
+              ['walk1']
+            )
+          })
+          const walked2 = ws.walk('all', (pkg) => {
+            pkgs.push(pkg.name + '2')
+            return createFakeJob(
+              logger,
+              10,
+              pkg.name + ' walk2',
+              ['walk2']
+            )
+          })
+          walked1.depends('each', walked2)
+          expect(pkgs.join()).toBe('x1,x2')
+          expect(walkedDebug(walked1)).toMatchSnapshot('walked1Debug')
+          expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
+          expect(logger.logged).toMatchSnapshot('logged')
+        })
+        it('filter x', () => {
+          const logger = createFakeLog()
+          const ws = logger.fakeSys.loadWorkspace('npm/x')
+          const pkgs: string[] = []
+          const walked1 = ws.walk({ x: true }, (pkg) => {
+            pkgs.push(pkg.name + '1')
+            return createFakeJob(
+              logger,
+              10,
+              pkg.name + ' walk1',
+              ['walk1']
+            )
+          })
+          const walked2 = ws.walk({ x: true }, (pkg) => {
+            pkgs.push(pkg.name + '2')
+            return createFakeJob(
+              logger,
+              10,
+              pkg.name + ' walk2',
+              ['walk2']
+            )
+          })
+          walked1.depends('each', walked2)
+          expect(pkgs.join()).toBe('x1,x2')
+          expect(walkedDebug(walked1)).toMatchSnapshot('walked1Debug')
+          expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
+          expect(logger.logged).toMatchSnapshot('logged')
+        })
+        it('filter none', () => {
+          const logger = createFakeLog()
+          const ws = logger.fakeSys.loadWorkspace('npm/x')
+          const pkgs: string[] = []
+          const walked1 = ws.walk({}, (pkg) => {
+            pkgs.push(pkg.name + '1')
+            return createFakeJob(
+              logger,
+              10,
+              pkg.name + ' walk1',
+              ['walk1']
+            )
+          })
+          const walked2 = ws.walk({}, (pkg) => {
+            pkgs.push(pkg.name + '2')
+            return createFakeJob(
+              logger,
+              10,
+              pkg.name + ' walk2',
+              ['walk2']
+            )
+          })
+          walked1.depends('each', walked2)
           expect(pkgs.join()).toBe('')
           expect(walkedDebug(walked1)).toMatchSnapshot('walked1Debug')
           expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
@@ -461,7 +547,7 @@ describe('workspace', () => {
           expect(logger.logged).toMatchSnapshot('logged')
         })
       })
-      describe('walk deps', () => {
+      describe('walk all-deps', () => {
         it('all', () => {
           const logger = createFakeLog()
           const ws = logger.fakeSys.loadWorkspace('npm/xy/deps')
@@ -484,7 +570,7 @@ describe('workspace', () => {
               ['walk2']
             )
           })
-          walked1.depends(walked2)
+          walked1.depends('all', walked2)
           expect(pkgs.join()).toBe('y1,x1,y2,x2')
           expect(walkedDebug(walked1)).toMatchSnapshot('walked1Debug')
           expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
@@ -512,7 +598,7 @@ describe('workspace', () => {
               ['walk2']
             )
           })
-          walked1.depends(walked2)
+          walked1.depends('all', walked2)
           expect(pkgs.join()).toBe('x1,x2')
           expect(walkedDebug(walked1)).toMatchSnapshot('walked1Debug')
           expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
@@ -540,7 +626,7 @@ describe('workspace', () => {
               ['walk2']
             )
           })
-          walked1.depends(walked2)
+          walked1.depends('all', walked2)
           expect(pkgs.join()).toBe('y1,x1,y2,x2')
           expect(walkedDebug(walked1)).toMatchSnapshot('walked1Debug')
           expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
@@ -568,7 +654,121 @@ describe('workspace', () => {
               ['walk2']
             )
           })
-          walked1.depends(walked2)
+          walked1.depends('all', walked2)
+          expect(pkgs.join()).toBe('')
+          expect(walkedDebug(walked1)).toMatchSnapshot('walked1Debug')
+          expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
+          expect(logger.logged).toMatchSnapshot('logged')
+        })
+      })
+      describe('walk each-deps', () => {
+        it('all', () => {
+          const logger = createFakeLog()
+          const ws = logger.fakeSys.loadWorkspace('npm/xy/deps')
+          const pkgs: string[] = []
+          const walked1 = ws.walk('all', (pkg) => {
+            pkgs.push(pkg.name + '1')
+            return createFakeJob(
+              logger,
+              10,
+              pkg.name + ' walk1XY',
+              ['walk1']
+            )
+          })
+          const walked2 = ws.walk('all', (pkg) => {
+            pkgs.push(pkg.name + '2')
+            return createFakeJob(
+              logger,
+              10,
+              pkg.name + ' walk2XY',
+              ['walk2']
+            )
+          })
+          walked1.depends('each', walked2)
+          expect(pkgs.join()).toBe('y1,x1,y2,x2')
+          expect(walkedDebug(walked1)).toMatchSnapshot('walked1Debug')
+          expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
+          expect(logger.logged).toMatchSnapshot('logged')
+        })
+        it('filter x', () => {
+          const logger = createFakeLog()
+          const ws = logger.fakeSys.loadWorkspace('npm/xy/deps')
+          const pkgs: string[] = []
+          const walked1 = ws.walk({ x: true }, (pkg) => {
+            pkgs.push(pkg.name + '1')
+            return createFakeJob(
+              logger,
+              10,
+              pkg.name + ' walk1XY',
+              ['walk1']
+            )
+          })
+          const walked2 = ws.walk({ x: true }, (pkg) => {
+            pkgs.push(pkg.name + '2')
+            return createFakeJob(
+              logger,
+              10,
+              pkg.name + ' walk2XY',
+              ['walk2']
+            )
+          })
+          walked1.depends('each', walked2)
+          expect(pkgs.join()).toBe('x1,x2')
+          expect(walkedDebug(walked1)).toMatchSnapshot('walked1Debug')
+          expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
+          expect(logger.logged).toMatchSnapshot('logged')
+        })
+        it('filter y', () => {
+          const logger = createFakeLog()
+          const ws = logger.fakeSys.loadWorkspace('npm/xy/deps')
+          const pkgs: string[] = []
+          const walked1 = ws.walk({ y: true }, (pkg) => {
+            pkgs.push(pkg.name + '1')
+            return createFakeJob(
+              logger,
+              10,
+              pkg.name + ' walk1XY',
+              ['walk1']
+            )
+          })
+          const walked2 = ws.walk({ y: true }, (pkg) => {
+            pkgs.push(pkg.name + '2')
+            return createFakeJob(
+              logger,
+              10,
+              pkg.name + ' walk2XY',
+              ['walk2']
+            )
+          })
+          walked1.depends('each', walked2)
+          expect(pkgs.join()).toBe('y1,x1,y2,x2')
+          expect(walkedDebug(walked1)).toMatchSnapshot('walked1Debug')
+          expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
+          expect(logger.logged).toMatchSnapshot('logged')
+        })
+        it('filter none', () => {
+          const logger = createFakeLog()
+          const ws = logger.fakeSys.loadWorkspace('npm/xy/deps')
+          const pkgs: string[] = []
+          const walked1 = ws.walk({}, (pkg) => {
+            pkgs.push(pkg.name + '1')
+            return createFakeJob(
+              logger,
+              10,
+              pkg.name + ' walk1XY',
+              ['walk1']
+            )
+          })
+          const walked2 = ws.walk({}, (pkg) => {
+            pkgs.push(pkg.name + '2')
+            return createFakeJob(
+              logger,
+              10,
+              pkg.name + ' walk2XY',
+              ['walk2']
+            )
+          })
+          walked1.depends('each', walked2)
           expect(pkgs.join()).toBe('')
           expect(walkedDebug(walked1)).toMatchSnapshot('walked1Debug')
           expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
@@ -962,7 +1162,7 @@ describe('workspace', () => {
           expect(logger.logged).toMatchSnapshot('logged')
         })
       })
-      describe('walk deps', () => {
+      describe('walk all-deps', () => {
         it('all', () => {
           const logger = createFakeLog()
           const ws = logger.fakeSys.loadWorkspace('npm/abcde/deps')
@@ -985,7 +1185,7 @@ describe('workspace', () => {
               ['walk2']
             )
           })
-          walked1.depends(walked2)
+          walked1.depends('all', walked2)
           expect(pkgs.join()).toBe('e1,d1,c1,b1,a1,e2,d2,c2,b2,a2')
           expect(walkedDebug(walked1)).toMatchSnapshot('walked1Debug')
           expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
@@ -1013,7 +1213,7 @@ describe('workspace', () => {
               ['walk2']
             )
           })
-          walked1.depends(walked2)
+          walked1.depends('all', walked2)
           expect(pkgs.join()).toBe('a1,a2')
           expect(walkedDebug(walked1)).toMatchSnapshot('walked1Debug')
           expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
@@ -1041,7 +1241,7 @@ describe('workspace', () => {
               ['walk2']
             )
           })
-          walked1.depends(walked2)
+          walked1.depends('all', walked2)
           expect(pkgs.join()).toBe('b1,a1,b2,a2')
           expect(walkedDebug(walked1)).toMatchSnapshot('walked1Debug')
           expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
@@ -1069,7 +1269,7 @@ describe('workspace', () => {
               ['walk2']
             )
           })
-          walked1.depends(walked2)
+          walked1.depends('all', walked2)
           expect(pkgs.join()).toBe('c1,b1,a1,c2,b2,a2')
           expect(walkedDebug(walked1)).toMatchSnapshot('walked1Debug')
           expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
@@ -1097,7 +1297,7 @@ describe('workspace', () => {
               ['walk2']
             )
           })
-          walked1.depends(walked2)
+          walked1.depends('all', walked2)
           expect(pkgs.join()).toBe('d1,c1,b1,a1,d2,c2,b2,a2')
           expect(walkedDebug(walked1)).toMatchSnapshot('walked1Debug')
           expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
@@ -1125,7 +1325,7 @@ describe('workspace', () => {
               ['walk2']
             )
           })
-          walked1.depends(walked2)
+          walked1.depends('all', walked2)
           expect(pkgs.join()).toBe('d1,c1,b1,a1,d2,c2,b2,a2')
           expect(walkedDebug(walked1)).toMatchSnapshot('walked1Debug')
           expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
@@ -1153,7 +1353,7 @@ describe('workspace', () => {
               ['walk2']
             )
           })
-          walked1.depends(walked2)
+          walked1.depends('all', walked2)
           expect(pkgs.join()).toBe('e1,d1,c1,b1,a1,e2,d2,c2,b2,a2')
           expect(walkedDebug(walked1)).toMatchSnapshot('walked1Debug')
           expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
@@ -1181,7 +1381,233 @@ describe('workspace', () => {
               ['walk2']
             )
           })
-          walked1.depends(walked2)
+          walked1.depends('all', walked2)
+          expect(pkgs.join()).toBe('')
+          expect(walkedDebug(walked1)).toMatchSnapshot('walked1Debug')
+          expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
+          expect(logger.logged).toMatchSnapshot('logged')
+        })
+      })
+      describe('walk each-deps', () => {
+        it('all', () => {
+          const logger = createFakeLog()
+          const ws = logger.fakeSys.loadWorkspace('npm/abcde/deps')
+          const pkgs: string[] = []
+          const walked1 = ws.walk('all', (pkg) => {
+            pkgs.push(pkg.name + '1')
+            return createFakeJob(
+              logger,
+              10,
+              pkg.name + ' walk1ABCDE',
+              ['walk1']
+            )
+          })
+          const walked2 = ws.walk('all', (pkg) => {
+            pkgs.push(pkg.name + '2')
+            return createFakeJob(
+              logger,
+              10,
+              pkg.name + ' walk2ABCDE',
+              ['walk2']
+            )
+          })
+          walked1.depends('each', walked2)
+          expect(pkgs.join()).toBe('e1,d1,c1,b1,a1,e2,d2,c2,b2,a2')
+          expect(walkedDebug(walked1)).toMatchSnapshot('walked1Debug')
+          expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
+          expect(logger.logged).toMatchSnapshot('logged')
+        })
+        it('filter a', () => {
+          const logger = createFakeLog()
+          const ws = logger.fakeSys.loadWorkspace('npm/abcde/deps')
+          const pkgs: string[] = []
+          const walked1 = ws.walk({ a: true }, (pkg) => {
+            pkgs.push(pkg.name + '1')
+            return createFakeJob(
+              logger,
+              10,
+              pkg.name + ' walk1ABCDE',
+              ['walk1']
+            )
+          })
+          const walked2 = ws.walk({ a: true }, (pkg) => {
+            pkgs.push(pkg.name + '2')
+            return createFakeJob(
+              logger,
+              10,
+              pkg.name + ' walk2ABCDE',
+              ['walk2']
+            )
+          })
+          walked1.depends('each', walked2)
+          expect(pkgs.join()).toBe('a1,a2')
+          expect(walkedDebug(walked1)).toMatchSnapshot('walked1Debug')
+          expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
+          expect(logger.logged).toMatchSnapshot('logged')
+        })
+        it('filter b', () => {
+          const logger = createFakeLog()
+          const ws = logger.fakeSys.loadWorkspace('npm/abcde/deps')
+          const pkgs: string[] = []
+          const walked1 = ws.walk({ b: true }, (pkg) => {
+            pkgs.push(pkg.name + '1')
+            return createFakeJob(
+              logger,
+              10,
+              pkg.name + ' walk1ABCDE',
+              ['walk1']
+            )
+          })
+          const walked2 = ws.walk({ b: true }, (pkg) => {
+            pkgs.push(pkg.name + '2')
+            return createFakeJob(
+              logger,
+              10,
+              pkg.name + ' walk2ABCDE',
+              ['walk2']
+            )
+          })
+          walked1.depends('each', walked2)
+          expect(pkgs.join()).toBe('b1,a1,b2,a2')
+          expect(walkedDebug(walked1)).toMatchSnapshot('walked1Debug')
+          expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
+          expect(logger.logged).toMatchSnapshot('logged')
+        })
+        it('filter c', () => {
+          const logger = createFakeLog()
+          const ws = logger.fakeSys.loadWorkspace('npm/abcde/deps')
+          const pkgs: string[] = []
+          const walked1 = ws.walk({ c: true }, (pkg) => {
+            pkgs.push(pkg.name + '1')
+            return createFakeJob(
+              logger,
+              10,
+              pkg.name + ' walk1ABCDE',
+              ['walk1']
+            )
+          })
+          const walked2 = ws.walk({ c: true }, (pkg) => {
+            pkgs.push(pkg.name + '2')
+            return createFakeJob(
+              logger,
+              10,
+              pkg.name + ' walk2ABCDE',
+              ['walk2']
+            )
+          })
+          walked1.depends('each', walked2)
+          expect(pkgs.join()).toBe('c1,b1,a1,c2,b2,a2')
+          expect(walkedDebug(walked1)).toMatchSnapshot('walked1Debug')
+          expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
+          expect(logger.logged).toMatchSnapshot('logged')
+        })
+        it('filter d', () => {
+          const logger = createFakeLog()
+          const ws = logger.fakeSys.loadWorkspace('npm/abcde/deps')
+          const pkgs: string[] = []
+          const walked1 = ws.walk({ d: true }, (pkg) => {
+            pkgs.push(pkg.name + '1')
+            return createFakeJob(
+              logger,
+              10,
+              pkg.name + ' walk1ABCDE',
+              ['walk1']
+            )
+          })
+          const walked2 = ws.walk({ d: true }, (pkg) => {
+            pkgs.push(pkg.name + '2')
+            return createFakeJob(
+              logger,
+              10,
+              pkg.name + ' walk2ABCDE',
+              ['walk2']
+            )
+          })
+          walked1.depends('each', walked2)
+          expect(pkgs.join()).toBe('d1,c1,b1,a1,d2,c2,b2,a2')
+          expect(walkedDebug(walked1)).toMatchSnapshot('walked1Debug')
+          expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
+          expect(logger.logged).toMatchSnapshot('logged')
+        })
+        it('filter c,d', () => {
+          const logger = createFakeLog()
+          const ws = logger.fakeSys.loadWorkspace('npm/abcde/deps')
+          const pkgs: string[] = []
+          const walked1 = ws.walk({ c: true, d: true }, (pkg) => {
+            pkgs.push(pkg.name + '1')
+            return createFakeJob(
+              logger,
+              10,
+              pkg.name + ' walk1ABCDE',
+              ['walk1']
+            )
+          })
+          const walked2 = ws.walk({ c: true, d: true }, (pkg) => {
+            pkgs.push(pkg.name + '2')
+            return createFakeJob(
+              logger,
+              10,
+              pkg.name + ' walk2ABCDE',
+              ['walk2']
+            )
+          })
+          walked1.depends('each', walked2)
+          expect(pkgs.join()).toBe('d1,c1,b1,a1,d2,c2,b2,a2')
+          expect(walkedDebug(walked1)).toMatchSnapshot('walked1Debug')
+          expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
+          expect(logger.logged).toMatchSnapshot('logged')
+        })
+        it('filter e', () => {
+          const logger = createFakeLog()
+          const ws = logger.fakeSys.loadWorkspace('npm/abcde/deps')
+          const pkgs: string[] = []
+          const walked1 = ws.walk({ e: true }, (pkg) => {
+            pkgs.push(pkg.name + '1')
+            return createFakeJob(
+              logger,
+              10,
+              pkg.name + ' walk1ABCDE',
+              ['walk1']
+            )
+          })
+          const walked2 = ws.walk({ e: true }, (pkg) => {
+            pkgs.push(pkg.name + '2')
+            return createFakeJob(
+              logger,
+              10,
+              pkg.name + ' walk2ABCDE',
+              ['walk2']
+            )
+          })
+          walked1.depends('each', walked2)
+          expect(pkgs.join()).toBe('e1,d1,c1,b1,a1,e2,d2,c2,b2,a2')
+          expect(walkedDebug(walked1)).toMatchSnapshot('walked1Debug')
+          expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')
+          expect(logger.logged).toMatchSnapshot('logged')
+        })
+        it('filter none', () => {
+          const logger = createFakeLog()
+          const ws = logger.fakeSys.loadWorkspace('npm/abcde/deps')
+          const pkgs: string[] = []
+          const walked1 = ws.walk({}, (pkg) => {
+            pkgs.push(pkg.name + '1')
+            return createFakeJob(
+              logger,
+              10,
+              pkg.name + ' walk1ABCDE',
+              ['walk1']
+            )
+          })
+          const walked2 = ws.walk({}, (pkg) => {
+            pkgs.push(pkg.name + '2')
+            return createFakeJob(
+              logger,
+              10,
+              pkg.name + ' walk2ABCDE',
+              ['walk2']
+            )
+          })
+          walked1.depends('each', walked2)
           expect(pkgs.join()).toBe('')
           expect(walkedDebug(walked1)).toMatchSnapshot('walked1Debug')
           expect(walkedDebug(walked2)).toMatchSnapshot('walked2Debug')

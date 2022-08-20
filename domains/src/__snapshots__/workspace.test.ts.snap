@@ -542,6 +542,309 @@ exports[`workspace just a,b,c,d,e packages walk two walks filter none: walked1De
 
 exports[`workspace just a,b,c,d,e packages walk two walks filter none: walked2Debug 1`] = `Object {}`;
 
+exports[`workspace just a,b,c,d,e packages walk walk all-deps all: logged 1`] = `
+Array [
+  "creating job [e walk1ABCDE]",
+  "creating job [d walk1ABCDE]",
+  "creating job [c walk1ABCDE]",
+  "creating job [b walk1ABCDE]",
+  "creating job [a walk1ABCDE]",
+  "creating job [e walk2ABCDE]",
+  "creating job [d walk2ABCDE]",
+  "creating job [c walk2ABCDE]",
+  "creating job [b walk2ABCDE]",
+  "creating job [a walk2ABCDE]",
+]
+`;
+
+exports[`workspace just a,b,c,d,e packages walk walk all-deps all: walked1Debug 1`] = `
+Object {
+  "a": Array [
+    "a walk1ABCDE(a walk2ABCDE,b walk1ABCDE,b walk2ABCDE,c walk1ABCDE,c walk2ABCDE,d walk2ABCDE,e walk2ABCDE)",
+  ],
+  "b": Array [
+    "b walk1ABCDE(a walk2ABCDE,b walk2ABCDE,c walk1ABCDE,c walk2ABCDE,d walk1ABCDE,d walk2ABCDE,e walk2ABCDE)",
+  ],
+  "c": Array [
+    "c walk1ABCDE(a walk2ABCDE,b walk2ABCDE,c walk2ABCDE,d walk1ABCDE,d walk2ABCDE,e walk2ABCDE)",
+  ],
+  "d": Array [
+    "d walk1ABCDE(a walk2ABCDE,b walk2ABCDE,c walk2ABCDE,d walk2ABCDE,e walk1ABCDE,e walk2ABCDE)",
+  ],
+  "e": Array [
+    "e walk1ABCDE(a walk2ABCDE,b walk2ABCDE,c walk2ABCDE,d walk2ABCDE,e walk2ABCDE)",
+  ],
+}
+`;
+
+exports[`workspace just a,b,c,d,e packages walk walk all-deps all: walked2Debug 1`] = `
+Object {
+  "a": Array [
+    "a walk2ABCDE(b walk2ABCDE,c walk2ABCDE)",
+  ],
+  "b": Array [
+    "b walk2ABCDE(c walk2ABCDE,d walk2ABCDE)",
+  ],
+  "c": Array [
+    "c walk2ABCDE(d walk2ABCDE)",
+  ],
+  "d": Array [
+    "d walk2ABCDE(e walk2ABCDE)",
+  ],
+  "e": Array [
+    "e walk2ABCDE()",
+  ],
+}
+`;
+
+exports[`workspace just a,b,c,d,e packages walk walk all-deps filter a: logged 1`] = `
+Array [
+  "creating job [a walk1ABCDE]",
+  "creating job [a walk2ABCDE]",
+]
+`;
+
+exports[`workspace just a,b,c,d,e packages walk walk all-deps filter a: walked1Debug 1`] = `
+Object {
+  "a": Array [
+    "a walk1ABCDE(a walk2ABCDE)",
+  ],
+}
+`;
+
+exports[`workspace just a,b,c,d,e packages walk walk all-deps filter a: walked2Debug 1`] = `
+Object {
+  "a": Array [
+    "a walk2ABCDE()",
+  ],
+}
+`;
+
+exports[`workspace just a,b,c,d,e packages walk walk all-deps filter b: logged 1`] = `
+Array [
+  "creating job [b walk1ABCDE]",
+  "creating job [a walk1ABCDE]",
+  "creating job [b walk2ABCDE]",
+  "creating job [a walk2ABCDE]",
+]
+`;
+
+exports[`workspace just a,b,c,d,e packages walk walk all-deps filter b: walked1Debug 1`] = `
+Object {
+  "a": Array [
+    "a walk1ABCDE(a walk2ABCDE,b walk1ABCDE,b walk2ABCDE)",
+  ],
+  "b": Array [
+    "b walk1ABCDE(a walk2ABCDE,b walk2ABCDE)",
+  ],
+}
+`;
+
+exports[`workspace just a,b,c,d,e packages walk walk all-deps filter b: walked2Debug 1`] = `
+Object {
+  "a": Array [
+    "a walk2ABCDE(b walk2ABCDE)",
+  ],
+  "b": Array [
+    "b walk2ABCDE()",
+  ],
+}
+`;
+
+exports[`workspace just a,b,c,d,e packages walk walk all-deps filter c,d: logged 1`] = `
+Array [
+  "creating job [d walk1ABCDE]",
+  "creating job [c walk1ABCDE]",
+  "creating job [b walk1ABCDE]",
+  "creating job [a walk1ABCDE]",
+  "creating job [d walk2ABCDE]",
+  "creating job [c walk2ABCDE]",
+  "creating job [b walk2ABCDE]",
+  "creating job [a walk2ABCDE]",
+]
+`;
+
+exports[`workspace just a,b,c,d,e packages walk walk all-deps filter c,d: walked1Debug 1`] = `
+Object {
+  "a": Array [
+    "a walk1ABCDE(a walk2ABCDE,b walk1ABCDE,b walk2ABCDE,c walk1ABCDE,c walk2ABCDE,d walk2ABCDE)",
+  ],
+  "b": Array [
+    "b walk1ABCDE(a walk2ABCDE,b walk2ABCDE,c walk1ABCDE,c walk2ABCDE,d walk1ABCDE,d walk2ABCDE)",
+  ],
+  "c": Array [
+    "c walk1ABCDE(a walk2ABCDE,b walk2ABCDE,c walk2ABCDE,d walk1ABCDE,d walk2ABCDE)",
+  ],
+  "d": Array [
+    "d walk1ABCDE(a walk2ABCDE,b walk2ABCDE,c walk2ABCDE,d walk2ABCDE)",
+  ],
+}
+`;
+
+exports[`workspace just a,b,c,d,e packages walk walk all-deps filter c,d: walked2Debug 1`] = `
+Object {
+  "a": Array [
+    "a walk2ABCDE(b walk2ABCDE,c walk2ABCDE)",
+  ],
+  "b": Array [
+    "b walk2ABCDE(c walk2ABCDE,d walk2ABCDE)",
+  ],
+  "c": Array [
+    "c walk2ABCDE(d walk2ABCDE)",
+  ],
+  "d": Array [
+    "d walk2ABCDE()",
+  ],
+}
+`;
+
+exports[`workspace just a,b,c,d,e packages walk walk all-deps filter c: logged 1`] = `
+Array [
+  "creating job [c walk1ABCDE]",
+  "creating job [b walk1ABCDE]",
+  "creating job [a walk1ABCDE]",
+  "creating job [c walk2ABCDE]",
+  "creating job [b walk2ABCDE]",
+  "creating job [a walk2ABCDE]",
+]
+`;
+
+exports[`workspace just a,b,c,d,e packages walk walk all-deps filter c: walked1Debug 1`] = `
+Object {
+  "a": Array [
+    "a walk1ABCDE(a walk2ABCDE,b walk1ABCDE,b walk2ABCDE,c walk1ABCDE,c walk2ABCDE)",
+  ],
+  "b": Array [
+    "b walk1ABCDE(a walk2ABCDE,b walk2ABCDE,c walk1ABCDE,c walk2ABCDE)",
+  ],
+  "c": Array [
+    "c walk1ABCDE(a walk2ABCDE,b walk2ABCDE,c walk2ABCDE)",
+  ],
+}
+`;
+
+exports[`workspace just a,b,c,d,e packages walk walk all-deps filter c: walked2Debug 1`] = `
+Object {
+  "a": Array [
+    "a walk2ABCDE(b walk2ABCDE,c walk2ABCDE)",
+  ],
+  "b": Array [
+    "b walk2ABCDE(c walk2ABCDE)",
+  ],
+  "c": Array [
+    "c walk2ABCDE()",
+  ],
+}
+`;
+
+exports[`workspace just a,b,c,d,e packages walk walk all-deps filter d: logged 1`] = `
+Array [
+  "creating job [d walk1ABCDE]",
+  "creating job [c walk1ABCDE]",
+  "creating job [b walk1ABCDE]",
+  "creating job [a walk1ABCDE]",
+  "creating job [d walk2ABCDE]",
+  "creating job [c walk2ABCDE]",
+  "creating job [b walk2ABCDE]",
+  "creating job [a walk2ABCDE]",
+]
+`;
+
+exports[`workspace just a,b,c,d,e packages walk walk all-deps filter d: walked1Debug 1`] = `
+Object {
+  "a": Array [
+    "a walk1ABCDE(a walk2ABCDE,b walk1ABCDE,b walk2ABCDE,c walk1ABCDE,c walk2ABCDE,d walk2ABCDE)",
+  ],
+  "b": Array [
+    "b walk1ABCDE(a walk2ABCDE,b walk2ABCDE,c walk1ABCDE,c walk2ABCDE,d walk1ABCDE,d walk2ABCDE)",
+  ],
+  "c": Array [
+    "c walk1ABCDE(a walk2ABCDE,b walk2ABCDE,c walk2ABCDE,d walk1ABCDE,d walk2ABCDE)",
+  ],
+  "d": Array [
+    "d walk1ABCDE(a walk2ABCDE,b walk2ABCDE,c walk2ABCDE,d walk2ABCDE)",
+  ],
+}
+`;
+
+exports[`workspace just a,b,c,d,e packages walk walk all-deps filter d: walked2Debug 1`] = `
+Object {
+  "a": Array [
+    "a walk2ABCDE(b walk2ABCDE,c walk2ABCDE)",
+  ],
+  "b": Array [
+    "b walk2ABCDE(c walk2ABCDE,d walk2ABCDE)",
+  ],
+  "c": Array [
+    "c walk2ABCDE(d walk2ABCDE)",
+  ],
+  "d": Array [
+    "d walk2ABCDE()",
+  ],
+}
+`;
+
+exports[`workspace just a,b,c,d,e packages walk walk all-deps filter e: logged 1`] = `
+Array [
+  "creating job [e walk1ABCDE]",
+  "creating job [d walk1ABCDE]",
+  "creating job [c walk1ABCDE]",
+  "creating job [b walk1ABCDE]",
+  "creating job [a walk1ABCDE]",
+  "creating job [e walk2ABCDE]",
+  "creating job [d walk2ABCDE]",
+  "creating job [c walk2ABCDE]",
+  "creating job [b walk2ABCDE]",
+  "creating job [a walk2ABCDE]",
+]
+`;
+
+exports[`workspace just a,b,c,d,e packages walk walk all-deps filter e: walked1Debug 1`] = `
+Object {
+  "a": Array [
+    "a walk1ABCDE(a walk2ABCDE,b walk1ABCDE,b walk2ABCDE,c walk1ABCDE,c walk2ABCDE,d walk2ABCDE,e walk2ABCDE)",
+  ],
+  "b": Array [
+    "b walk1ABCDE(a walk2ABCDE,b walk2ABCDE,c walk1ABCDE,c walk2ABCDE,d walk1ABCDE,d walk2ABCDE,e walk2ABCDE)",
+  ],
+  "c": Array [
+    "c walk1ABCDE(a walk2ABCDE,b walk2ABCDE,c walk2ABCDE,d walk1ABCDE,d walk2ABCDE,e walk2ABCDE)",
+  ],
+  "d": Array [
+    "d walk1ABCDE(a walk2ABCDE,b walk2ABCDE,c walk2ABCDE,d walk2ABCDE,e walk1ABCDE,e walk2ABCDE)",
+  ],
+  "e": Array [
+    "e walk1ABCDE(a walk2ABCDE,b walk2ABCDE,c walk2ABCDE,d walk2ABCDE,e walk2ABCDE)",
+  ],
+}
+`;
+
+exports[`workspace just a,b,c,d,e packages walk walk all-deps filter e: walked2Debug 1`] = `
+Object {
+  "a": Array [
+    "a walk2ABCDE(b walk2ABCDE,c walk2ABCDE)",
+  ],
+  "b": Array [
+    "b walk2ABCDE(c walk2ABCDE,d walk2ABCDE)",
+  ],
+  "c": Array [
+    "c walk2ABCDE(d walk2ABCDE)",
+  ],
+  "d": Array [
+    "d walk2ABCDE(e walk2ABCDE)",
+  ],
+  "e": Array [
+    "e walk2ABCDE()",
+  ],
+}
+`;
+
+exports[`workspace just a,b,c,d,e packages walk walk all-deps filter none: logged 1`] = `Array []`;
+
+exports[`workspace just a,b,c,d,e packages walk walk all-deps filter none: walked1Debug 1`] = `Object {}`;
+
+exports[`workspace just a,b,c,d,e packages walk walk all-deps filter none: walked2Debug 1`] = `Object {}`;
+
 exports[`workspace just a,b,c,d,e packages walk walk deps all: logged 1`] = `
 Array [
   "creating job [e walk1ABCDE]",
@@ -845,6 +1148,309 @@ exports[`workspace just a,b,c,d,e packages walk walk deps filter none: walked1De
 
 exports[`workspace just a,b,c,d,e packages walk walk deps filter none: walked2Debug 1`] = `Object {}`;
 
+exports[`workspace just a,b,c,d,e packages walk walk each-deps all: logged 1`] = `
+Array [
+  "creating job [e walk1ABCDE]",
+  "creating job [d walk1ABCDE]",
+  "creating job [c walk1ABCDE]",
+  "creating job [b walk1ABCDE]",
+  "creating job [a walk1ABCDE]",
+  "creating job [e walk2ABCDE]",
+  "creating job [d walk2ABCDE]",
+  "creating job [c walk2ABCDE]",
+  "creating job [b walk2ABCDE]",
+  "creating job [a walk2ABCDE]",
+]
+`;
+
+exports[`workspace just a,b,c,d,e packages walk walk each-deps all: walked1Debug 1`] = `
+Object {
+  "a": Array [
+    "a walk1ABCDE(a walk2ABCDE,b walk1ABCDE,c walk1ABCDE)",
+  ],
+  "b": Array [
+    "b walk1ABCDE(b walk2ABCDE,c walk1ABCDE,d walk1ABCDE)",
+  ],
+  "c": Array [
+    "c walk1ABCDE(c walk2ABCDE,d walk1ABCDE)",
+  ],
+  "d": Array [
+    "d walk1ABCDE(d walk2ABCDE,e walk1ABCDE)",
+  ],
+  "e": Array [
+    "e walk1ABCDE(e walk2ABCDE)",
+  ],
+}
+`;
+
+exports[`workspace just a,b,c,d,e packages walk walk each-deps all: walked2Debug 1`] = `
+Object {
+  "a": Array [
+    "a walk2ABCDE(b walk2ABCDE,c walk2ABCDE)",
+  ],
+  "b": Array [
+    "b walk2ABCDE(c walk2ABCDE,d walk2ABCDE)",
+  ],
+  "c": Array [
+    "c walk2ABCDE(d walk2ABCDE)",
+  ],
+  "d": Array [
+    "d walk2ABCDE(e walk2ABCDE)",
+  ],
+  "e": Array [
+    "e walk2ABCDE()",
+  ],
+}
+`;
+
+exports[`workspace just a,b,c,d,e packages walk walk each-deps filter a: logged 1`] = `
+Array [
+  "creating job [a walk1ABCDE]",
+  "creating job [a walk2ABCDE]",
+]
+`;
+
+exports[`workspace just a,b,c,d,e packages walk walk each-deps filter a: walked1Debug 1`] = `
+Object {
+  "a": Array [
+    "a walk1ABCDE(a walk2ABCDE)",
+  ],
+}
+`;
+
+exports[`workspace just a,b,c,d,e packages walk walk each-deps filter a: walked2Debug 1`] = `
+Object {
+  "a": Array [
+    "a walk2ABCDE()",
+  ],
+}
+`;
+
+exports[`workspace just a,b,c,d,e packages walk walk each-deps filter b: logged 1`] = `
+Array [
+  "creating job [b walk1ABCDE]",
+  "creating job [a walk1ABCDE]",
+  "creating job [b walk2ABCDE]",
+  "creating job [a walk2ABCDE]",
+]
+`;
+
+exports[`workspace just a,b,c,d,e packages walk walk each-deps filter b: walked1Debug 1`] = `
+Object {
+  "a": Array [
+    "a walk1ABCDE(a walk2ABCDE,b walk1ABCDE)",
+  ],
+  "b": Array [
+    "b walk1ABCDE(b walk2ABCDE)",
+  ],
+}
+`;
+
+exports[`workspace just a,b,c,d,e packages walk walk each-deps filter b: walked2Debug 1`] = `
+Object {
+  "a": Array [
+    "a walk2ABCDE(b walk2ABCDE)",
+  ],
+  "b": Array [
+    "b walk2ABCDE()",
+  ],
+}
+`;
+
+exports[`workspace just a,b,c,d,e packages walk walk each-deps filter c,d: logged 1`] = `
+Array [
+  "creating job [d walk1ABCDE]",
+  "creating job [c walk1ABCDE]",
+  "creating job [b walk1ABCDE]",
+  "creating job [a walk1ABCDE]",
+  "creating job [d walk2ABCDE]",
+  "creating job [c walk2ABCDE]",
+  "creating job [b walk2ABCDE]",
+  "creating job [a walk2ABCDE]",
+]
+`;
+
+exports[`workspace just a,b,c,d,e packages walk walk each-deps filter c,d: walked1Debug 1`] = `
+Object {
+  "a": Array [
+    "a walk1ABCDE(a walk2ABCDE,b walk1ABCDE,c walk1ABCDE)",
+  ],
+  "b": Array [
+    "b walk1ABCDE(b walk2ABCDE,c walk1ABCDE,d walk1ABCDE)",
+  ],
+  "c": Array [
+    "c walk1ABCDE(c walk2ABCDE,d walk1ABCDE)",
+  ],
+  "d": Array [
+    "d walk1ABCDE(d walk2ABCDE)",
+  ],
+}
+`;
+
+exports[`workspace just a,b,c,d,e packages walk walk each-deps filter c,d: walked2Debug 1`] = `
+Object {
+  "a": Array [
+    "a walk2ABCDE(b walk2ABCDE,c walk2ABCDE)",
+  ],
+  "b": Array [
+    "b walk2ABCDE(c walk2ABCDE,d walk2ABCDE)",
+  ],
+  "c": Array [
+    "c walk2ABCDE(d walk2ABCDE)",
+  ],
+  "d": Array [
+    "d walk2ABCDE()",
+  ],
+}
+`;
+
+exports[`workspace just a,b,c,d,e packages walk walk each-deps filter c: logged 1`] = `
+Array [
+  "creating job [c walk1ABCDE]",
+  "creating job [b walk1ABCDE]",
+  "creating job [a walk1ABCDE]",
+  "creating job [c walk2ABCDE]",
+  "creating job [b walk2ABCDE]",
+  "creating job [a walk2ABCDE]",
+]
+`;
+
+exports[`workspace just a,b,c,d,e packages walk walk each-deps filter c: walked1Debug 1`] = `
+Object {
+  "a": Array [
+    "a walk1ABCDE(a walk2ABCDE,b walk1ABCDE,c walk1ABCDE)",
+  ],
+  "b": Array [
+    "b walk1ABCDE(b walk2ABCDE,c walk1ABCDE)",
+  ],
+  "c": Array [
+    "c walk1ABCDE(c walk2ABCDE)",
+  ],
+}
+`;
+
+exports[`workspace just a,b,c,d,e packages walk walk each-deps filter c: walked2Debug 1`] = `
+Object {
+  "a": Array [
+    "a walk2ABCDE(b walk2ABCDE,c walk2ABCDE)",
+  ],
+  "b": Array [
+    "b walk2ABCDE(c walk2ABCDE)",
+  ],
+  "c": Array [
+    "c walk2ABCDE()",
+  ],
+}
+`;
+
+exports[`workspace just a,b,c,d,e packages walk walk each-deps filter d: logged 1`] = `
+Array [
+  "creating job [d walk1ABCDE]",
+  "creating job [c walk1ABCDE]",
+  "creating job [b walk1ABCDE]",
+  "creating job [a walk1ABCDE]",
+  "creating job [d walk2ABCDE]",
+  "creating job [c walk2ABCDE]",
+  "creating job [b walk2ABCDE]",
+  "creating job [a walk2ABCDE]",
+]
+`;
+
+exports[`workspace just a,b,c,d,e packages walk walk each-deps filter d: walked1Debug 1`] = `
+Object {
+  "a": Array [
+    "a walk1ABCDE(a walk2ABCDE,b walk1ABCDE,c walk1ABCDE)",
+  ],
+  "b": Array [
+    "b walk1ABCDE(b walk2ABCDE,c walk1ABCDE,d walk1ABCDE)",
+  ],
+  "c": Array [
+    "c walk1ABCDE(c walk2ABCDE,d walk1ABCDE)",
+  ],
+  "d": Array [
+    "d walk1ABCDE(d walk2ABCDE)",
+  ],
+}
+`;
+
+exports[`workspace just a,b,c,d,e packages walk walk each-deps filter d: walked2Debug 1`] = `
+Object {
+  "a": Array [
+    "a walk2ABCDE(b walk2ABCDE,c walk2ABCDE)",
+  ],
+  "b": Array [
+    "b walk2ABCDE(c walk2ABCDE,d walk2ABCDE)",
+  ],
+  "c": Array [
+    "c walk2ABCDE(d walk2ABCDE)",
+  ],
+  "d": Array [
+    "d walk2ABCDE()",
+  ],
+}
+`;
+
+exports[`workspace just a,b,c,d,e packages walk walk each-deps filter e: logged 1`] = `
+Array [
+  "creating job [e walk1ABCDE]",
+  "creating job [d walk1ABCDE]",
+  "creating job [c walk1ABCDE]",
+  "creating job [b walk1ABCDE]",
+  "creating job [a walk1ABCDE]",
+  "creating job [e walk2ABCDE]",
+  "creating job [d walk2ABCDE]",
+  "creating job [c walk2ABCDE]",
+  "creating job [b walk2ABCDE]",
+  "creating job [a walk2ABCDE]",
+]
+`;
+
+exports[`workspace just a,b,c,d,e packages walk walk each-deps filter e: walked1Debug 1`] = `
+Object {
+  "a": Array [
+    "a walk1ABCDE(a walk2ABCDE,b walk1ABCDE,c walk1ABCDE)",
+  ],
+  "b": Array [
+    "b walk1ABCDE(b walk2ABCDE,c walk1ABCDE,d walk1ABCDE)",
+  ],
+  "c": Array [
+    "c walk1ABCDE(c walk2ABCDE,d walk1ABCDE)",
+  ],
+  "d": Array [
+    "d walk1ABCDE(d walk2ABCDE,e walk1ABCDE)",
+  ],
+  "e": Array [
+    "e walk1ABCDE(e walk2ABCDE)",
+  ],
+}
+`;
+
+exports[`workspace just a,b,c,d,e packages walk walk each-deps filter e: walked2Debug 1`] = `
+Object {
+  "a": Array [
+    "a walk2ABCDE(b walk2ABCDE,c walk2ABCDE)",
+  ],
+  "b": Array [
+    "b walk2ABCDE(c walk2ABCDE,d walk2ABCDE)",
+  ],
+  "c": Array [
+    "c walk2ABCDE(d walk2ABCDE)",
+  ],
+  "d": Array [
+    "d walk2ABCDE(e walk2ABCDE)",
+  ],
+  "e": Array [
+    "e walk2ABCDE()",
+  ],
+}
+`;
+
+exports[`workspace just a,b,c,d,e packages walk walk each-deps filter none: logged 1`] = `Array []`;
+
+exports[`workspace just a,b,c,d,e packages walk walk each-deps filter none: walked1Debug 1`] = `Object {}`;
+
+exports[`workspace just a,b,c,d,e packages walk walk each-deps filter none: walked2Debug 1`] = `Object {}`;
+
 exports[`workspace just one package create: layers/pkg 1`] = `
 Object {
   "layers": Array [],
@@ -952,6 +1558,58 @@ Object {
 }
 `;
 
+exports[`workspace just one package walk walk all-deps all: logged 1`] = `
+Array [
+  "creating job [x walk1]",
+  "creating job [x walk2]",
+]
+`;
+
+exports[`workspace just one package walk walk all-deps all: walked1Debug 1`] = `
+Object {
+  "x": Array [
+    "x walk1(x walk2)",
+  ],
+}
+`;
+
+exports[`workspace just one package walk walk all-deps all: walked2Debug 1`] = `
+Object {
+  "x": Array [
+    "x walk2()",
+  ],
+}
+`;
+
+exports[`workspace just one package walk walk all-deps filter none: logged 1`] = `Array []`;
+
+exports[`workspace just one package walk walk all-deps filter none: walked1Debug 1`] = `Object {}`;
+
+exports[`workspace just one package walk walk all-deps filter none: walked2Debug 1`] = `Object {}`;
+
+exports[`workspace just one package walk walk all-deps filter x: logged 1`] = `
+Array [
+  "creating job [x walk1]",
+  "creating job [x walk2]",
+]
+`;
+
+exports[`workspace just one package walk walk all-deps filter x: walked1Debug 1`] = `
+Object {
+  "x": Array [
+    "x walk1(x walk2)",
+  ],
+}
+`;
+
+exports[`workspace just one package walk walk all-deps filter x: walked2Debug 1`] = `
+Object {
+  "x": Array [
+    "x walk2()",
+  ],
+}
+`;
+
 exports[`workspace just one package walk walk deps all: logged 1`] = `
 Array [
   "creating job [x walk1]",
@@ -997,6 +1655,58 @@ Object {
 `;
 
 exports[`workspace just one package walk walk deps filter x: walked2Debug 1`] = `
+Object {
+  "x": Array [
+    "x walk2()",
+  ],
+}
+`;
+
+exports[`workspace just one package walk walk each-deps all: logged 1`] = `
+Array [
+  "creating job [x walk1]",
+  "creating job [x walk2]",
+]
+`;
+
+exports[`workspace just one package walk walk each-deps all: walked1Debug 1`] = `
+Object {
+  "x": Array [
+    "x walk1(x walk2)",
+  ],
+}
+`;
+
+exports[`workspace just one package walk walk each-deps all: walked2Debug 1`] = `
+Object {
+  "x": Array [
+    "x walk2()",
+  ],
+}
+`;
+
+exports[`workspace just one package walk walk each-deps filter none: logged 1`] = `Array []`;
+
+exports[`workspace just one package walk walk each-deps filter none: walked1Debug 1`] = `Object {}`;
+
+exports[`workspace just one package walk walk each-deps filter none: walked2Debug 1`] = `Object {}`;
+
+exports[`workspace just one package walk walk each-deps filter x: logged 1`] = `
+Array [
+  "creating job [x walk1]",
+  "creating job [x walk2]",
+]
+`;
+
+exports[`workspace just one package walk walk each-deps filter x: walked1Debug 1`] = `
+Object {
+  "x": Array [
+    "x walk1(x walk2)",
+  ],
+}
+`;
+
+exports[`workspace just one package walk walk each-deps filter x: walked2Debug 1`] = `
 Object {
   "x": Array [
     "x walk2()",
@@ -1183,6 +1893,97 @@ Object {
 }
 `;
 
+exports[`workspace just x,y packages walk walk all-deps all: logged 1`] = `
+Array [
+  "creating job [y walk1XY]",
+  "creating job [x walk1XY]",
+  "creating job [y walk2XY]",
+  "creating job [x walk2XY]",
+]
+`;
+
+exports[`workspace just x,y packages walk walk all-deps all: walked1Debug 1`] = `
+Object {
+  "x": Array [
+    "x walk1XY(x walk2XY,y walk1XY,y walk2XY)",
+  ],
+  "y": Array [
+    "y walk1XY(x walk2XY,y walk2XY)",
+  ],
+}
+`;
+
+exports[`workspace just x,y packages walk walk all-deps all: walked2Debug 1`] = `
+Object {
+  "x": Array [
+    "x walk2XY(y walk2XY)",
+  ],
+  "y": Array [
+    "y walk2XY()",
+  ],
+}
+`;
+
+exports[`workspace just x,y packages walk walk all-deps filter none: logged 1`] = `Array []`;
+
+exports[`workspace just x,y packages walk walk all-deps filter none: walked1Debug 1`] = `Object {}`;
+
+exports[`workspace just x,y packages walk walk all-deps filter none: walked2Debug 1`] = `Object {}`;
+
+exports[`workspace just x,y packages walk walk all-deps filter x: logged 1`] = `
+Array [
+  "creating job [x walk1XY]",
+  "creating job [x walk2XY]",
+]
+`;
+
+exports[`workspace just x,y packages walk walk all-deps filter x: walked1Debug 1`] = `
+Object {
+  "x": Array [
+    "x walk1XY(x walk2XY)",
+  ],
+}
+`;
+
+exports[`workspace just x,y packages walk walk all-deps filter x: walked2Debug 1`] = `
+Object {
+  "x": Array [
+    "x walk2XY()",
+  ],
+}
+`;
+
+exports[`workspace just x,y packages walk walk all-deps filter y: logged 1`] = `
+Array [
+  "creating job [y walk1XY]",
+  "creating job [x walk1XY]",
+  "creating job [y walk2XY]",
+  "creating job [x walk2XY]",
+]
+`;
+
+exports[`workspace just x,y packages walk walk all-deps filter y: walked1Debug 1`] = `
+Object {
+  "x": Array [
+    "x walk1XY(x walk2XY,y walk1XY,y walk2XY)",
+  ],
+  "y": Array [
+    "y walk1XY(x walk2XY,y walk2XY)",
+  ],
+}
+`;
+
+exports[`workspace just x,y packages walk walk all-deps filter y: walked2Debug 1`] = `
+Object {
+  "x": Array [
+    "x walk2XY(y walk2XY)",
+  ],
+  "y": Array [
+    "y walk2XY()",
+  ],
+}
+`;
+
 exports[`workspace just x,y packages walk walk deps all: logged 1`] = `
 Array [
   "creating job [y walk1XY]",
@@ -1264,6 +2065,97 @@ Object {
 `;
 
 exports[`workspace just x,y packages walk walk deps filter y: walked2Debug 1`] = `
+Object {
+  "x": Array [
+    "x walk2XY(y walk2XY)",
+  ],
+  "y": Array [
+    "y walk2XY()",
+  ],
+}
+`;
+
+exports[`workspace just x,y packages walk walk each-deps all: logged 1`] = `
+Array [
+  "creating job [y walk1XY]",
+  "creating job [x walk1XY]",
+  "creating job [y walk2XY]",
+  "creating job [x walk2XY]",
+]
+`;
+
+exports[`workspace just x,y packages walk walk each-deps all: walked1Debug 1`] = `
+Object {
+  "x": Array [
+    "x walk1XY(x walk2XY,y walk1XY)",
+  ],
+  "y": Array [
+    "y walk1XY(y walk2XY)",
+  ],
+}
+`;
+
+exports[`workspace just x,y packages walk walk each-deps all: walked2Debug 1`] = `
+Object {
+  "x": Array [
+    "x walk2XY(y walk2XY)",
+  ],
+  "y": Array [
+    "y walk2XY()",
+  ],
+}
+`;
+
+exports[`workspace just x,y packages walk walk each-deps filter none: logged 1`] = `Array []`;
+
+exports[`workspace just x,y packages walk walk each-deps filter none: walked1Debug 1`] = `Object {}`;
+
+exports[`workspace just x,y packages walk walk each-deps filter none: walked2Debug 1`] = `Object {}`;
+
+exports[`workspace just x,y packages walk walk each-deps filter x: logged 1`] = `
+Array [
+  "creating job [x walk1XY]",
+  "creating job [x walk2XY]",
+]
+`;
+
+exports[`workspace just x,y packages walk walk each-deps filter x: walked1Debug 1`] = `
+Object {
+  "x": Array [
+    "x walk1XY(x walk2XY)",
+  ],
+}
+`;
+
+exports[`workspace just x,y packages walk walk each-deps filter x: walked2Debug 1`] = `
+Object {
+  "x": Array [
+    "x walk2XY()",
+  ],
+}
+`;
+
+exports[`workspace just x,y packages walk walk each-deps filter y: logged 1`] = `
+Array [
+  "creating job [y walk1XY]",
+  "creating job [x walk1XY]",
+  "creating job [y walk2XY]",
+  "creating job [x walk2XY]",
+]
+`;
+
+exports[`workspace just x,y packages walk walk each-deps filter y: walked1Debug 1`] = `
+Object {
+  "x": Array [
+    "x walk1XY(x walk2XY,y walk1XY)",
+  ],
+  "y": Array [
+    "y walk1XY(y walk2XY)",
+  ],
+}
+`;
+
+exports[`workspace just x,y packages walk walk each-deps filter y: walked2Debug 1`] = `
 Object {
   "x": Array [
     "x walk2XY(y walk2XY)",

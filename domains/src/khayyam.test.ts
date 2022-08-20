@@ -4,37 +4,38 @@ import { createFakeLog } from './testlib'
 
 describe.skip('Khayyam domain', () => {
   describe('CI', () => {
-    it.only('x package', async () => {
+    it('x package', async () => {
       const logger = createFakeLog(true)
       const p = khayyamCI(
         logger.fakeSys,
         'npm/x/deps',
         logger.jobManager
       )
-      console.log('back')
       expect(logger.logged).toMatchSnapshot('log')
       expect(logger.tree()).toMatchSnapshot('tree')
       await p
     })
     it('x package', async () => {
       const logger = createFakeLog()
-      await khayyamCI(
+      const p = khayyamCI(
         logger.fakeSys,
         'npm/xy/deps',
         logger.jobManager
       )
       expect(logger.logged).toMatchSnapshot('log')
       expect(logger.tree()).toMatchSnapshot('tree')
+      await p
     })
     it('a,b,c,d,e packages', async () => {
       const logger = createFakeLog()
-      await khayyamCI(
+      const p = khayyamCI(
         logger.fakeSys,
         'npm/abcde/deps',
         logger.jobManager
       )
       expect(logger.logged).toMatchSnapshot('log')
       expect(logger.tree()).toMatchSnapshot('tree')
+      await p
     }, 10000)
   })
   // describe('dev', () => {
