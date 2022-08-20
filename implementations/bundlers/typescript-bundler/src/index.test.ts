@@ -2,5 +2,5 @@
 import { doSomething } from './index'
 
 it('test something', () => {
-  expect('something').toBe(doSomething())
+  expect('something').toEqual(doSomething())
 })

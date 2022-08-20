@@ -8,15 +8,16 @@ domains:
     publish: public
 
 adapters:
-  "@khayyam/node-library-adapter":
-    folder: "adapters/node-library-adapter"
+  "@khayyam/system-adapter":
+    folder: "implementations/adapters/system-adapter"
     publish: no
-  "@khayyam/node-application":
-    folder: "adapters/node-application"
+    dependencies:
+      "@khayyam/domains": '*'
+  "@khayyam/typescript-bundler":
+    folder: "implementations/bundlers/typescript-bundler"
     publish: no
-  "@khayyam/react-application":
-    folder: "adapters/react-application"
-    publish: no
+    dependencies:
+      "@khayyam/domains": '*'
 
 applications:
   "@khayyam/server":
