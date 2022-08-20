@@ -167,7 +167,13 @@ export function createJobManager () {
       return defer.promise
     }
     function setDeps (deps: Job[]) {
+      deps.forEach(checkCircular)
+      console.log(title + ' deps=' + deps.map(d => d.title).join())
       _dependencies = deps
+      function checkCircular (dep: Job) {
+        if (dep === job) throw new Error('Circular job dependency')
+        dep.dependencies.forEach(checkCircular)
+      }
     }
     async function createProcess () {
       const queue = queuePromises()

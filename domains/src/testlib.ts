@@ -57,6 +57,7 @@ export function createFakeLog (verbose = false) {
     bOk,
     cOk,
     fakeSys,
+    verbose,
     log (...args: string[]) {
       logged.push(args.join(' '))
       if (verbose) { console.log(args.join(' ')) }
@@ -126,6 +127,7 @@ export function createFakeProgress (logger: Logger, title: string, manual: boole
 }
 
 export function createFakeJob (logger: Logger, delay: number, title: string, args: string[], manual: boolean = false) {
+  logger.log('creating job [' + title + ']')
   const job = logger.jobManager.createJob({
     title,
     cwd,
@@ -143,6 +145,7 @@ export function createFakeJob (logger: Logger, delay: number, title: string, arg
 }
 
 export function create2FakeJob (logger: Logger, delay: number, mainTitle: string, mainArgs: string[], depTitle: string, depArgs: string[]) {
+  logger.log('creating main job [' + mainTitle + ']')
   const main = logger.jobManager.createJob({
     title: mainTitle,
     cwd,
@@ -152,6 +155,7 @@ export function create2FakeJob (logger: Logger, delay: number, mainTitle: string
     queue: 'persistent',
     manual: false
   })
+  logger.log('creating dep job [' + depTitle + ']')
   const dep = logger.jobManager.createJob({
     title: depTitle,
     cwd,

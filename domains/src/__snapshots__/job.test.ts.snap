@@ -1,7 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`job auto-start dependencies: 00:create 1`] = `
+Array [
+  "creating main job [main]",
+  "creating dep job [dep]",
+]
+`;
+
 exports[`job auto-start dependencies: 01:log-dep working 1`] = `
 Array [
+  "creating main job [main]",
+  "creating dep job [dep]",
   "pg-main waiting undefined",
   "pg-dep waiting undefined",
   "pg-dep working undefined",
@@ -26,6 +35,8 @@ Array [
 
 exports[`job auto-start dependencies: 03:log-dep finished 1`] = `
 Array [
+  "creating main job [main]",
+  "creating dep job [dep]",
   "pg-main waiting undefined",
   "pg-dep waiting undefined",
   "pg-dep working undefined",
@@ -56,6 +67,8 @@ Array [
 
 exports[`job auto-start dependencies: 05:log-finished 1`] = `
 Array [
+  "creating main job [main]",
+  "creating dep job [dep]",
   "pg-main waiting undefined",
   "pg-dep waiting undefined",
   "pg-dep working undefined",
@@ -87,8 +100,15 @@ Array [
 ]
 `;
 
+exports[`job multiline: 00:create 1`] = `
+Array [
+  "creating job [multi]",
+]
+`;
+
 exports[`job multiline: 01:log-aOk 1`] = `
 Array [
+  "creating job [multi]",
   "pg multi: waiting undefined",
   "pg multi: working undefined",
   "pg multi: working started",
@@ -107,6 +127,7 @@ Array [
 
 exports[`job multiline: 03:log-bOk 1`] = `
 Array [
+  "creating job [multi]",
   "pg multi: waiting undefined",
   "pg multi: working undefined",
   "pg multi: working started",
@@ -126,6 +147,7 @@ Array [
 
 exports[`job multiline: 05:log-finished 1`] = `
 Array [
+  "creating job [multi]",
   "pg multi: waiting undefined",
   "pg multi: working undefined",
   "pg multi: working started",
@@ -145,8 +167,15 @@ Array [
 ]
 `;
 
+exports[`job typing: 00:create 1`] = `
+Array [
+  "creating job [typing]",
+]
+`;
+
 exports[`job typing: 01:log-aOk 1`] = `
 Array [
+  "creating job [typing]",
   "pg typing: waiting undefined",
   "pg typing: working undefined",
   "pg typing: working started",
@@ -165,6 +194,7 @@ Array [
 
 exports[`job typing: 03:log-bOk 1`] = `
 Array [
+  "creating job [typing]",
   "pg typing: waiting undefined",
   "pg typing: working undefined",
   "pg typing: working started",
@@ -185,6 +215,7 @@ Array [
 
 exports[`job typing: 05:log-cOk 1`] = `
 Array [
+  "creating job [typing]",
   "pg typing: waiting undefined",
   "pg typing: working undefined",
   "pg typing: working started",
@@ -207,6 +238,7 @@ Array [
 
 exports[`job typing: 07:log-finished 1`] = `
 Array [
+  "creating job [typing]",
   "pg typing: waiting undefined",
   "pg typing: working undefined",
   "pg typing: working started",
@@ -230,8 +262,17 @@ Array [
 ]
 `;
 
+exports[`job with dependencies: 00:create 1`] = `
+Array [
+  "creating main job [main]",
+  "creating dep job [dep]",
+]
+`;
+
 exports[`job with dependencies: 01:log-dep working 1`] = `
 Array [
+  "creating main job [main]",
+  "creating dep job [dep]",
   "pg-main waiting undefined",
   "pg-dep waiting undefined",
   "pg-dep working undefined",
@@ -256,6 +297,8 @@ Array [
 
 exports[`job with dependencies: 03:log-dep finished 1`] = `
 Array [
+  "creating main job [main]",
+  "creating dep job [dep]",
   "pg-main waiting undefined",
   "pg-dep waiting undefined",
   "pg-dep working undefined",
@@ -286,6 +329,8 @@ Array [
 
 exports[`job with dependencies: 05:log-dep working 1`] = `
 Array [
+  "creating main job [main]",
+  "creating dep job [dep]",
   "pg-main waiting undefined",
   "pg-dep waiting undefined",
   "pg-dep working undefined",
@@ -317,8 +362,15 @@ Array [
 ]
 `;
 
+exports[`job without dependencies: 00:create 1`] = `
+Array [
+  "creating job [job]",
+]
+`;
+
 exports[`job without dependencies: 01:log-working 1`] = `
 Array [
+  "creating job [job]",
   "pg job: waiting undefined",
   "pg job: working undefined",
   "pg job: working started",
@@ -337,6 +389,7 @@ Array [
 
 exports[`job without dependencies: 03:log-finished 1`] = `
 Array [
+  "creating job [job]",
   "pg job: waiting undefined",
   "pg job: working undefined",
   "pg job: working started",

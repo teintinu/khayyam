@@ -8,7 +8,7 @@ describe('job', () => {
     expect(job.title).toBe('job')
     expect(job.progress.actual.state).toBe('created')
     expect(logger.handleOutput).not.toBeCalled()
-    expect(logger.logged?.length).toBe(0)
+    expect(logger.logged).toMatchSnapshot('00:create')
     const p = job.execute()
     await logger.aOk.promise
     expect(job.progress.actual.state).toBe('working')
@@ -27,7 +27,7 @@ describe('job', () => {
     expect(job.title).toBe('multi')
     expect(job.progress.actual.state).toBe('created')
     expect(logger.handleOutput).not.toBeCalled()
-    expect(logger.logged?.length).toBe(0)
+    expect(logger.logged).toMatchSnapshot('00:create')
     const p = job.execute()
     await logger.aOk.promise
     expect(logger.logged).toMatchSnapshot('01:log-aOk')
@@ -62,7 +62,7 @@ describe('job', () => {
     expect(job.title).toBe('typing')
     expect(job.progress.actual.state).toBe('created')
     expect(logger.handleOutput).not.toBeCalled()
-    expect(logger.logged?.length).toBe(0)
+    expect(logger.logged).toMatchSnapshot('00:create')
     const p = job.execute()
     await logger.aOk.promise
     expect(logger.logged).toMatchSnapshot('01:log-aOk')
@@ -94,7 +94,7 @@ describe('job', () => {
     expect(main.progress.actual.state).toBe('created')
     expect(dep.progress.actual.state).toBe('created')
     expect(logger.handleOutput).not.toBeCalled()
-    expect(logger.logged?.length).toBe(0)
+    expect(logger.logged).toMatchSnapshot('00:create')
     const pMain = main.execute()
     const pDep = dep.execute()
     await logger.bOk.promise
@@ -130,7 +130,7 @@ describe('job', () => {
     expect(main.progress.actual.state).toBe('created')
     expect(dep.progress.actual.state).toBe('created')
     expect(logger.handleOutput).not.toBeCalled()
-    expect(logger.logged?.length).toBe(0)
+    expect(logger.logged).toMatchSnapshot('00:create')
     const p1 = main.execute()
     const p2 = dep.execute()
     await logger.bOk.promise

@@ -120,9 +120,11 @@ export function createWorkspace ({
             const b = findBundler(bundlerName)
             if (b) {
               const nJob = fn(pkg, b)
+              console.log('push flag ' + nJob.title + ' on ' + pkg.name, pkg)
               flat[pkg.name].push(nJob)
               pkg.dependencies.forEach((depName) => {
                 if (flat[depName]) {
+                  console.log('push deps on ' + depName + ' on ' + nJob.title)
                   nJob.depends(...flat[depName])
                 }
               })
