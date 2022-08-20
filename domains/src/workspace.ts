@@ -93,7 +93,7 @@ export function createWorkspace ({
         })
       }
     }
-    const flat: ByPackage<true> = {}
+    const flat: ByPackage<Job[]> = {}
     const tree: ByPackage<true> = {}
     packages.forEach((pkg) => walkOn(pkg))
     return ret
@@ -107,17 +107,25 @@ export function createWorkspace ({
         return false
       }
       if (!flat[pkg.name]) {
-        flat[pkg.name] = true
+        flat[pkg.name] = []
         tree[pkg.name] = true
         pkg.dependencies.forEach((depName) => {
           const dep = checkAndGetDependency(pkg, depName)
-          if (dep && walkOn(dep)) filtered = true
+          if (dep && walkOn(dep)) {
+            filtered = true
+          }
         })
         if (filtered) {
           pkg.bundlers.forEach((bundlerName) => {
             const b = findBundler(bundlerName)
             if (b) {
               const nJob = fn(pkg, b)
+              flat[pkg.name].push(nJob)
+              pkg.dependencies.forEach((depName) => {
+                if (flat[depName]) {
+                  nJob.depends(...flat[depName])
+                }
+              })
               if (ret.jobs[pkg.name]) {
                 ret.jobs[pkg.name].push(nJob)
               } else {

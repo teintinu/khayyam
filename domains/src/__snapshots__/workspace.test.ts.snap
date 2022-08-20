@@ -66,16 +66,16 @@ Object {
 exports[`workspace just a,b,c,d,e packages walk workspace all: walkedDebug 1`] = `
 Object {
   "a": Array [
-    "a walkABCDE()",
+    "a walkABCDE(b walkABCDE,c walkABCDE)",
   ],
   "b": Array [
-    "b walkABCDE()",
+    "b walkABCDE(c walkABCDE,d walkABCDE)",
   ],
   "c": Array [
-    "c walkABCDE()",
+    "c walkABCDE(d walkABCDE)",
   ],
   "d": Array [
-    "d walkABCDE()",
+    "d walkABCDE(e walkABCDE)",
   ],
   "e": Array [
     "e walkABCDE()",
@@ -94,7 +94,7 @@ Object {
 exports[`workspace just a,b,c,d,e packages walk workspace filter b: walkedDebug 1`] = `
 Object {
   "a": Array [
-    "a walkABCDE()",
+    "a walkABCDE(b walkABCDE)",
   ],
   "b": Array [
     "b walkABCDE()",
@@ -105,13 +105,13 @@ Object {
 exports[`workspace just a,b,c,d,e packages walk workspace filter c,d: walkedDebug 1`] = `
 Object {
   "a": Array [
-    "a walkABCDE()",
+    "a walkABCDE(b walkABCDE,c walkABCDE)",
   ],
   "b": Array [
-    "b walkABCDE()",
+    "b walkABCDE(c walkABCDE,d walkABCDE)",
   ],
   "c": Array [
-    "c walkABCDE()",
+    "c walkABCDE(d walkABCDE)",
   ],
   "d": Array [
     "d walkABCDE()",
@@ -122,10 +122,10 @@ Object {
 exports[`workspace just a,b,c,d,e packages walk workspace filter c: walkedDebug 1`] = `
 Object {
   "a": Array [
-    "a walkABCDE()",
+    "a walkABCDE(b walkABCDE,c walkABCDE)",
   ],
   "b": Array [
-    "b walkABCDE()",
+    "b walkABCDE(c walkABCDE)",
   ],
   "c": Array [
     "c walkABCDE()",
@@ -136,13 +136,13 @@ Object {
 exports[`workspace just a,b,c,d,e packages walk workspace filter d: walkedDebug 1`] = `
 Object {
   "a": Array [
-    "a walkABCDE()",
+    "a walkABCDE(b walkABCDE,c walkABCDE)",
   ],
   "b": Array [
-    "b walkABCDE()",
+    "b walkABCDE(c walkABCDE,d walkABCDE)",
   ],
   "c": Array [
-    "c walkABCDE()",
+    "c walkABCDE(d walkABCDE)",
   ],
   "d": Array [
     "d walkABCDE()",
@@ -153,16 +153,16 @@ Object {
 exports[`workspace just a,b,c,d,e packages walk workspace filter e: walkedDebug 1`] = `
 Object {
   "a": Array [
-    "a walkABCDE()",
+    "a walkABCDE(b walkABCDE,c walkABCDE)",
   ],
   "b": Array [
-    "b walkABCDE()",
+    "b walkABCDE(c walkABCDE,d walkABCDE)",
   ],
   "c": Array [
-    "c walkABCDE()",
+    "c walkABCDE(d walkABCDE)",
   ],
   "d": Array [
-    "d walkABCDE()",
+    "d walkABCDE(e walkABCDE)",
   ],
   "e": Array [
     "e walkABCDE()",
@@ -238,7 +238,7 @@ Object {
 exports[`workspace just x,y packages walk workspace all: walkedDebug 1`] = `
 Object {
   "x": Array [
-    "x walkXY()",
+    "x walkXY(y walkXY)",
   ],
   "y": Array [
     "y walkXY()",
@@ -259,7 +259,7 @@ Object {
 exports[`workspace just x,y packages walk workspace filter y: walkedDebug 1`] = `
 Object {
   "x": Array [
-    "x walkXY()",
+    "x walkXY(y walkXY)",
   ],
   "y": Array [
     "y walkXY()",
