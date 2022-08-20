@@ -168,7 +168,6 @@ export function createJobManager () {
     }
     function setDeps (deps: Job[]) {
       deps.forEach(checkCircular)
-      console.log(title + ' deps=' + deps.map(d => d.title).join())
       _dependencies = deps
       function checkCircular (dep: Job) {
         if (dep === job) throw new Error('Circular job dependency')

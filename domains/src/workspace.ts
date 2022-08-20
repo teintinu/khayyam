@@ -83,10 +83,10 @@ export function createWorkspace ({
           tDependants.forEach(tDependant => {
             deps.forEach(dep => {
               Object.keys(dep.jobs).forEach(nDependency => {
-                const tDependencies = ret.jobs[nDependency]
-                tDependencies.forEach(tDependency =>
+                const tDependencies = dep.jobs[nDependency]
+                tDependencies.forEach(tDependency => {
                   tDependant.depends(tDependency)
-                )
+                })
               })
             })
           })
@@ -120,11 +120,9 @@ export function createWorkspace ({
             const b = findBundler(bundlerName)
             if (b) {
               const nJob = fn(pkg, b)
-              console.log('push flag ' + nJob.title + ' on ' + pkg.name, pkg)
               flat[pkg.name].push(nJob)
               pkg.dependencies.forEach((depName) => {
                 if (flat[depName]) {
-                  console.log('push deps on ' + depName + ' on ' + nJob.title)
                   nJob.depends(...flat[depName])
                 }
               })

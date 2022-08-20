@@ -60,7 +60,7 @@ export function createFakeLog (verbose = false) {
     verbose,
     log (...args: string[]) {
       logged.push(args.join(' '))
-      if (verbose) { console.log(args.join(' ')) }
+      if (verbose) { console.info(args.join(' ')) }
     },
     logged,
     tree () {

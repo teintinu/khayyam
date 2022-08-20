@@ -3,4 +3,4 @@ export async function main () {
   return 'something'
 }
 
-main().catch(console.log)
+main().catch(console.info)
