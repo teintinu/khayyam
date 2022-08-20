@@ -1,8 +1,9 @@
 import { asap } from 'pjobs'
+import { Unscribe } from './sys'
 
 export interface Progress {
     readonly actual: Status
-    on(callback: (status: Status) => void): () => void
+    on(callback: (status: Status) => void): Unscribe
     update(status: Status): Promise<void>
 }
 

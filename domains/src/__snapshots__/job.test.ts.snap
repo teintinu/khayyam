@@ -40,6 +40,7 @@ Array [
   "pg-dep working INPUT: b",
   "pg-dep working b: dep-ok",
   "pg-dep working finished",
+  "killing dep",
   "pg-dep finished undefined",
   "pg-main working undefined",
   "pg-main working started",
@@ -68,12 +69,14 @@ Array [
   "pg-dep working INPUT: b",
   "pg-dep working b: dep-ok",
   "pg-dep working finished",
+  "killing dep",
   "pg-dep finished undefined",
   "pg-main working undefined",
   "pg-main working started",
   "pg-main working INPUT: a",
   "pg-main working a: main-ok",
   "pg-main working finished",
+  "killing main",
   "pg-main finished undefined",
 ]
 `;
@@ -136,6 +139,7 @@ Array [
   "pg multi: working a",
   "pg multi: working b",
   "pg multi: working finished",
+  "killing multi",
   "pg multi: finished undefined",
 ]
 `;
@@ -219,6 +223,7 @@ Array [
   "pg typing: working INPUT: c",
   "pg typing: working c: 789",
   "pg typing: working finished",
+  "killing typing",
   "pg typing: finished undefined",
 ]
 `;
@@ -269,6 +274,7 @@ Array [
   "pg-dep working INPUT: b",
   "pg-dep working b: dep-ok",
   "pg-dep working finished",
+  "killing dep",
   "pg-dep finished undefined",
   "pg-main working undefined",
   "pg-main working started",
@@ -297,12 +303,14 @@ Array [
   "pg-dep working INPUT: b",
   "pg-dep working b: dep-ok",
   "pg-dep working finished",
+  "killing dep",
   "pg-dep finished undefined",
   "pg-main working undefined",
   "pg-main working started",
   "pg-main working INPUT: a",
   "pg-main working a: main-ok",
   "pg-main working finished",
+  "killing main",
   "pg-main finished undefined",
 ]
 `;
@@ -347,6 +355,7 @@ Array [
   "pg job: working started",
   "pg job: working a",
   "pg job: working finished",
+  "killing job",
   "pg job: finished undefined",
 ]
 `;

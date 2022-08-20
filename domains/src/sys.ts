@@ -1,16 +1,17 @@
 import { Workspace } from './workspace'
 
+export type Unscribe=()=>void
 export interface System {
     readonly concurrency: number
-    workspaceChanged(): void
-    listenForWorkspaceChanges(callback:()=>void):()=>void
     getRepository(folder: string): string|undefined
     loadWorkspace(folder: string): Workspace
     notify(msg: string, packageName: string):void
     createProcess(process: ProcessParams): RunningProcess
+    watch(globs: string[], callback:()=>void): Unscribe
 }
 
 export interface ProcessParams {
+    title: string
     cwd: string
     cmd: string
     args: string[]

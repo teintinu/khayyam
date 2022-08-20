@@ -3,7 +3,7 @@ import { asap, defer, sleep } from 'pjobs'
 import { Bundler } from './bundler'
 import { ByPackage, createWorkspace, Package, WalkedJobs } from './workspace'
 import { createProgress } from './progress'
-import { ProcessParams, RunningProcess, System } from './sys'
+import { ProcessParams, RunningProcess, System, Unscribe } from './sys'
 import { spawn, ChildProcessWithoutNullStreams } from 'child_process'
 import { Readable, Writable } from 'stream'
 import { cpus } from 'os'
@@ -32,22 +32,15 @@ export function createFakeLog (verbose?: 'verbose') {
         })
       })
     })
-  const fsListeners = new Set<()=>void>()
-  let tmChanged: any
-  const fakeSys: System & { simulateChange():void} = {
+  const fsListeners: Record<string, Set<Unscribe>> = {}
+  const fakeSys: System & { simulateChange(path: string):void} = {
     concurrency: cpus().length,
-    workspaceChanged: fsChanged,
-    listenForWorkspaceChanges (callback) {
-      fsListeners.add(callback)
-      return () => {
-        fsListeners.delete(callback)
-      }
-    },
     getRepository: fsGetRepository,
-    simulateChange: fsSimulateChange,
+    simulateChange: fsChanged,
     loadWorkspace,
     notify: fsNotify,
-    createProcess: fsCreateProcess
+    createProcess: fsCreateProcess,
+    watch: fsWatch
   }
   const jobManager = createJobManager(fakeSys)
   const fakeLogger = {
@@ -89,17 +82,24 @@ export function createFakeLog (verbose?: 'verbose') {
     }
   }
   return fakeLogger
-  function fsChanged (): void {
-    clearTimeout(tmChanged)
-    tmChanged = setTimeout(() => {
-      fsListeners.forEach((fn) => asap(fn))
-    }, 1000)
+  function fsChanged (path: string): void {
+    const list = fsListeners[path]
+    if (list) list.forEach(fn => asap(fn))
+  }
+  function fsWatch (paths: string[], callback: ()=>void): Unscribe {
+    const removers:Unscribe[] = []
+    paths.forEach(path => {
+      let list = fsListeners[path]
+      if (list) list = fsListeners[path] = new Set<Unscribe>()
+      list.add(callback)
+      removers.push(() => list.delete(callback))
+    })
+    return () => {
+      removers.forEach((r) => r())
+    }
   }
   function fsGetRepository (folder: string): string|undefined {
     return 'repo:' + folder
-  }
-  function fsSimulateChange ():void {
-    fsChanged()
   }
   function loadWorkspace (folder:string) {
     const [sBundler, sPkg, sDeps, sLayer, sInvalid] = folder.split('/')
@@ -118,7 +118,7 @@ export function createFakeLog (verbose?: 'verbose') {
   function fsNotify (msg: string, pkgName: string) {
     fakeLogger.log('fsNotify:' + msg + ' on package: ' + pkgName)
   }
-  function fsCreateProcess ({ cmd, args, handleOutput }: ProcessParams): RunningProcess {
+  function fsCreateProcess ({ title, cmd, args, handleOutput }: ProcessParams): RunningProcess {
     let childProcess: ChildProcessWithoutNullStreams|undefined
     let sendStream : Writable|undefined
     let receiveStream: Readable|undefined
@@ -160,8 +160,9 @@ export function createFakeLog (verbose?: 'verbose') {
       promise,
       kill () {
         if (childProcess) {
+          fakeLogger.log('killing ' + title)
           try {
-            childProcess.kill()
+            childProcess.kill('SIGKILL')
           } catch (e) {
           //
           }
@@ -247,7 +248,7 @@ export function create2FakeJob (logger: Logger, delay: number, mainTitle: string
 function createFakeBundlerNPM (logger:Logger) {
   const fakeBundler: Bundler = {
     name: 'fakeBundlerNPM',
-    watch (pkg) {
+    getPathsToWatch (pkg) {
       return ['fakeBundlerNPM/' + pkg.name]
     },
     build (pkg, jobManager, goal) {
@@ -256,11 +257,8 @@ function createFakeBundlerNPM (logger:Logger) {
     test (pkg, jobManager) {
       return createFakeBundlerCommand(pkg, jobManager, 'npm-test')
     },
-    serve (pkg, jobManager) {
-      return createFakeBundlerCommand(pkg, jobManager, 'npm-serve')
-    },
-    publish (pkg, jobManager) {
-      return createFakeBundlerCommand(pkg, jobManager, 'npm-publish')
+    publish (pkg, jobManager, goal) {
+      return createFakeBundlerCommand(pkg, jobManager, 'npm-publish-' + goal)
     },
     lint (pkg, jobManager) {
       return createFakeBundlerCommand(pkg, jobManager, 'npm-lint')
@@ -296,8 +294,7 @@ function createFakeWorkspace (
       name: n,
       layer: layers ? n : '',
       dependencies: [],
-      bundlers: [bundler.name],
-      folder: n
+      bundlers: [bundler.name]
     }
     pkgs[n] = pkg
   }

@@ -8,7 +8,7 @@ import { System } from '@khayyam/domains'
 
 export function systemAdapterFactory (): System {
   return null as any
-  // const fsListeners = new Set<()=>void>()
+  // const fsListeners = new Set<Unscribe>()
   // let tmChanged: any
   // const sys: System = {
   //   concurrency: cpus().length,

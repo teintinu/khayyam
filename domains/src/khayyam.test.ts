@@ -1,25 +1,24 @@
-/* eslint-disable no-redeclare */
-import { khayyamCI } from './khayyam'
+import { khayyamCD } from './khayyam'
 import { createFakeLog } from './testlib'
 
 describe('Khayyam domain', () => {
-  describe('CI', () => {
+  describe('CD', () => {
     it('x package', async () => {
       const logger = createFakeLog()
-      const p = khayyamCI(
-        logger.fakeSys,
-        'npm/x/deps',
+      const workspace = logger.fakeSys.loadWorkspace('npm/x/deps')
+      const p = khayyamCD(
+        workspace,
         logger.jobManager
       )
       expect(logger.logged).toMatchSnapshot('log')
       expect(logger.tree()).toMatchSnapshot('tree')
       await p
     })
-    it('x package', async () => {
+    it('xy package', async () => {
       const logger = createFakeLog()
-      const p = khayyamCI(
-        logger.fakeSys,
-        'npm/xy/deps',
+      const workspace = logger.fakeSys.loadWorkspace('npm/xy/deps')
+      const p = khayyamCD(
+        workspace,
         logger.jobManager
       )
       expect(logger.logged).toMatchSnapshot('log')
@@ -28,9 +27,9 @@ describe('Khayyam domain', () => {
     })
     it('a,b,c,d,e packages', async () => {
       const logger = createFakeLog()
-      const p = khayyamCI(
-        logger.fakeSys,
-        'npm/abcde/deps',
+      const workspace = logger.fakeSys.loadWorkspace('npm/abcde/deps')
+      const p = khayyamCD(
+        workspace,
         logger.jobManager
       )
       expect(logger.logged).toMatchSnapshot('log')

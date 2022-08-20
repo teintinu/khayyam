@@ -1,6 +1,6 @@
 import { createProgress, Progress, State } from './progress'
 import p, { asap, QueuePromises, queuePromises } from 'pjobs'
-import { RunningProcess, System } from './sys'
+import { RunningProcess, System, Unscribe } from './sys'
 
 export type JobQueue = 'persistent'|'sequential'|'parallel'
 
@@ -12,6 +12,7 @@ export interface JobManager {
   } :JobCreate): Job
   execute(): Promise<void>
   waitFor(): Promise<void>
+  killAll(): void
 }
 
 export interface Job {
@@ -25,7 +26,7 @@ export interface Job {
   readonly stoppedAt: number
   kill(): void,
   type(text: string): void,
-  listen(callback: JobCallback): ()=>void,
+  listen(callback: JobCallback): Unscribe,
   depends(...dependencies: Job[]): void
   execute(): Promise<void>,
 }
@@ -80,7 +81,11 @@ export function createJobManager (sys: System) {
       updateTotalProgress()
       return totalProgress
     },
-    getTree
+    getTree,
+    killAll () {
+      allJobs.forEach((j) => asap(() => j.kill()))
+      allJobs = []
+    }
   }
   return manager
 
@@ -172,6 +177,7 @@ export function createJobManager (sys: System) {
     async function createProcess () {
       let lastOutputHandling : Promise<void>
       process = sys.createProcess({
+        title,
         cwd,
         cmd,
         args,
@@ -212,7 +218,7 @@ export function createJobManager (sys: System) {
         }
       })
     }
-    function listen (callback: JobCallback): ()=>void {
+    function listen (callback: JobCallback): Unscribe {
       callbacks.add(callback)
       return () => {
         callbacks.delete(callback)

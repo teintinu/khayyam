@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Khayyam domain CI a,b,c,d,e packages: log 1`] = `
+exports[`Khayyam domain CD a,b,c,d,e packages: log 1`] = `
 Array [
   "creating job [e(npm-build-production)]",
   "creating job [d(npm-build-production)]",
@@ -12,11 +12,11 @@ Array [
   "creating job [c(npm-test)]",
   "creating job [b(npm-test)]",
   "creating job [a(npm-test)]",
-  "creating job [e(npm-publish)]",
-  "creating job [d(npm-publish)]",
-  "creating job [c(npm-publish)]",
-  "creating job [b(npm-publish)]",
-  "creating job [a(npm-publish)]",
+  "creating job [e(npm-publish-production)]",
+  "creating job [d(npm-publish-production)]",
+  "creating job [c(npm-publish-production)]",
+  "creating job [b(npm-publish-production)]",
+  "creating job [a(npm-publish-production)]",
   "creating job [e(npm-lint)]",
   "creating job [d(npm-lint)]",
   "creating job [c(npm-lint)]",
@@ -30,36 +30,36 @@ Array [
 ]
 `;
 
-exports[`Khayyam domain CI a,b,c,d,e packages: tree 1`] = `
-"e(npm-publish)
+exports[`Khayyam domain CD a,b,c,d,e packages: tree 1`] = `
+"e(npm-publish-production)
   dependents:
   dependencies:
     e(npm-build-production)
       dependents:
         d(npm-build-production)
         e(npm-test)
-        e(npm-publish)
+        e(npm-publish-production)
       dependencies:
     e(npm-test)
       dependents:
         d(npm-test)
-        e(npm-publish)
+        e(npm-publish-production)
       dependencies:
         e(npm-build-production)
           dependents:
             d(npm-build-production)
             e(npm-test)
-            e(npm-publish)
+            e(npm-publish-production)
           dependencies:
     e(npm-lint)
       dependents:
-        e(npm-publish)
+        e(npm-publish-production)
       dependencies:
     e(npm-measure)
       dependents:
-        e(npm-publish)
+        e(npm-publish-production)
       dependencies:
-d(npm-publish)
+d(npm-publish-production)
   dependents:
   dependencies:
     d(npm-build-production)
@@ -67,53 +67,53 @@ d(npm-publish)
         c(npm-build-production)
         b(npm-build-production)
         d(npm-test)
-        d(npm-publish)
+        d(npm-publish-production)
       dependencies:
         e(npm-build-production)
           dependents:
             d(npm-build-production)
             e(npm-test)
-            e(npm-publish)
+            e(npm-publish-production)
           dependencies:
     d(npm-test)
       dependents:
         c(npm-test)
         b(npm-test)
-        d(npm-publish)
+        d(npm-publish-production)
       dependencies:
         e(npm-test)
           dependents:
             d(npm-test)
-            e(npm-publish)
+            e(npm-publish-production)
           dependencies:
             e(npm-build-production)
               dependents:
                 d(npm-build-production)
                 e(npm-test)
-                e(npm-publish)
+                e(npm-publish-production)
               dependencies:
         d(npm-build-production)
           dependents:
             c(npm-build-production)
             b(npm-build-production)
             d(npm-test)
-            d(npm-publish)
+            d(npm-publish-production)
           dependencies:
             e(npm-build-production)
               dependents:
                 d(npm-build-production)
                 e(npm-test)
-                e(npm-publish)
+                e(npm-publish-production)
               dependencies:
     d(npm-lint)
       dependents:
-        d(npm-publish)
+        d(npm-publish-production)
       dependencies:
     d(npm-measure)
       dependents:
-        d(npm-publish)
+        d(npm-publish-production)
       dependencies:
-c(npm-publish)
+c(npm-publish-production)
   dependents:
   dependencies:
     c(npm-build-production)
@@ -121,614 +121,642 @@ c(npm-publish)
         b(npm-build-production)
         a(npm-build-production)
         c(npm-test)
-        c(npm-publish)
+        c(npm-publish-production)
       dependencies:
         d(npm-build-production)
           dependents:
             c(npm-build-production)
             b(npm-build-production)
             d(npm-test)
-            d(npm-publish)
+            d(npm-publish-production)
           dependencies:
             e(npm-build-production)
               dependents:
                 d(npm-build-production)
                 e(npm-test)
-                e(npm-publish)
+                e(npm-publish-production)
               dependencies:
     c(npm-test)
       dependents:
         b(npm-test)
         a(npm-test)
-        c(npm-publish)
+        c(npm-publish-production)
       dependencies:
         d(npm-test)
           dependents:
             c(npm-test)
             b(npm-test)
-            d(npm-publish)
+            d(npm-publish-production)
           dependencies:
             e(npm-test)
               dependents:
                 d(npm-test)
-                e(npm-publish)
+                e(npm-publish-production)
               dependencies:
                 e(npm-build-production)
                   dependents:
                     d(npm-build-production)
                     e(npm-test)
-                    e(npm-publish)
+                    e(npm-publish-production)
                   dependencies:
             d(npm-build-production)
               dependents:
                 c(npm-build-production)
                 b(npm-build-production)
                 d(npm-test)
-                d(npm-publish)
+                d(npm-publish-production)
               dependencies:
                 e(npm-build-production)
                   dependents:
                     d(npm-build-production)
                     e(npm-test)
-                    e(npm-publish)
+                    e(npm-publish-production)
                   dependencies:
         c(npm-build-production)
           dependents:
             b(npm-build-production)
             a(npm-build-production)
             c(npm-test)
-            c(npm-publish)
+            c(npm-publish-production)
           dependencies:
             d(npm-build-production)
               dependents:
                 c(npm-build-production)
                 b(npm-build-production)
                 d(npm-test)
-                d(npm-publish)
+                d(npm-publish-production)
               dependencies:
                 e(npm-build-production)
                   dependents:
                     d(npm-build-production)
                     e(npm-test)
-                    e(npm-publish)
+                    e(npm-publish-production)
                   dependencies:
     c(npm-lint)
       dependents:
-        c(npm-publish)
+        c(npm-publish-production)
       dependencies:
     c(npm-measure)
       dependents:
-        c(npm-publish)
+        c(npm-publish-production)
       dependencies:
-b(npm-publish)
+b(npm-publish-production)
   dependents:
   dependencies:
     b(npm-build-production)
       dependents:
         a(npm-build-production)
         b(npm-test)
-        b(npm-publish)
+        b(npm-publish-production)
       dependencies:
         c(npm-build-production)
           dependents:
             b(npm-build-production)
             a(npm-build-production)
             c(npm-test)
-            c(npm-publish)
+            c(npm-publish-production)
           dependencies:
             d(npm-build-production)
               dependents:
                 c(npm-build-production)
                 b(npm-build-production)
                 d(npm-test)
-                d(npm-publish)
+                d(npm-publish-production)
               dependencies:
                 e(npm-build-production)
                   dependents:
                     d(npm-build-production)
                     e(npm-test)
-                    e(npm-publish)
+                    e(npm-publish-production)
                   dependencies:
         d(npm-build-production)
           dependents:
             c(npm-build-production)
             b(npm-build-production)
             d(npm-test)
-            d(npm-publish)
+            d(npm-publish-production)
           dependencies:
             e(npm-build-production)
               dependents:
                 d(npm-build-production)
                 e(npm-test)
-                e(npm-publish)
+                e(npm-publish-production)
               dependencies:
     b(npm-test)
       dependents:
         a(npm-test)
-        b(npm-publish)
+        b(npm-publish-production)
       dependencies:
         c(npm-test)
           dependents:
             b(npm-test)
             a(npm-test)
-            c(npm-publish)
+            c(npm-publish-production)
           dependencies:
             d(npm-test)
               dependents:
                 c(npm-test)
                 b(npm-test)
-                d(npm-publish)
+                d(npm-publish-production)
               dependencies:
                 e(npm-test)
                   dependents:
                     d(npm-test)
-                    e(npm-publish)
+                    e(npm-publish-production)
                   dependencies:
                     e(npm-build-production)
                       dependents:
                         d(npm-build-production)
                         e(npm-test)
-                        e(npm-publish)
+                        e(npm-publish-production)
                       dependencies:
                 d(npm-build-production)
                   dependents:
                     c(npm-build-production)
                     b(npm-build-production)
                     d(npm-test)
-                    d(npm-publish)
+                    d(npm-publish-production)
                   dependencies:
                     e(npm-build-production)
                       dependents:
                         d(npm-build-production)
                         e(npm-test)
-                        e(npm-publish)
+                        e(npm-publish-production)
                       dependencies:
             c(npm-build-production)
               dependents:
                 b(npm-build-production)
                 a(npm-build-production)
                 c(npm-test)
-                c(npm-publish)
+                c(npm-publish-production)
               dependencies:
                 d(npm-build-production)
                   dependents:
                     c(npm-build-production)
                     b(npm-build-production)
                     d(npm-test)
-                    d(npm-publish)
+                    d(npm-publish-production)
                   dependencies:
                     e(npm-build-production)
                       dependents:
                         d(npm-build-production)
                         e(npm-test)
-                        e(npm-publish)
+                        e(npm-publish-production)
                       dependencies:
         d(npm-test)
           dependents:
             c(npm-test)
             b(npm-test)
-            d(npm-publish)
+            d(npm-publish-production)
           dependencies:
             e(npm-test)
               dependents:
                 d(npm-test)
-                e(npm-publish)
+                e(npm-publish-production)
               dependencies:
                 e(npm-build-production)
                   dependents:
                     d(npm-build-production)
                     e(npm-test)
-                    e(npm-publish)
+                    e(npm-publish-production)
                   dependencies:
             d(npm-build-production)
               dependents:
                 c(npm-build-production)
                 b(npm-build-production)
                 d(npm-test)
-                d(npm-publish)
+                d(npm-publish-production)
               dependencies:
                 e(npm-build-production)
                   dependents:
                     d(npm-build-production)
                     e(npm-test)
-                    e(npm-publish)
+                    e(npm-publish-production)
                   dependencies:
         b(npm-build-production)
           dependents:
             a(npm-build-production)
             b(npm-test)
-            b(npm-publish)
+            b(npm-publish-production)
           dependencies:
             c(npm-build-production)
               dependents:
                 b(npm-build-production)
                 a(npm-build-production)
                 c(npm-test)
-                c(npm-publish)
+                c(npm-publish-production)
               dependencies:
                 d(npm-build-production)
                   dependents:
                     c(npm-build-production)
                     b(npm-build-production)
                     d(npm-test)
-                    d(npm-publish)
+                    d(npm-publish-production)
                   dependencies:
                     e(npm-build-production)
                       dependents:
                         d(npm-build-production)
                         e(npm-test)
-                        e(npm-publish)
+                        e(npm-publish-production)
                       dependencies:
             d(npm-build-production)
               dependents:
                 c(npm-build-production)
                 b(npm-build-production)
                 d(npm-test)
-                d(npm-publish)
+                d(npm-publish-production)
               dependencies:
                 e(npm-build-production)
                   dependents:
                     d(npm-build-production)
                     e(npm-test)
-                    e(npm-publish)
+                    e(npm-publish-production)
                   dependencies:
     b(npm-lint)
       dependents:
-        b(npm-publish)
+        b(npm-publish-production)
       dependencies:
     b(npm-measure)
       dependents:
-        b(npm-publish)
+        b(npm-publish-production)
       dependencies:
-a(npm-publish)
+a(npm-publish-production)
   dependents:
   dependencies:
     a(npm-build-production)
       dependents:
         a(npm-test)
-        a(npm-publish)
+        a(npm-publish-production)
       dependencies:
         b(npm-build-production)
           dependents:
             a(npm-build-production)
             b(npm-test)
-            b(npm-publish)
+            b(npm-publish-production)
           dependencies:
             c(npm-build-production)
               dependents:
                 b(npm-build-production)
                 a(npm-build-production)
                 c(npm-test)
-                c(npm-publish)
+                c(npm-publish-production)
               dependencies:
                 d(npm-build-production)
                   dependents:
                     c(npm-build-production)
                     b(npm-build-production)
                     d(npm-test)
-                    d(npm-publish)
+                    d(npm-publish-production)
                   dependencies:
                     e(npm-build-production)
                       dependents:
                         d(npm-build-production)
                         e(npm-test)
-                        e(npm-publish)
+                        e(npm-publish-production)
                       dependencies:
             d(npm-build-production)
               dependents:
                 c(npm-build-production)
                 b(npm-build-production)
                 d(npm-test)
-                d(npm-publish)
+                d(npm-publish-production)
               dependencies:
                 e(npm-build-production)
                   dependents:
                     d(npm-build-production)
                     e(npm-test)
-                    e(npm-publish)
+                    e(npm-publish-production)
                   dependencies:
         c(npm-build-production)
           dependents:
             b(npm-build-production)
             a(npm-build-production)
             c(npm-test)
-            c(npm-publish)
+            c(npm-publish-production)
           dependencies:
             d(npm-build-production)
               dependents:
                 c(npm-build-production)
                 b(npm-build-production)
                 d(npm-test)
-                d(npm-publish)
+                d(npm-publish-production)
               dependencies:
                 e(npm-build-production)
                   dependents:
                     d(npm-build-production)
                     e(npm-test)
-                    e(npm-publish)
+                    e(npm-publish-production)
                   dependencies:
     a(npm-test)
       dependents:
-        a(npm-publish)
+        a(npm-publish-production)
       dependencies:
         b(npm-test)
           dependents:
             a(npm-test)
-            b(npm-publish)
+            b(npm-publish-production)
           dependencies:
             c(npm-test)
               dependents:
                 b(npm-test)
                 a(npm-test)
-                c(npm-publish)
+                c(npm-publish-production)
               dependencies:
                 d(npm-test)
                   dependents:
                     c(npm-test)
                     b(npm-test)
-                    d(npm-publish)
+                    d(npm-publish-production)
                   dependencies:
                     e(npm-test)
                       dependents:
                         d(npm-test)
-                        e(npm-publish)
+                        e(npm-publish-production)
                       dependencies:
                         e(npm-build-production)
                           dependents:
                             d(npm-build-production)
                             e(npm-test)
-                            e(npm-publish)
+                            e(npm-publish-production)
                           dependencies:
                     d(npm-build-production)
                       dependents:
                         c(npm-build-production)
                         b(npm-build-production)
                         d(npm-test)
-                        d(npm-publish)
+                        d(npm-publish-production)
                       dependencies:
                         e(npm-build-production)
                           dependents:
                             d(npm-build-production)
                             e(npm-test)
-                            e(npm-publish)
+                            e(npm-publish-production)
                           dependencies:
                 c(npm-build-production)
                   dependents:
                     b(npm-build-production)
                     a(npm-build-production)
                     c(npm-test)
-                    c(npm-publish)
+                    c(npm-publish-production)
                   dependencies:
                     d(npm-build-production)
                       dependents:
                         c(npm-build-production)
                         b(npm-build-production)
                         d(npm-test)
-                        d(npm-publish)
+                        d(npm-publish-production)
                       dependencies:
                         e(npm-build-production)
                           dependents:
                             d(npm-build-production)
                             e(npm-test)
-                            e(npm-publish)
+                            e(npm-publish-production)
                           dependencies:
             d(npm-test)
               dependents:
                 c(npm-test)
                 b(npm-test)
-                d(npm-publish)
+                d(npm-publish-production)
               dependencies:
                 e(npm-test)
                   dependents:
                     d(npm-test)
-                    e(npm-publish)
+                    e(npm-publish-production)
                   dependencies:
                     e(npm-build-production)
                       dependents:
                         d(npm-build-production)
                         e(npm-test)
-                        e(npm-publish)
+                        e(npm-publish-production)
                       dependencies:
                 d(npm-build-production)
                   dependents:
                     c(npm-build-production)
                     b(npm-build-production)
                     d(npm-test)
-                    d(npm-publish)
+                    d(npm-publish-production)
                   dependencies:
                     e(npm-build-production)
                       dependents:
                         d(npm-build-production)
                         e(npm-test)
-                        e(npm-publish)
+                        e(npm-publish-production)
                       dependencies:
             b(npm-build-production)
               dependents:
                 a(npm-build-production)
                 b(npm-test)
-                b(npm-publish)
+                b(npm-publish-production)
               dependencies:
                 c(npm-build-production)
                   dependents:
                     b(npm-build-production)
                     a(npm-build-production)
                     c(npm-test)
-                    c(npm-publish)
+                    c(npm-publish-production)
                   dependencies:
                     d(npm-build-production)
                       dependents:
                         c(npm-build-production)
                         b(npm-build-production)
                         d(npm-test)
-                        d(npm-publish)
+                        d(npm-publish-production)
                       dependencies:
                         e(npm-build-production)
                           dependents:
                             d(npm-build-production)
                             e(npm-test)
-                            e(npm-publish)
+                            e(npm-publish-production)
                           dependencies:
                 d(npm-build-production)
                   dependents:
                     c(npm-build-production)
                     b(npm-build-production)
                     d(npm-test)
-                    d(npm-publish)
+                    d(npm-publish-production)
                   dependencies:
                     e(npm-build-production)
                       dependents:
                         d(npm-build-production)
                         e(npm-test)
-                        e(npm-publish)
+                        e(npm-publish-production)
                       dependencies:
         c(npm-test)
           dependents:
             b(npm-test)
             a(npm-test)
-            c(npm-publish)
+            c(npm-publish-production)
           dependencies:
             d(npm-test)
               dependents:
                 c(npm-test)
                 b(npm-test)
-                d(npm-publish)
+                d(npm-publish-production)
               dependencies:
                 e(npm-test)
                   dependents:
                     d(npm-test)
-                    e(npm-publish)
+                    e(npm-publish-production)
                   dependencies:
                     e(npm-build-production)
                       dependents:
                         d(npm-build-production)
                         e(npm-test)
-                        e(npm-publish)
+                        e(npm-publish-production)
                       dependencies:
                 d(npm-build-production)
                   dependents:
                     c(npm-build-production)
                     b(npm-build-production)
                     d(npm-test)
-                    d(npm-publish)
+                    d(npm-publish-production)
                   dependencies:
                     e(npm-build-production)
                       dependents:
                         d(npm-build-production)
                         e(npm-test)
-                        e(npm-publish)
+                        e(npm-publish-production)
                       dependencies:
             c(npm-build-production)
               dependents:
                 b(npm-build-production)
                 a(npm-build-production)
                 c(npm-test)
-                c(npm-publish)
+                c(npm-publish-production)
               dependencies:
                 d(npm-build-production)
                   dependents:
                     c(npm-build-production)
                     b(npm-build-production)
                     d(npm-test)
-                    d(npm-publish)
+                    d(npm-publish-production)
                   dependencies:
                     e(npm-build-production)
                       dependents:
                         d(npm-build-production)
                         e(npm-test)
-                        e(npm-publish)
+                        e(npm-publish-production)
                       dependencies:
         a(npm-build-production)
           dependents:
             a(npm-test)
-            a(npm-publish)
+            a(npm-publish-production)
           dependencies:
             b(npm-build-production)
               dependents:
                 a(npm-build-production)
                 b(npm-test)
-                b(npm-publish)
+                b(npm-publish-production)
               dependencies:
                 c(npm-build-production)
                   dependents:
                     b(npm-build-production)
                     a(npm-build-production)
                     c(npm-test)
-                    c(npm-publish)
+                    c(npm-publish-production)
                   dependencies:
                     d(npm-build-production)
                       dependents:
                         c(npm-build-production)
                         b(npm-build-production)
                         d(npm-test)
-                        d(npm-publish)
+                        d(npm-publish-production)
                       dependencies:
                         e(npm-build-production)
                           dependents:
                             d(npm-build-production)
                             e(npm-test)
-                            e(npm-publish)
+                            e(npm-publish-production)
                           dependencies:
                 d(npm-build-production)
                   dependents:
                     c(npm-build-production)
                     b(npm-build-production)
                     d(npm-test)
-                    d(npm-publish)
+                    d(npm-publish-production)
                   dependencies:
                     e(npm-build-production)
                       dependents:
                         d(npm-build-production)
                         e(npm-test)
-                        e(npm-publish)
+                        e(npm-publish-production)
                       dependencies:
             c(npm-build-production)
               dependents:
                 b(npm-build-production)
                 a(npm-build-production)
                 c(npm-test)
-                c(npm-publish)
+                c(npm-publish-production)
               dependencies:
                 d(npm-build-production)
                   dependents:
                     c(npm-build-production)
                     b(npm-build-production)
                     d(npm-test)
-                    d(npm-publish)
+                    d(npm-publish-production)
                   dependencies:
                     e(npm-build-production)
                       dependents:
                         d(npm-build-production)
                         e(npm-test)
-                        e(npm-publish)
+                        e(npm-publish-production)
                       dependencies:
     a(npm-lint)
       dependents:
-        a(npm-publish)
+        a(npm-publish-production)
       dependencies:
     a(npm-measure)
       dependents:
-        a(npm-publish)
+        a(npm-publish-production)
       dependencies:"
 `;
 
-exports[`Khayyam domain CI x package: log 1`] = `
+exports[`Khayyam domain CD x package: log 1`] = `
 Array [
   "creating job [x(npm-build-production)]",
   "creating job [x(npm-test)]",
-  "creating job [x(npm-publish)]",
+  "creating job [x(npm-publish-production)]",
   "creating job [x(npm-lint)]",
   "creating job [x(npm-measure)]",
 ]
 `;
 
-exports[`Khayyam domain CI x package: log 2`] = `
+exports[`Khayyam domain CD x package: tree 1`] = `
+"x(npm-publish-production)
+  dependents:
+  dependencies:
+    x(npm-build-production)
+      dependents:
+        x(npm-test)
+        x(npm-publish-production)
+      dependencies:
+    x(npm-test)
+      dependents:
+        x(npm-publish-production)
+      dependencies:
+        x(npm-build-production)
+          dependents:
+            x(npm-test)
+            x(npm-publish-production)
+          dependencies:
+    x(npm-lint)
+      dependents:
+        x(npm-publish-production)
+      dependencies:
+    x(npm-measure)
+      dependents:
+        x(npm-publish-production)
+      dependencies:"
+`;
+
+exports[`Khayyam domain CD xy package: log 1`] = `
 Array [
   "creating job [y(npm-build-production)]",
   "creating job [x(npm-build-production)]",
   "creating job [y(npm-test)]",
   "creating job [x(npm-test)]",
-  "creating job [y(npm-publish)]",
-  "creating job [x(npm-publish)]",
+  "creating job [y(npm-publish-production)]",
+  "creating job [x(npm-publish-production)]",
   "creating job [y(npm-lint)]",
   "creating job [x(npm-lint)]",
   "creating job [y(npm-measure)]",
@@ -736,109 +764,81 @@ Array [
 ]
 `;
 
-exports[`Khayyam domain CI x package: tree 1`] = `
-"x(npm-publish)
-  dependents:
-  dependencies:
-    x(npm-build-production)
-      dependents:
-        x(npm-test)
-        x(npm-publish)
-      dependencies:
-    x(npm-test)
-      dependents:
-        x(npm-publish)
-      dependencies:
-        x(npm-build-production)
-          dependents:
-            x(npm-test)
-            x(npm-publish)
-          dependencies:
-    x(npm-lint)
-      dependents:
-        x(npm-publish)
-      dependencies:
-    x(npm-measure)
-      dependents:
-        x(npm-publish)
-      dependencies:"
-`;
-
-exports[`Khayyam domain CI x package: tree 2`] = `
-"y(npm-publish)
+exports[`Khayyam domain CD xy package: tree 1`] = `
+"y(npm-publish-production)
   dependents:
   dependencies:
     y(npm-build-production)
       dependents:
         x(npm-build-production)
         y(npm-test)
-        y(npm-publish)
+        y(npm-publish-production)
       dependencies:
     y(npm-test)
       dependents:
         x(npm-test)
-        y(npm-publish)
+        y(npm-publish-production)
       dependencies:
         y(npm-build-production)
           dependents:
             x(npm-build-production)
             y(npm-test)
-            y(npm-publish)
+            y(npm-publish-production)
           dependencies:
     y(npm-lint)
       dependents:
-        y(npm-publish)
+        y(npm-publish-production)
       dependencies:
     y(npm-measure)
       dependents:
-        y(npm-publish)
+        y(npm-publish-production)
       dependencies:
-x(npm-publish)
+x(npm-publish-production)
   dependents:
   dependencies:
     x(npm-build-production)
       dependents:
         x(npm-test)
-        x(npm-publish)
+        x(npm-publish-production)
       dependencies:
         y(npm-build-production)
           dependents:
             x(npm-build-production)
             y(npm-test)
-            y(npm-publish)
+            y(npm-publish-production)
           dependencies:
     x(npm-test)
       dependents:
-        x(npm-publish)
+        x(npm-publish-production)
       dependencies:
         y(npm-test)
           dependents:
             x(npm-test)
-            y(npm-publish)
+            y(npm-publish-production)
           dependencies:
             y(npm-build-production)
               dependents:
                 x(npm-build-production)
                 y(npm-test)
-                y(npm-publish)
+                y(npm-publish-production)
               dependencies:
         x(npm-build-production)
           dependents:
             x(npm-test)
-            x(npm-publish)
+            x(npm-publish-production)
           dependencies:
             y(npm-build-production)
               dependents:
                 x(npm-build-production)
                 y(npm-test)
-                y(npm-publish)
+                y(npm-publish-production)
               dependencies:
     x(npm-lint)
       dependents:
-        x(npm-publish)
+        x(npm-publish-production)
       dependencies:
     x(npm-measure)
       dependents:
-        x(npm-publish)
+        x(npm-publish-production)
       dependencies:"
 `;

@@ -10,11 +10,12 @@ export interface Workspace {
   findPackage (packageName: string): Package|undefined
   findBundler (bundlerName: string): Bundler|undefined
   walk (
-    filter: 'all'|ByPackage<boolean>,
+    filter: WalkFilter,
     treeDep: boolean,
     fn: (pkg: Package, bundler: Bundler)=>Job): WalkedJobs
 }
 
+export type WalkFilter = 'all'|ByPackage<boolean>
 export interface WalkedJobs {
   jobs: ByPackage<Job[]>
   depends(mode: 'each'|'all', deps:WalkedJobs[]): void
@@ -26,7 +27,6 @@ export interface Layer {
 
 export interface Package {
     readonly name: string;
-    readonly folder: string;
     readonly layer: string;
     readonly repository?: string
     readonly bundlers: ReadonlyArray<string>
