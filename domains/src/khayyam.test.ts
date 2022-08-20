@@ -5,7 +5,7 @@ import { createFakeLog } from './testlib'
 describe('Khayyam domain', () => {
   describe('CI', () => {
     it('x package', async () => {
-      const logger = createFakeLog(true)
+      const logger = createFakeLog()
       const p = khayyamCI(
         logger.fakeSys,
         'npm/x/deps',

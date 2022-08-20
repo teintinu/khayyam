@@ -1,8 +1,6 @@
 import { createProgress, Progress, State } from './progress'
-import p, { asap, QueuePromises, queuePromises, sleep } from 'pjobs'
-import { spawn, ChildProcessWithoutNullStreams } from 'child_process'
-import { Writable, Readable } from 'stream'
-import { cpus } from 'os'
+import p, { asap, QueuePromises, queuePromises } from 'pjobs'
+import { RunningProcess, System } from './sys'
 
 export type JobQueue = 'persistent'|'sequential'|'parallel'
 
@@ -10,7 +8,7 @@ export interface JobManager {
   progress: Progress
   getTree(): Node[]
   createJob({
-    title, cwd, command, args, shell, queue, manual
+    title, cwd, cmd, args, shell, queue, manual
   } :JobCreate): Job
   execute(): Promise<void>
   waitFor(): Promise<void>
@@ -35,7 +33,7 @@ export interface Job {
 export interface JobCreate {
   title: string,
   cwd: string,
-  command: string,
+  cmd: string,
   args: string[],
   shell?: boolean | string | undefined,
   queue: JobQueue
@@ -54,7 +52,7 @@ export interface Node {
   dependencies: Node[]
   dependents: Node[]
 }
-export function createJobManager () {
+export function createJobManager (sys: System) {
   const totalProgress = createProgress(false)
   let nextId = 1
   let allJobs: Job[] = []
@@ -64,7 +62,7 @@ export function createJobManager () {
   } = {
     persistent: queuePromises({ concurrency: 0xFFFFFFF }),
     sequential: queuePromises({ concurrency: 1 }),
-    parallel: queuePromises({ concurrency: cpus().length })
+    parallel: queuePromises({ concurrency: sys.concurrency })
   }
 
   const manager: JobManager = {
@@ -93,7 +91,7 @@ export function createJobManager () {
   }
 
   function internalCreateJob ({
-    title, cwd, command, args, shell, queue, manual
+    title, cwd, cmd, args, shell, queue, manual
   }:JobCreate): Job {
     nextId = (nextId + 1) % 0xFFFFFFF
     const callbacks = new Set<JobCallback>()
@@ -121,10 +119,7 @@ export function createJobManager () {
       setDeps
     }
     allJobs.push(job)
-    let childProcess: ChildProcessWithoutNullStreams|undefined
-    let sendStream : Writable|undefined
-    let receiveStream: Readable|undefined
-    let exitCode = 0
+    let process: RunningProcess|undefined
     return job
 
     async function execute () {
@@ -175,40 +170,31 @@ export function createJobManager () {
       }
     }
     async function createProcess () {
-      const queue = queuePromises()
-      return new Promise<void>((resolve, reject) => {
-        const child = spawn(command, args, {
-          cwd,
-          shell
-        })
-        child.stdout.on('data', (chunk) => {
-          const data = typeof chunk === 'string' ? chunk : chunk.toString('utf-8')
-          queue.enqueue(() => handleOutput(job, data, false))
-        })
-        child.stderr.on('data', function (chunk) {
-          const data = typeof chunk === 'string' ? chunk : chunk.toString('utf-8')
-          queue.enqueue(() => handleOutput(job, data, true))
-        })
-        sendStream = child.stdin
-
-        childProcess = child
-        child.on('error', function (err) {
-          reject(err)
-        })
-        child.on('close', async (code) => {
-          await sleep(100)
-          await queue.waitFor()
-          exitCode = code || 0
-          if (exitCode) {
-            const err = new Error('error level=' + exitCode)
-            handleOutput(job, err.message, true).finally(() => {
-              reject(err)
-            })
-          } else {
-            resolve()
-          }
-        })
+      let lastOutputHandling : Promise<void>
+      process = sys.createProcess({
+        cwd,
+        cmd,
+        args,
+        shell,
+        handleOutput (data, error) {
+          const fn = () => handleOutput(job, data, error)
+          if (lastOutputHandling) lastOutputHandling = lastOutputHandling.finally(fn)
+          else lastOutputHandling = fn()
+          return lastOutputHandling
+        }
       })
+      return process.promise
+    }
+    function kill () {
+      if (process) {
+        process.kill()
+        process = undefined
+      }
+    }
+    function type (text: string) {
+      if (process) {
+        process.type(text)
+      }
     }
     async function waitDependencies () {
       let oldDeps: Job[] = []
@@ -225,33 +211,6 @@ export function createJobManager () {
           } else resolve()
         }
       })
-    }
-    function release () {
-      childProcess = undefined
-      sendStream = undefined
-      if (receiveStream) {
-        receiveStream.destroy()
-        receiveStream = undefined
-      }
-    }
-    function kill () {
-      const deps = _dependencies
-      _dependencies = []
-      deps.forEach((dep) => dep.kill())
-      if (childProcess) {
-        try {
-          childProcess.kill()
-        } catch (e) {
-          //
-        }
-        progress.update({ state: 'killed' })
-      }
-      release()
-    }
-    async function type (text: string) {
-      if (sendStream) {
-        sendStream.write(text)
-      }
     }
     function listen (callback: JobCallback): ()=>void {
       callbacks.add(callback)

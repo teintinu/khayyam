@@ -1,9 +1,12 @@
 import { createJobManager, JobCallbackArgs, JobManager, Job, Node } from './job'
-import { asap, defer } from 'pjobs'
+import { asap, defer, sleep } from 'pjobs'
 import { Bundler } from './bundler'
 import { ByPackage, createWorkspace, Package, WalkedJobs } from './workspace'
 import { createProgress } from './progress'
-import { System } from './sys'
+import { ProcessParams, RunningProcess, System } from './sys'
+import { spawn, ChildProcessWithoutNullStreams } from 'child_process'
+import { Readable, Writable } from 'stream'
+import { cpus } from 'os'
 
 export const cwd = process.cwd()
 const fakeProcess = './scripts/fake-process.js'
@@ -16,7 +19,7 @@ export type TreeOfNode = [
 
 export type Logger=ReturnType<typeof createFakeLog>
 
-export function createFakeLog (verbose = false) {
+export function createFakeLog (verbose?: 'verbose') {
   const logged: string[] = []
   const aOk = defer<void>()
   const bOk = defer<void>()
@@ -34,10 +37,10 @@ export function createFakeLog (verbose = false) {
         })
       })
     })
-  const jobManager = createJobManager()
   const fsListeners = new Set<()=>void>()
   let tmChanged: any
   const fakeSys: System & { simulateChange():void} = {
+    concurrency: cpus().length,
     workspaceChanged: fsChanged,
     listenForWorkspaceChanges (callback) {
       fsListeners.add(callback)
@@ -48,8 +51,10 @@ export function createFakeLog (verbose = false) {
     getRepository: fsGetRepository,
     simulateChange: fsSimulateChange,
     loadWorkspace,
-    notify: fsNotify
+    notify: fsNotify,
+    createProcess: fsCreateProcess
   }
+  const jobManager = createJobManager(fakeSys)
   const fakeLogger = {
     jobManager,
     handleOutput,
@@ -116,6 +121,69 @@ export function createFakeLog (verbose = false) {
   function fsNotify (msg: string, pkgName: string) {
     fakeLogger.log('fsNotify:' + msg + ' on package: ' + pkgName)
   }
+  function fsCreateProcess ({ cmd, args, handleOutput }: ProcessParams): RunningProcess {
+    let childProcess:ChildProcessWithoutNullStreams|undefined
+    let sendStream : Writable|undefined
+    let receiveStream: Readable|undefined
+    let exitCode = 0
+    const promise = new Promise<void>((resolve, reject) => {
+      const child = spawn(cmd, args, {
+        cwd,
+        shell
+      })
+      child.stdout.on('data', (chunk) => {
+        const data = typeof chunk === 'string' ? chunk : chunk.toString('utf-8')
+        handleOutput(data, false)
+      })
+      child.stderr.on('data', function (chunk) {
+        const data = typeof chunk === 'string' ? chunk : chunk.toString('utf-8')
+        handleOutput(data, false)
+      })
+      sendStream = child.stdin
+
+      childProcess = child
+      child.on('error', function (err) {
+        reject(err)
+      })
+      child.on('close', async (code) => {
+        await sleep(100)
+        exitCode = code || 0
+        asap(p.kill)
+        if (exitCode) {
+          const err = new Error('error level=' + exitCode)
+          handleOutput(err.message, true).finally(() => {
+            reject(err)
+          })
+        } else {
+          resolve()
+        }
+      })
+    })
+    const p:RunningProcess = {
+      promise,
+      kill () {
+        if (childProcess) {
+          try {
+            childProcess.kill()
+          } catch (e) {
+          //
+          }
+        }
+        childProcess = undefined
+        sendStream = undefined
+        if (receiveStream) {
+          receiveStream.destroy()
+          receiveStream = undefined
+        }
+      },
+      type (text) {
+        if (sendStream) {
+          sendStream.write(text)
+        }
+      }
+    }
+    return p
+  }
 }
 
 export function createFakeProgress (logger: Logger, title: string, manual: boolean) {
@@ -131,7 +199,7 @@ export function createFakeJob (logger: Logger, delay: number, title: string, arg
   const job = logger.jobManager.createJob({
     title,
     cwd,
-    command: 'node',
+    cmd: 'node',
     args: [fakeProcess, String(delay), ...args],
     shell,
     queue: 'sequential',
@@ -149,7 +217,7 @@ export function create2FakeJob (logger: Logger, delay: number, mainTitle: string
   const main = logger.jobManager.createJob({
     title: mainTitle,
     cwd,
-    command: 'node',
+    cmd: 'node',
     args: [fakeProcess, String(delay), ...mainArgs],
     shell,
     queue: 'persistent',
@@ -159,7 +227,7 @@ export function create2FakeJob (logger: Logger, delay: number, mainTitle: string
   const dep = logger.jobManager.createJob({
     title: depTitle,
     cwd,
-    command: 'node',
+    cmd: 'node',
     args: [fakeProcess, String(delay), ...depArgs],
     shell,
     queue: 'persistent',
